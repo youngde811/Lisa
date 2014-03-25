@@ -1,0 +1,417 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.2  (Linux)">
+	<META NAME="CREATED" CONTENT="20070908;14272300">
+	<META NAME="CHANGEDBY" CONTENT="David Young">
+	<META NAME="CHANGED" CONTENT="20070917;18503300">
+	<META NAME="ProgId" CONTENT="Word.Document">
+	<META NAME="Originator" CONTENT="Microsoft Word 9">
+	<META NAME="ProgId" CONTENT="Word.Document">
+	<META NAME="Originator" CONTENT="Microsoft Word 9">
+	<!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+	<STYLE TYPE="text/css">
+	<!--
+		TD P { color: #000000 }
+		P { color: #000000 }
+		H2 { color: #000000 }
+		H3 { color: #000000 }
+		A:link { color: #0000ef }
+		A:visited { color: #52188c }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" TEXT="#000000" LINK="#0000ef" VLINK="#52188c" BGCOLOR="#ffffff" BACKGROUND="hierarchy-background.gif" DIR="LTR">
+<P> 
+</P>
+<P>&nbsp; 
+</P>
+<TABLE COLS=3 WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=2>
+	<TR>
+		<TD ROWSPAN=2 WIDTH=28%>
+			<P STYLE="text-decoration: none"><A NAME="_x0000_i10271"></A><A HREF="http://www.powmiaff.org/"><IMG SRC="powmia.jpg" NAME="graphics1" ALIGN=BOTTOM WIDTH=50 HEIGHT=85 BORDER=0></A></P>
+		</TD>
+		<TD ROWSPAN=2 WIDTH=100%>
+			<P>&nbsp;</P>
+			<P>&nbsp;</P>
+		</TD>
+		<TD WIDTH=29%>
+			<P ALIGN=RIGHT><A NAME="_x0000_i10261"></A><IMG SRC="http://sourceforge.net/sflogo.php?group_id=12453&amp;type=1" NAME="graphics2" ALIGN=BOTTOM WIDTH=88 HEIGHT=31 BORDER=0></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=29% VALIGN=TOP>
+			<P>&nbsp;</P>
+		</TD>
+	</TR>
+</TABLE>
+<H2 ALIGN=CENTER>The Lisa Project</H2>
+<P><BR>Welcome to the <A HREF="http://sourceforge.net/projects/lisa">Lisa</A>
+project, a platform for the development of <B>L</B>isp-based
+<B>I</B>ntelligent <B>S</B>oftware <B>A</B>gents. Lisa is a
+production-rule system implemented in the Common Lisp Object System
+(CLOS), and is heavily influenced by CLIPS and the Java Expert System
+Shell (JESS). At its core is a reasoning engine based on an
+object-oriented implementation of the Rete algorithm, a very
+efficient mechanism for solving the difficult many-to-many matching
+problem (&quot;Rete: A Fast Algorithm for the Many Pattern/Many
+Object Pattern Match Problem&quot;, Charles L. Forgy, Artificial
+Intelligence 19(1982), 17-37.) Intrinsic to Lisa is the ability to
+reason over CLOS objects without imposing special class hierarchy
+requirements; thus it should be possible to easily augment existing
+CLOS applications with reasoning capabilities. As Lisa is an
+extension to Common Lisp, the full power of the Lisp environment is
+always available. Lisa-enabled applications should run on any
+ANSI-compliant Common Lisp platform. 
+</P>
+<H3>Project Goals</H3>
+<P>The Lisa project is driven by a number of important goals: 
+</P>
+<UL TYPE=DISC>
+	<LI><P><I>Unrestricted availability</I>: The principal motivation
+	for beginning Lisa was the apparent dearth of lightweight, <I>current,
+	freely-available</I> toolkits for constructing Lisp-based
+	intelligent systems. There are a number of very fine commercial and
+	restricted-use products out there (see the links below), but these
+	systems do not necessarily address the needs of developers
+	attempting to introduce Lisp into their organizations. This is
+	exactly the position I found myself in prior to Lisa. I was leading
+	an applied research project that needed an expert system shell, and
+	if I'd had a modern implementation freely available for Lisp I might
+	have been able to successfully entrench Lisp within the
+	organization. So, I wrote Lisa. 
+	</P>
+	<LI><P><I>Portability</I>: Vendor neutrality is a significant
+	project goal, not because I disapprove of commercial software but to
+	ensure Lisa is available on as many platforms as I can manage.. As
+	previously mentioned, Lisa is implemented in ANSI Common Lisp;
+	currently, all development is being done on Windows 2000 using&nbsp;
+	<A HREF="http://www.xanalys.com/">Xanalys</A>' LispWorks. Every
+	effort will be made to avoid the use of implementation-specific
+	functionality; in the cases where a non-ANSI feature must be used
+	(e.g. multiprocessing support), Lisa will attempt to support the
+	major Lisp implementations either through conditional evaluation or
+	the use of a common library such as <A HREF="http://clocc.sourceforge.net/">CLOCC</A>.
+		</P>
+	<LI><P><I>Familiarity</I>: Lisa's production-rule system has its
+	roots in CLIPS and JESS, making it readily familiar to developers
+	who've worked with either of these systems. Indeed, the CLIPS and
+	JESS languages both have their roots in Lisp. 
+	</P>
+	<LI><P><I>Flexibility</I>: As previously mentioned, Lisa reasons
+	over CLOS objects without requiring changes to an application's
+	class hierarchy. In addition, the full power of Common Lisp is
+	available for use within productions; there is no dichotomy between
+	Lisa's programming language and her implementation. 
+	</P>
+	<LI><P><I>Simplicity</I>: Along with portability, the project is
+	striving for simplicity and elegance at the functional, architecture
+	and source code levels. This doesn't mean Lisa should have limited
+	usefulness; rather, it should be possible for new developers to
+	easily understand the code layout and behavior. Unless performance
+	absolutely demands otherwise, clarity of design and implementation
+	will take precedence. 
+	</P>
+</UL>
+<H3>Project People</H3>
+<UL TYPE=DISC>
+	<LI><P><A HREF="mailto:youngde@pobox.com">David E. Young</A>:
+	Presently a knowledge engineer at a small startup in RTP, North
+	Carolina. 
+	</P>
+</UL>
+<H3>Project Status</H3>
+<P>Release 3.2 is the latest official release. The major addition
+after version 2.1 is support for Certainty Factors (CF), as described
+in Peter Norvig's <I>Paradigms of Artificial Intelligence
+Programming</I>. There's also a simplified install facility based on
+ASDF, and some major performance improvements.</P>
+<P>The first production release for Lisa 2.0, a major rewrite of the
+system, was available as of 9 December, 2002. The Rete algorithm was
+re-implemented from scratch; new conditional elements were added;
+contexts were introduced; and a production rule debugger made
+available. There were also other features not listed here. 
+</P>
+<P>Lisa had its first production release (Version 1.0) on 31 August,
+2001 and is considered &quot;stable&quot; software; it should now be
+possible to develop reasonably sophisticated knowledge bases for
+&quot;real systems&quot;. Lisa has successfully run adaptations of
+the &quot;monkey and bananas&quot; (MAB) planning problem on all four
+target Lisp platforms, and full reasoning capabilities are available
+for CLOS objects in a multi-threaded environment. Release 1.1 offers
+support for <I>dynamic rule definition</I>, the ability to create new
+rules from existing rules at runtime; version 1.2 includes a new
+query facility that allows interactive and programmatic retrieval of
+CLOS instances from a knowledge base. For the most current
+information on the project, including mailing lists, latest news and
+available downloads, see the <A HREF="http://sourceforge.net/projects/lisa">official
+project page</A>. If you prefer, you may contact the project staff
+directly (see <I>Project People</I>).</P>
+<H3>Supported Platforms</H3>
+<P>Lisa is known to run on LispWorks, ACL, CLISP, CMUCL (19a), SBCL
+and OpenMCL. I also know of an individual that has managed to get
+Lisa running on Armed Bear Common Lisp, a testimony to the quality of
+that member of the Common Lisp family.</P>
+<H3>Documentation</H3>
+<P>Currently, documentation for Lisa is a work-in-progress. However,
+there is a beta-quality version of the <A HREF="ref-guide.html">Lisa</A>
+<A HREF="ref-guide.html">Reference Guide</A> that should help you get
+started. Also, you may see the source code for Lisa's two versions of
+the MAB, <A HREF="http://lisa.sourceforge.net/mab.lisp">mab.lisp</A>
+and <A HREF="http://lisa.sourceforge.net/mab-clos.lisp">mab-clos.lisp</A>
+(a &quot;CLOS-ified&quot; version of the default MAB implementation).
+</P>
+<H3>License</H3>
+<P>Lisa is currently released under the GNU Lesser General Public
+License (LGPL), primarily because it seemed more versatile than the
+GPL. However, some sources indicate that the LGPL might inhibit
+commercial uses of Lisp applications like Lisa. I've no idea if this
+is the case as I'm not a legal expert. So, if you're interested in
+using Lisa commercially and decide the LGPL gets in the way, feel
+free to contact me to discuss some other type of license arrangement.</P>
+<H3>News</H3>
+<P><I>8 September, 2007:</I> <SPAN STYLE="font-style: normal">Release
+3.0. This is a major release that offers support for certainty
+factors, big performance improvements, and some important bug fixes.</SPAN></P>
+<P><I>21 February, 2006:</I> Release 2.4. This is a minor release
+that makes Lisa compatible with CLISP 2.38.</P>
+<P><I>5 April, 2005:</I> Release 2.3. This version fixes a serious
+bug in Lisa’s join network; thanks to Andy Sloane for the patch.
+There’s also a patch from Fred Gilham that enables auto-notify
+support for CMUCL.</P>
+<P><I>4 April, 2005: </I>Release 2.1 is out of beta and is the latest
+stable release.</P>
+<P><I>17 September, 2004</I>: Release 2.1 beta is available, with
+support for Certainty Factors. Also, Lisa now unofficially once again
+supports CMUCL. I've had reports that the PCL bugs were fixed as of
+19a, and that Lisa is able to run the MAB on that platform.</P>
+<P><I>9 June, 2004</I>: Lisa now uses ASDF as its default system
+definition facility. The build and load procedure has also been
+simplified to help new folks get up and running quickly. I also have
+plans to write a tutorial that will be more useful than the reference
+guide. Also, note that Lisa officially no longer supports CMUCL.
+There's apparently a bug in PCL that prevents Lisa from running (or
+perhaps compiling; I forget). This situation has existed for awhile
+now, but I'm just getting around to announcing it.</P>
+<P><I>6 June, 2004</I>: Release 2.0.7. Yet another bug-fix release
+that corrects a problem reported by Aneil Mallavarapu. Lisa was
+having difficulty keeping the agenda straight when rules were created
+after facts had been asserted into working memory.</P>
+<P><I>5 March, 2004</I>: Release 2.0.6. This is a bug-fix release
+that addresses problems with a) Lisa's duplicate fact detection
+mechanism; and b) the LOGICAL conditional element. Patches for both
+issues were submitted by Aneil Mallavarapu.</P>
+<P><I>1 November, 2003</I>: Release 2.0.5, a bug-fix release that
+corrects problems with Lisa’s taxonomic reasoning system. Patches
+submitted courtesy of Aneil Mallavarapu.</P>
+<P><I>19 December, 2002</I>: Release 2.0.3, a bug-fix release
+addressing a problem with queries. 
+</P>
+<P><I>10 December, 2002</I>: Release 2.0.1, a bug-fix release for
+2.0.</P>
+<P><I>9 December, 2002</I>: The first production release for 2.0 is
+available. Details are in the <A HREF="RELNOTES.html">release notes</A>.</P>
+<P><I>25 November, 2002</I>: Beta 3 is available. Again, some major
+enhancements, including Contexts, a new conditional element and
+duplicate fact detection. Details are in the release notes.</P>
+<P><I>18 November, 2002</I>: Beta 2 is available. Lots of changes and
+enhancements in this version, including completion of Lisa's truth
+maintenance system. See the <A HREF="RELNOTES.html">release notes</A>
+for details.</P>
+<P><I>6 November, 2002</I>: The first beta release for Lisa 2.0,
+2.0b1. This version introduces a form of truth maintenance via the
+LOGICAL conditional element. Details are in the reference guide in
+the distribution.</P>
+<P><I>4 November, 2002</I>: Alpha release 5 for Lisa 2.0 is now
+available. This version introduces the OR conditional element, along
+with some improvements to the debugger. Details are in the reference
+guide in the distribution.</P>
+<P><I>28 October, 2002</I>: Alpha release 4 for Lisa 2.0 is now
+available. New to this version is the Lisa debugger, a simple,
+interactive production rule monitoring/inspection facility. The
+Reference Guide in the distribution has a chapter explaining how to
+use it.</P>
+<P>Additional items of interest can be found <A HREF="news.htm">here</A>.</P>
+<H3>Related Links</H3>
+<P>This section contains a small collection of topics related to Lisa
+and its development environment. It will be updated periodically as
+the need arises. NB: If your favorite Lisp/Environment/Tool was
+omitted here it was done without prejudice; I simply haven't had time
+to test Lisa with every mainstream Lisp implementation, or
+investigate every knowledge representation system, or... you get the
+idea. <BR>&nbsp; <BR>&nbsp; 
+</P>
+<TABLE COLS=2 WIDTH=893 BORDER=0 CELLPADDING=0 CELLSPACING=2>
+	<TR>
+		<TD WIDTH=351>
+			<P><B>Free Common Lisp Implementations</B></P>
+		</TD>
+		<TD WIDTH=528>
+			<P><B>Commercial Common Lisp Implementations</B></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=351>
+			<UL TYPE=DISC>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://www.cons.org/cmucl">CMU
+				Common Lisp</A> (CMUCL) 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://clisp.cons.org/">CLISP</A>
+								</P>
+				<LI><P><A HREF="http://armedbear-j.sourceforge.net/">Armed Bear
+				Lisp</A> (ABL) 
+				</P>
+			</UL>
+		</TD>
+		<TD WIDTH=528>
+			<UL TYPE=DISC>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://www.lispworks.com/">LispWorks</A>:
+				Xanalys, Inc. My Lisp environment of choice. Reminds me of my
+				Symbolics days... 
+				</P>
+				<LI><P><A HREF="http://www.franz.com/">Allegro Common Lisp</A>:
+				Franz, Inc. 
+				</P>
+			</UL>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR>&nbsp; 
+</P>
+<TABLE COLS=2 WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=2>
+	<TR>
+		<TD>
+			<P><B>Lisp Development Environments and Libraries</B></P>
+		</TD>
+		<TD>
+			<P>&nbsp;</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<UL TYPE=DISC>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://www.gnu.org/">Emacs</A>:
+				No comment necessary. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://ilisp.sourceforge.net/">ILisp</A>:
+				A nice, comprehensive Emacs Lisp package that integrates a number
+				of Lisp implementations. 
+				</P>
+				<LI><P><A HREF="http://clocc.sourceforge.net/">CLOCC</A>: The
+				Common Lisp Open Code Collection. 
+				</P>
+			</UL>
+		</TD>
+		<TD>
+			<P>&nbsp;</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR>&nbsp; 
+</P>
+<TABLE COLS=2 WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=2>
+	<TR>
+		<TD>
+			<P><B>Commercial and Restricted-Use Knowledge Systems</B></P>
+		</TD>
+		<TD>
+			<P><B>Freely-Available Knowledge Systems</B></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD>
+			<UL TYPE=DISC>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://www.isi.edu/isd/LOOM/LOOM-HOME.html">Loom,
+				PowerLoom</A>: Semantic networks, ontologies. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://www.lispworks.com/">KnowledgeWorks</A>:
+				Production-rule system for LispWorks. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://herzberg.ca.sandia.gov/jess/">JESS</A>:
+				The Java Expert System Shell. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://www.ilog.com/">JRules</A>:
+				ILog's production-rule system for Java. 
+				</P>
+				<LI><P><A HREF="http://www.haley.com/">Eclipse, Authorete</A>:
+				The Haley Enterprise's production rule suite. 
+				</P>
+			</UL>
+		</TD>
+		<TD>
+			<UL TYPE=DISC>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://www.ghgcorp.com/clips/CLIPS.html">CLIPS</A>:
+				A classic expert system tool. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://www.cis.upenn.edu/~screamer-tools/home.html">Screamer:</A>
+				Nondeterministic programming for Lisp. 
+				</P>
+				<LI><P><A HREF="http://jlisa.sf.net/">JLisa</A>: A powerful
+				framework for building business rules accessible to Java. 
+				</P>
+			</UL>
+			<P><BR>&nbsp;</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR>&nbsp; 
+</P>
+<TABLE COLS=2 WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=2>
+	<TR>
+		<TD>
+			<P><B>Useful References</B></P>
+		</TD>
+		<TD>
+			<P>&nbsp;</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<UL TYPE=DISC>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://www.lisp.org/HyperSpec/FrontMatter/index.html">Common
+				Lisp HyperSpec</A>: HTML version of the ANSI standard X3.226,
+				1994. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://www.alu.org/mop/index.html">The
+				CLOS MOP</A>: HTML version of the AMOP. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><A HREF="http://www.alu.org/">ALU</A>:
+				The Association of Lisp Users. 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><I>Steele, Guy L. Jr.</I>:
+				<A HREF="http://www.amazon.com/exec/obidos/ASIN/1555580416/qid%3D984074327/107-1518177-7350946">Common
+				Lisp : The Language, Second Edition</A> (CLtL2). 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><I>Keene, Sonya E.</I>: <A HREF="http://www.amazon.com/exec/obidos/ASIN/0201175894/">Object
+				Oriented Programming in Common Lisp - A Programmer's Guide to the
+				Common Lisp Object System.</A>&nbsp; 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><I>Kiczales, Gregor et al</I>:
+				<A HREF="http://www.amazon.com/exec/obidos/ASIN/0262610744/">The
+				Art of the Metaobject Protocol.</A>&nbsp; 
+				</P>
+				<LI><P STYLE="margin-bottom: 0in"><I>Graham, Paul</I>: <A HREF="http://www.amazon.com/exec/obidos/ASIN/0133708756/ref=sim_books/104-3504753-0375128">ANSI
+				Common Lisp</A>.&nbsp; 
+				</P>
+				<LI><P><I>Graham, Paul</I>: <A HREF="http://www.amazon.com/exec/obidos/ASIN/0130305529/">On
+				Lisp</A>.&nbsp; 
+				</P>
+			</UL>
+		</TD>
+		<TD>
+			<P>&nbsp;</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><B>Credits</B> 
+</P>
+<P>The background image for this web site was lifted, with
+permission, from the Loom project home page. 
+</P>
+</BODY>
+</HTML>
