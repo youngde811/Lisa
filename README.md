@@ -11,7 +11,7 @@ it should be possible to easily augment existing CLOS applications with reasonin
 to Common Lisp, the full power of the Lisp environment is always available. Lisa-enabled applications should run on any
 ANSI-compliant Common Lisp platform.
 
-Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Lisa) for complete details and documentation.
+Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Lisa-Home) for complete details and documentation.
 
 ## Authors ##
 
