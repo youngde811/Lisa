@@ -13,6 +13,8 @@ ANSI-compliant Common Lisp platform.
 
 Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Lisa) for complete details and documentation.
 
-## Footnotes ##
+## Authors ##
+
+[David E. Young](mailto://streetrod750@protonmail.com)
 
 [^1]: "Rete: A Fast Algorithm for the Many Pattern/Many Object Pattern Match Problem" Charles L. Forgy, Artificial Intelligence 19(1982), 17-37.
