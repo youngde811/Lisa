@@ -13,6 +13,18 @@ ANSI-compliant Common Lisp platform.
 
 Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Lisa-Home) for complete details and documentation.
 
+## Supported Platforms ##
+
+Lisa is known to run on the following ANSI Common Lisp implementations:
+
+- SBCL
+- LispWorks
+- ACL
+- CLISP
+- CMUCL (19a)
+- OpenMCL
+- Armed Bear Common Lisp (ABCL)
+
 ## Authors ##
 
 [David E. Young](mailto://streetrod750@protonmail.com)
