@@ -1,0 +1,35 @@
+This is a preliminary document describing Lisa's support for Certainty
+Factors (CF).
+
+Lisa now has an implementation of CF as described in Peter Norvig's
+Paradigms of Artificial Intelligence Programming (PAIP), chapter 16. I
+don't have much to say about it right now, other than PAIP is the
+offical reference for the algorithm employed, and that the MYCIN
+example in that book has been partially replicated for Lisa; you'll
+find it in "lisa:misc;mycin.lisp".
+
+The Lisa MYCIN example contains the full set of rules found in PAIP,
+plus two functions: CULTURE-1 and CULTURE-2. These two functions set
+up the environment found on pgs 555-556, eliminating the need for user
+interaction. They produce the results found in the book.
+
+I'm not going to write any documentation until we've finished the
+implementation. It's possible I'll add support for Dempster-Shafer
+theory and Baye's law, if I can find the time in my life, and that
+will require refactoring the existing interfaces.
+
+If you're interested in the code, changes occurred in these files:
+
+  * "lisa:src;2.0-core;cf.lisp" (new file)
+  * "lisa:src;2.0-core;language.lisp"
+  * "lisa:src;2.0-core;parser.lisp"
+  * "lisa:src;2.0-core;rete.lisp"
+  * "lisa:src;2.0-core;fact.lisp"
+  * "lisa:src;2.0-core;rule.lisp"
+  * "lisa:src;package;pkgdecl.lisp"
+
+Look at mycin.lisp to see how CF is employed in Lisa.
+
+Please report bugs to me; I'll try and fix them in a timely manner.
+
+dey.  

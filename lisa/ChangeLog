@@ -1,0 +1,32 @@
+2007-09-11  David E. Young  <youngde@pobox.com>
+
+	* Release 3.1.
+	* Fixed bug reported by Andrew Philpot in Lisa's new conflict
+	  resolution machinery. The trouble actually lay in the heap
+	  library that Lisa borrowed. This bug affected the retrieval and
+	  display of activations.
+	* Addressed warnings reported by CLISP and Lispworks when
+	  compiling Lisa. Lisa now compiles warning-free on these
+	  platforms.
+	* Added patch for OpenMCL support. I'm not sure who offered this,
+	  so I can't offer proper attribution. Sorry.
+
+2007-09-08  David E. Young  <youngde@pobox.com>
+
+	* This is Lisa release 3.0.
+	* Finally beginning a change log for this project.
+	* Added support for SBCL. Thanks to Rusian Kosolapov for
+  	  submitting some of the patches for this.
+	* Fixed an ugly but subtle bug in Lisa's replace-rule
+	  mechanism. Whenever an existing rule was replaced with a new
+	  version, the old rule's root nodes were retained rather than being
+	  removed, eventually drastically reducing performace. Thanks to
+	  Andrew Philpot for analyzing and reporting this problem.
+	* Significantly improved the performance of Lisa's conflict
+	  resolution machinery. Thanks to Edi Weitz for reporting the
+	  problem that led to this work.
+	* Streamlined Lisa's rule parser.
+	* Made the belief system a permanent part of Lisa. There's a
+          keyword arg change DEFRULE -- from :cf to :belief -- that will
+	  break existing code. Sorry for that.
+
