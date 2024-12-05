@@ -11,8 +11,6 @@ it should be possible to easily augment existing CLOS applications with reasonin
 to Common Lisp, the full power of the Lisp environment is always available. Lisa-enabled applications should run on any
 ANSI-compliant Common Lisp platform.
 
-Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Lisa-Home) for complete details and documentation.
-
 ## Supported Platforms ##
 
 Lisa is known to run on the following ANSI Common Lisp implementations:
@@ -24,6 +22,10 @@ Lisa is known to run on the following ANSI Common Lisp implementations:
 - CMUCL (19a)
 - OpenMCL
 - Armed Bear Common Lisp (ABCL)
+
+## Documentation ##
+
+Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Lisa-Home) for complete details and documentation.
 
 ## Authors ##
 
