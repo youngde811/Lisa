@@ -22,12 +22,12 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; Description: Meta operations that LISA uses to support the manipulation of
+;; Description: Meta operations that Lisa uses to support the manipulation of
 ;; facts and instances.
 
 ;; NB: A note on terminology. We make the distinction here between symbolic
 ;; slot names and effective slot names. The former refers to an internal
-;; symbol, created by LISA, used to identify fact slots within rules; the
+;; symbol, created by Lisa, used to identify fact slots within rules; the
 ;; latter refers to the actual, package-qualified slot name.
 
 (in-package :lisa)
@@ -94,7 +94,7 @@
                (acquire-meta-data class-name)
                (return))
              (cerror "Enter a template definition now."
-                     "LISA doesn't know about the template named by (~S)." class-name)
+                     "Lisa doesn't know about the template named by (~S)." class-name)
              (format t "Enter a DEFTEMPLATE form: ")
              (eval (read))
              (fresh-line))))

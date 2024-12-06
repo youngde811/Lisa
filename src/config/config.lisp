@@ -1,4 +1,3 @@
-
 ;;; This file is part of Lisa, the Lisp-based Intelligent Software Agents platform.
 
 ;; MIT License
@@ -23,9 +22,8 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; File: config.lisp
-;; Description: User-customisable configuration settings for Lisa. It is
-;; expected that developers will edit this file as they see fit.
+;; Description: User-customisable configuration settings for Lisa. It is expected
+;; that developers will edit this file as they see fit.
 
 (in-package :lisa)
 

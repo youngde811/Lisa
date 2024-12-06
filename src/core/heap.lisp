@@ -1,7 +1,5 @@
 ;;; -*- Lisp -*-
 ;;;
-;;; $Header: /cvsroot/lisa/lisa/src/core/heap.lisp,v 1.3 2007/09/11 21:14:09 youngde Exp $
-;;;
 ;;; Copyright (c) 2002, 2003 Gene Michael Stover.
 ;;; 
 ;;; This library is free software; you can redistribute it

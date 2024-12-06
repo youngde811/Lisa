@@ -1,4 +1,3 @@
-
 ;; This file is part of Lisa, the Lisp-based Intelligent Software Agents platform.
 
 ;; MIT License
@@ -23,7 +22,6 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; File: pattern.lisp
 ;; Description: Structures here collectively represent patterns after they've
 ;; been analysed by the language parser. This is the canonical representation
 ;; of parsed patterns that Rete compilers are intended to see.

@@ -73,7 +73,7 @@
 (defclass builtin-strategy (strategy priority-queue-mixin)
   ()
   (:documentation
-   "A base class for all LISA builtin conflict resolution strategies."))
+   "A base class for all Lisa builtin conflict resolution strategies."))
   
 (defmethod add-activation ((self builtin-strategy) activation)
   (insert-activation self activation))

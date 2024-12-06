@@ -22,7 +22,7 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; Description: Defines the standard LISA environment.
+;; Description: Defines the standard Lisa environment.
 
 (in-package :lisa)
 
@@ -31,7 +31,7 @@
 
 (defun use-default-engine ()
   "Create and make available a default instance of the inference engine. Use
-    this function when you want a basic, single-threaded LISA environment."
+    this function when you want a basic, single-threaded Lisa environment."
   (when (null *default-engine*)
     (setf *default-engine* (make-inference-engine)))
   (values *default-engine*))

@@ -22,7 +22,6 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; File: activation.lisp
 ;; Description: This class represents an activation of a rule.
 
 (in-package :lisa)

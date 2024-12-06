@@ -22,7 +22,6 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; File: deffacts.lisp
 ;; Description: This class represents "autoloaded" facts that are asserted automatically
 ;; as part of an engine reset.
 

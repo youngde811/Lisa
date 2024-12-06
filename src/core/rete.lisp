@@ -1,4 +1,3 @@
-
 ;; This file is part of Lisa, the Lisp-based Intelligent Software Agents platform.
 
 ;; MIT License
