@@ -25,7 +25,7 @@ Lisa is known to run on the following ANSI Common Lisp implementations:
 
 ## Documentation ##
 
-Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Lisa-Home) for complete details and documentation.
+Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Home) for complete details and documentation.
 
 ## Authors ##
 
