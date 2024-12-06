@@ -36,6 +36,7 @@ some of the following:
 - Project re-homing from Sourceforge to GitHub, including codebase cleanup and improved document presentation.
 - Performance tuning using SBCL's profiler, locating hotspots in any areas of the code (particularly the inference
   engine and compiler).
+- Support for Quicklisp.
 - Anything else I feel like adding.
 
 ## Documentation ##
