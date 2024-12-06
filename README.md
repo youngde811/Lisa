@@ -24,7 +24,7 @@ Lisa is known to run on the following ANSI Common Lisp implementations:
 - OpenMCL
 - Armed Bear Common Lisp (ABCL)
 
-## Current Project Tasks ##
+## What's New ##
 
 After taking an eleven-year hiatus, as of December 2024 I've decided to resume work on Lisa, adding some modern features
 and capabilities. The fundamental architecture will not change, as I'm quite happy with it. But, Lisa needs at least
