@@ -12,6 +12,9 @@ requirements; thus it should be possible to easily augment existing CLOS applica
 Lisa is an extension to Common Lisp, the full power of the Lisp environment is always available. Lisa-enabled
 applications should run on any ANSI-compliant Common Lisp platform.
 
+**NB**: Lisa is currently undergoing a re-home from SourceForge to GitHub (here). Just about every file has been touched
+in some way, and the code itself has not yet been regression tested in SBCL. Once done (soon), I'll remove this notice.
+
 ## Supported Lisps ##
 
 Lisa is known to run on the following ANSI Common Lisp implementations:
@@ -41,7 +44,7 @@ some of the following:
 
 ## Documentation ##
 
-Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Lisa-Home) for complete details, features and
+Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Home) for complete details, features and
 documentation.
 
 ## Authors ##
