@@ -1,42 +1,42 @@
-;;; This file is part of LISA, the Lisp-based Intelligent Software
-;;; Agents platform.
+;; This file is part of Lisa, the Lisp-based Intelligent Software Agents platform.
 
-;;; Copyright (C) 2000 David E. Young (de.young@computer.org)
+;; MIT License
 
-;;; This library is free software; you can redistribute it and/or
-;;; modify it under the terms of the GNU Lesser General Public License
-;;; as published by the Free Software Foundation; either version 2.1
-;;; of the License, or (at your option) any later version.
+;; Copyright (c) 2000 David Young
 
-;;; This library is distributed in the hope that it will be useful,
-;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;;; GNU Lesser General Public License for more details.
+;; Permission is hereby granted, free of charge, to any person obtaining a copy
+;; of this software and associated documentation files (the "Software"), to deal
+;; in the Software without restriction, including without limitation the rights
+;; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+;; copies of the Software, and to permit persons to whom the Software is
+;; furnished to do so, subject to the following conditions:
 
-;;; You should have received a copy of the GNU Lesser General Public License
-;;; along with this library; if not, write to the Free Software
-;;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+;; The above copyright notice and this permission notice shall be included in all
+;; copies or substantial portions of the Software.
 
-;;; File: allegro-auto-notify.lisp
-;;; Description: Allegro-specific implementation of LISA's auto-notification
-;;; mechanism, whereby changes to the slot values of CLOS instances, outside
-;;; of LISA's control, are picked up via the MOP protocol and synchronized
-;;; with KB facts.
+;; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+;; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+;; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+;; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+;; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;; SOFTWARE.
 
-;;; $Id: allegro-auto-notify.lisp,v 1.2 2002/12/03 16:03:51 youngde Exp $
+;; Description: Allegro-specific implementation of Lisa's auto-notification
+;; mechanism, whereby changes to the slot values of CLOS instances, outside
+;; of Lisa's control, are picked up via the MOP protocol and synchronized
+;; with KB facts.
 
-(in-package "LISA")
+(in-package :lisa)
 
 (defclass standard-kb-class (standard-class) ())
 
-(defmethod make-instance :around ((self standard-kb-class) 
-                                  &rest initargs)
+(defmethod make-instance :around ((self standard-kb-class) &rest initargs)
   (declare (ignore initargs))
   (let ((*ignore-this-instance* self))
     (call-next-method)))
 
-(defmethod (setf mop:slot-value-using-class) :after
-           (new-value (class standard-kb-class) instance slot)
+(defmethod (setf mop:slot-value-using-class) :after (new-value (class standard-kb-class) instance slot)
   (declare (ignore new-value))
   (flet ((ignore-instance (object)
            (and (boundp '*ignore-this-instance*)
@@ -45,8 +45,7 @@
       (mark-instance-as-changed 
        instance :slot-id (clos:slot-definition-name slot)))))
 
-(defmethod validate-superclass ((class standard-kb-class)
-                                (superclass standard-class))
+(defmethod validate-superclass ((class standard-kb-class) (superclass standard-class))
   t)
 
 (eval-when (:load-toplevel)
