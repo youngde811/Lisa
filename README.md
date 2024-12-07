@@ -51,4 +51,7 @@ documentation.
 
 [David E. Young](mailto://streetrod750@protonmail.com)
 
+"Even in our sleep, pain which cannot forget falls drop by drop upon the heart, until, in our own despair, against our will, comes wisdom through the awful grace of God."
+-- Aeschylus
+
 [^1]: "Rete: A Fast Algorithm for the Many Pattern/Many Object Pattern Match Problem" Charles L. Forgy, Artificial Intelligence 19(1982), 17-37.
