@@ -140,6 +140,7 @@
         ("lib;**;*.*" ,(make-lisa-path "lib/**/"))
         ("config;*.*" ,(make-lisa-path "config/"))
         ("debugger;*.*" ,(make-lisa-path "src/debugger/"))
+        ("examples;*.*", (make-lisa-path "examples/**"))
         ("contrib;**;" ,(make-lisa-path "contrib/**/"))))
 
 (defun lisa-debugger ()
