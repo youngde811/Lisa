@@ -28,8 +28,8 @@
 
 (defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
 
-#+:sbcl
-(sb-ext:disable-package-locks '(:common-lisp))
+#+sbcl
+(sb-ext:unlock-package :common-lisp)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (unless (find-package :asdf)
