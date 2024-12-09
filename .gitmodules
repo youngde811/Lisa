@@ -4,3 +4,5 @@
 [submodule "logging/cl-grip"]
 	path = logging/cl-grip
 	url = https://github.com/tychoish/cl-grip.git
+[submodule]
+	cl-grip = stable
