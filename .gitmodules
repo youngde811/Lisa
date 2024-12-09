@@ -1,3 +1,6 @@
 [submodule "wiki/Lisa.wiki"]
 	path = wiki/Lisa.wiki
 	url = https://github.com/youngde811/Lisa.wiki.git
+[submodule "logging/cl-grip"]
+	path = logging/cl-grip
+	url = https://github.com/tychoish/cl-grip.git
