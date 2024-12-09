@@ -28,6 +28,9 @@
 
 (defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
 
+#+:sbcl
+(sb-ext:disable-package-locks '(:common-lisp))
+
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (unless (find-package :asdf)
     (load (merge-pathnames "lib/asdf/asdf" *install-root*))))
