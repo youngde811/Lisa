@@ -34,6 +34,8 @@ Lisa successfully loads and runs on SBCL 2.4.11, and the Monkey and Bananas test
 completes successfully:
 
 ```lisp
+CL-USER> (load "examples/mab.lisp")
+T
 CL-USER> (in-package :lisa-mab)
 #<PACKAGE "LISA-MAB">
 LISA-MAB> (run-mab)
