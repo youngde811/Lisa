@@ -1,5 +1,4 @@
-_"Even in our sleep, pain which cannot forget falls drop by drop upon the heart, until, in our own despair, against our will, comes wisdom through the awful grace of God."_
--- Aeschylus
+#### _"Even in our sleep, pain which cannot forget falls drop by drop upon the heart, until, in our own despair, against our will, comes wisdom through the awful grace of God."_ -- Aeschylus ####
 
 # Welcome to the Lisa Project #
 
