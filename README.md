@@ -20,7 +20,7 @@ Lisa is known to run on the following ANSI Common Lisp implementations:
 - SBCL
 - LispWorks
 - Allegro Common Lisp (ACL)
-- CLISP (apparently no longer maintained)
+- CLISP
 - CMUCL (19a)
 - OpenMCL
 - Armed Bear Common Lisp (ABCL)
@@ -30,7 +30,8 @@ Lisa is known to run on the following ANSI Common Lisp implementations:
 Lisa has just completed a re-home from SourceForge to GitHub. Just about every file was touched in some form, and some
 aspects of the directory structure were reorganized.
 
-Lisa successfully loads and runs on SBCL 2.4.11, and the Monkey and Bananas test problem completes successfully:
+Lisa successfully loads and runs on SBCL 2.4.11, and the Monkey and Bananas test suite, a classic AI planning problem,
+completes successfully:
 
 ```lisp
 CL-USER> (in-package :lisa-mab)
@@ -98,7 +99,6 @@ some of the following:
 - A non-invasive metrics-gathering system for instrumentation. OpenTelemetry will not be considered, as it has zero
   support for Common Lisp.
 - Re-introduction of the OR conditional element.
-- Project re-homing from Sourceforge to GitHub, including codebase cleanup and improved document presentation.
 - Performance tuning using SBCL's profiler, locating hotspots in any areas of the code (particularly the inference
   engine and compiler).
 - Support for Quicklisp.
@@ -108,7 +108,7 @@ some of the following:
 
 Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Home) for complete details and documentation.
 
-## Authors ##
+## Author ##
 
 [David E. Young](mailto://streetrod750@protonmail.com)
 
