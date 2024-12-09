@@ -1,3 +1,5 @@
+_"Even in our sleep, pain which cannot forget falls drop by drop upon the heart, until, in our own despair, against our will, comes wisdom through the awful grace of God."_
+-- Aeschylus
 
 # Welcome to the Lisa Project #
 
@@ -52,8 +54,5 @@ Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Home) fo
 ## Authors ##
 
 [David E. Young](mailto://streetrod750@protonmail.com)
-
-_"Even in our sleep, pain which cannot forget falls drop by drop upon the heart, until, in our own despair, against our will, comes wisdom through the awful grace of God."_
--- Aeschylus
 
 [^1]: "Rete: A Fast Algorithm for the Many Pattern/Many Object Pattern Match Problem" Charles L. Forgy, Artificial Intelligence 19(1982), 17-37.
