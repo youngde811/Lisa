@@ -30,7 +30,7 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (unless (find-package :asdf)
-    (load (merge-pathnames "misc/asdf" *install-root*))))
+    (load (merge-pathnames "lib/asdf/asdf" *install-root*))))
 
 (push *install-root* asdf:*central-registry*)
 (asdf:operate 'asdf:load-op :lisa :force t)
