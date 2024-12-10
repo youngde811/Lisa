@@ -141,7 +141,6 @@
         ("lib;**;*.*" ,(make-lisa-path "lib/**/"))
         ("config;*.*" ,(make-lisa-path "config/"))
         ("debugger;*.*" ,(make-lisa-path "src/debugger/"))
-        ("logging;**;", (make-lisa-path "logging/cl-grip/"))
         ("examples;*.*", (make-lisa-path "examples/**"))
         ("contrib;**;" ,(make-lisa-path "contrib/**/"))))
 

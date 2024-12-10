@@ -27,7 +27,7 @@
 (in-package :cl-user)
 
 #-sbcl
-(error "For now, this file is suitable only for SBCL 2.4.11")
+(error "For now, this file is suitable only for SBCL 2.4.11 and later.")
 
 (defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
 
