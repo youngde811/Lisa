@@ -36,10 +36,14 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (unless (find-package :asdf)
-    (load (merge-pathnames "lib/asdf/asdf" *install-root*))))
+    (load (merge-pathnames "lib/asdf/asdf" *install-root*)))
+  (unless (find-package :ql)
+    (error "Lisa requires Quicklisp for dependency resolution. Please set that up first.")))
 
+#|
 (ql:quickload :log4cl)
 (asdf:operate 'asdf:load-op :log4cl :force t)
+|#
 
 (push *install-root* asdf:*central-registry*)
 (asdf:operate 'asdf:load-op :lisa :force t)
