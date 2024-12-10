@@ -38,6 +38,9 @@
   (unless (find-package :asdf)
     (load (merge-pathnames "lib/asdf/asdf" *install-root*))))
 
+(ql:quickload :log4cl)
+(asdf:operate 'asdf:load-op :log4cl :force t)
+
 (push *install-root* asdf:*central-registry*)
 (asdf:operate 'asdf:load-op :lisa :force t)
 
