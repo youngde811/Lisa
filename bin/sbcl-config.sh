@@ -46,14 +46,12 @@ EOF
 
 setup_quicklisp() {
     local ql="$workdir/quicklisp.lisp"
-    local ql_asc="$workdir/quicklisp.lisp.asc"
+    local ql_url='https://beta.quicklisp.org/quicklisp.lisp'
     
-    curl -o $ql https://beta.quicklisp.org/quicklisp.lisp
-    curl -o $ql_asc https://beta.quicklisp.org/quicklisp.lisp.asc
+    curl -o $ql $ql_url
 
-    gpg --verify $ql_asc $ql || echo "$progname: could not verify $ql"
-
-    sbcl --eval "(load \"$ql\")" --eval "(quicklisp-quickstart:install)" --eval "(ql:system-apropos :log4cl)" --eval "(ql:add-to-init-file)" --eval "(sb-ext:exit)"
+    sbcl --eval "(load \"$ql\")" --eval "(quicklisp-quickstart:install)" --eval "(ql:system-apropos :log4cl)" --eval "(ql:add-to-init-file)" \
+         --eval "(ql:quickload \"quicklisp-slime-helper\")" --eval "(sb-ext:exit)"
 }
 
 sanity_checks() {
