@@ -26,6 +26,9 @@
 
 (in-package :cl-user)
 
+#-sbcl
+(error "For now, this file is suitable only for SBCL 2.4.11")
+
 (defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
 
 ;;; There's a bug in Lisa that is creating a symbol in the COMMON-LISP package. I need
@@ -40,10 +43,7 @@
   (unless (find-package :ql)
     (error "Lisa requires Quicklisp for dependency resolution. Please set that up first.")))
 
-#|
 (ql:quickload :log4cl)
-(asdf:operate 'asdf:load-op :log4cl :force t)
-|#
 
 (push *install-root* asdf:*central-registry*)
 (asdf:operate 'asdf:load-op :lisa :force t)
