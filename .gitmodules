@@ -3,3 +3,6 @@
 	url = https://github.com/youngde811/Lisa.wiki.git
 [submodule]
 	cl-grip = stable
+[submodule "logging/cl-grip"]
+	path = logging/cl-grip
+	url = https://github.com/tychoish/cl-grip.git
