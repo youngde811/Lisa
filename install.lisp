@@ -34,7 +34,6 @@
 ;;; There's a bug in Lisa that is creating a symbol in the COMMON-LISP package. I need
 ;;; to track that down. Until then, we unlock that package in SBCL.
 
-#+sbcl
 (sb-ext:unlock-package :common-lisp)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)

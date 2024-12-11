@@ -63,8 +63,8 @@ setup_quicklisp() {
         gpg --verify $ql $ql_asc || echo "$progname: failed to verify quicklisp ASC key!"
     fi
 
-    sbcl --eval "(load \"$ql\")" --eval "(quicklisp-quickstart:install)" --eval "(ql:system-apropos :log4cl)" --eval "(ql:add-to-init-file)" \
-         --eval "(ql:quickload \"quicklisp-slime-helper\")" --eval "(sb-ext:exit)"
+    sbcl --quit --eval "(load \"$ql\")" --eval "(quicklisp-quickstart:install)" --eval "(ql:system-apropos :log4cl)" --eval "(ql:add-to-init-file)" \
+         --eval "(ql:quickload \"quicklisp-slime-helper\")"
 }
 
 sanity_checks() {
