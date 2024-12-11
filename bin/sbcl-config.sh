@@ -1,4 +1,4 @@
-# -*- mode: shell-script; sh-shell: bash -*-
+#!/usr/bin/env bash
 
 # MIT License
 
@@ -22,7 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-readonly progname="$(basename $0)"
+# This script can be used to install and configure Quicklisp for your SBCL environment.
+# All Quicklisp installation defaults are taken, so if you want a different installation
+# experience, please do all of this manually.
+
+progname="$(basename $0)"
 
 set -e -o pipefail
 
@@ -51,10 +55,13 @@ setup_quicklisp() {
     local ql_asc_url='https://beta.quicklisp.org/quicklisp.lisp.asc'
     
     curl -o $ql $ql_url
-    curl -o $ql_asc $ql_asc_url
 
-    gpg --import $ql_asc || echo "$progname: failed to import quicklisp PGP key!"
-    gpg --verify $ql $ql_asc || echo "$progname: failed to verify quicklisp ASC key!"
+    if which -s gpg ; then
+        curl -o $ql_asc $ql_asc_url
+
+        gpg --import $ql_asc || echo "$progname: failed to import quicklisp PGP key!"
+        gpg --verify $ql $ql_asc || echo "$progname: failed to verify quicklisp ASC key!"
+    fi
 
     sbcl --eval "(load \"$ql\")" --eval "(quicklisp-quickstart:install)" --eval "(ql:system-apropos :log4cl)" --eval "(ql:add-to-init-file)" \
          --eval "(ql:quickload \"quicklisp-slime-helper\")" --eval "(sb-ext:exit)"
@@ -62,7 +69,6 @@ setup_quicklisp() {
 
 sanity_checks() {
     which -s curl || { echo "$progname: curl is required; please install it."; exit 1; }
-    which -s gpg || { echo "$progname: gpg is required; please install it."; exit 1; }
     which -s sbcl || { echo "$progname: sbcl is required; please install it."; exit 1; }
 }
 
@@ -77,10 +83,12 @@ done
 
 workdir="$(mktemp -d /tmp/ql.XXXXX)"
 
-# trap "rm -rf $workdir" EXIT
+trap "rm -rf $workdir" EXIT
 
 sanity_checks
 
 setup_quicklisp
 
 exit 0
+
+# -*- mode: shell-script; sh-shell: bash -*-
