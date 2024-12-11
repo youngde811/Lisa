@@ -47,4 +47,3 @@
 
 (push *install-root* asdf:*central-registry*)
 (asdf:operate 'asdf:load-op :lisa :force t)
-
