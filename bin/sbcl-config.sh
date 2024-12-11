@@ -47,8 +47,14 @@ EOF
 setup_quicklisp() {
     local ql="$workdir/quicklisp.lisp"
     local ql_url='https://beta.quicklisp.org/quicklisp.lisp'
+    local ql_asc="$workdir/quicklisp.lisp.asc"
+    local ql_asc_url='https://beta.quicklisp.org/quicklisp.lisp.asc'
     
     curl -o $ql $ql_url
+    curl -o $ql_asc $ql_asc_url
+
+    gpg --import $ql_asc || echo "$progname: failed to import quicklisp PGP key!"
+    gpg --verify $ql $ql_asc || echo "$progname: failed to verify quicklisp ASC key!"
 
     sbcl --eval "(load \"$ql\")" --eval "(quicklisp-quickstart:install)" --eval "(ql:system-apropos :log4cl)" --eval "(ql:add-to-init-file)" \
          --eval "(ql:quickload \"quicklisp-slime-helper\")" --eval "(sb-ext:exit)"
@@ -71,7 +77,7 @@ done
 
 workdir="$(mktemp -d /tmp/ql.XXXXX)"
 
-trap "rm -rf $workdir" EXIT
+# trap "rm -rf $workdir" EXIT
 
 sanity_checks
 
