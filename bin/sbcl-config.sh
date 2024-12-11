@@ -50,17 +50,20 @@ EOF
 
 setup_quicklisp() {
     local ql="$workdir/quicklisp.lisp"
-    local ql_url='https://beta.quicklisp.org/quicklisp.lisp'
     local ql_asc="$workdir/quicklisp.lisp.asc"
+    local ql_key="$workdir/release-key.txt"
+    local ql_url='https://beta.quicklisp.org/quicklisp.lisp'
+    local ql_key_url='https://beta.quicklisp.org/release-key.txt'
     local ql_asc_url='https://beta.quicklisp.org/quicklisp.lisp.asc'
     
     curl -o $ql $ql_url
 
     if which -s gpg ; then
         curl -o $ql_asc $ql_asc_url
+        curl -o $ql_key $ql_key_url
 
-        gpg --import $ql_asc || echo "$progname: failed to import quicklisp PGP key!"
-        gpg --verify $ql $ql_asc || echo "$progname: failed to verify quicklisp ASC key!"
+        gpg --import $ql_key || echo "$progname: failed to import quicklisp PGP key!"
+        gpg --verify $ql_asc $ql || echo "$progname: failed to verify quicklisp PGP key!"
     fi
 
     sbcl --quit --eval "(load \"$ql\")" --eval "(quicklisp-quickstart:install)" --eval "(ql:system-apropos :log4cl)" --eval "(ql:add-to-init-file)" \
