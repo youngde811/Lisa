@@ -26,6 +26,8 @@
 # All Quicklisp installation defaults are taken, so if you want a different installation
 # experience, please do all of this manually.
 
+# Quicklisp: https://www.quicklisp.org/beta/
+
 progname="$(basename $0)"
 
 set -e -o pipefail
