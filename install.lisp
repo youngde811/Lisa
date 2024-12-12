@@ -43,6 +43,8 @@
     (error "Lisa requires Quicklisp for dependency resolution. Please set that up first.")))
 
 (ql:quickload :log4cl)
+(push :log4cl *features*)
 
 (push *install-root* asdf:*central-registry*)
 (asdf:operate 'asdf:load-op :lisa :force t)
+(asdf:operate 'asdf:load-op :lisa/lisa-logger :force t)

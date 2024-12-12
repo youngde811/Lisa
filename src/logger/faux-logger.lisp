@@ -22,12 +22,14 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; Description: This file configures some basic attributes of LOG4CL that make it
-;; suiteable for Lisa.
-
-(in-package :lisa)
+;; Description: This package exists solely in case someone does not load/use the
+;; log4cl logging package used by default.
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (log:config :daily "lisa_log.txt" :backup nil))
+  (defpackage "LISA.LOGGER"
+    (:use "COMMON-LISP")
+    (:nicknames "LOG")))
+
+(in-package :lisa.logger)
 
 

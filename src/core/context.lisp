@@ -79,6 +79,7 @@
     (symbol (symbol-name defined-name))
     (string defined-name)
     (otherwise
+     (log:fatal "The context name must be a string designator.")
      (error "The context name must be a string designator."))))
 
 (defmacro with-context (context &body body)

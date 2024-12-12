@@ -45,10 +45,9 @@
   "Locates the META-FACT instance associated with SYMBOLIC-NAME. If ERRORP is
   non-nil, signals an error if no binding is found."
   (let ((meta-fact (find-meta-object (inference-engine) symbolic-name)))
-    (when errorp
-      (cl:assert (not (null meta-fact)) nil
-        "This fact name does not have a registered meta class: ~S"
-        symbolic-name))
+    (when (and errorp (null meta-fact))
+      (log:fatal "This fact does not have a registered meta class: ~S" symbolic-name)
+      (error "This fact does not have a registered meta class: ~S" symbolic-name))
     meta-fact))
 
 ;;; Corrected version courtesy of Aneil Mallavarapu...
