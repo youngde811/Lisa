@@ -126,6 +126,21 @@
       :serial t))
     :serial t)))
 
+#-log4cl
+(defsystem lisa-logger
+  :name "Lisa-Logger"
+  :author "David E. Young"
+  :maintainer "David E. Young"
+  :licence "MIT"
+  :description "Default logger for Lisa, which really is useless as Lisa expects LOG4CL."
+  :depends-on ("lisa")
+  :components
+  ((:module src
+    :components
+    ((:module logger
+      :components
+      ((:file "logger")))))))
+
 (defvar *lisa-root-pathname*
   (make-pathname :directory
                  (pathname-directory *load-truename*)
