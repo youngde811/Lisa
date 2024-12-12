@@ -29,7 +29,7 @@
                   :initarg :existing-fact))
   (:report (lambda (condition strm)
              (declare (ignore strm))
-             (log-warn "Lisa detected an attempt to assert a duplicate for: ~S"
+             (log:warn "Lisa detected an attempt to assert a duplicate for: ~S"
                        (duplicate-fact-existing-fact condition)))))
                   
 (define-condition parsing-error (error)
@@ -41,9 +41,8 @@
              :reader location))
   (:report (lambda (condition strm)
              (declare (ignore strm))
-             (let ((msg "Parsing error: ~A" (text condition)))
-               (log:error msg)
-               (error msg)))))
+             (log:error "Parsing error: ~A" (text condition))
+             (error t))))
 
 (define-condition slot-parsing-error (parsing-error)
   ((slot-name :initarg :slot-name
@@ -51,10 +50,9 @@
               :reader slot-name))
   (:report (lambda (condition strm)
              (declare (ignore strm))
-             (let ((msg "Slot parsing error: slot ~A, pattern location ~A, text ~A"
-                        (slot-name condition) (location condition) (text condition)))
-               (log:error msg)
-               (error msg)))))
+             (log:error "Slot parsing error: slot ~A, pattern location ~A, text ~A"
+                        (slot-name condition) (location condition) (text condition))
+             (error t))))
 
 (define-condition class-parsing-error (parsing-error)
   ((class-name :initarg :class-name
@@ -70,5 +68,5 @@
               :reader rule-name))
   (:report (lambda (condition strm)
              (declare (ignore strm))
-             (log:error "Rule parsing error: rule name ~A, pattern location ~A text ~A",
+             (log:error "Rule parsing error: rule name ~A, pattern location ~A, text ~A"
                         (rule-name condition) (location condition) (text condition)))))
