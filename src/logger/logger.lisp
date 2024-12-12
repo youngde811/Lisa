@@ -27,6 +27,7 @@
 
 (in-package :lisa)
 
+#+nil
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (log:config :daily "lisa_log.txt" :backup nil))
 
