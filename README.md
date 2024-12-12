@@ -108,7 +108,13 @@ some of the following:
 
 ## Documentation ##
 
-Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Home) for complete details and documentation.
+Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Home) for complete details and documentation. In
+particular, read the _Getting Started_ section first for details on using SBCL and Emacs.
+
+**NB**: Lisa is currently being developed using SBCL only; no testing on other Lisp implementations is on the
+schedule. However, the core code here represents Lisa version 3.2 as found on [Sourceforge](https://sourceforge.net/),
+which should run properly on the Lisp implementations mentioned above. **A word of caution however**: folks NOT using
+Emacs and SBCL are on their own at this time, until I'm able to begin regression testing with other Lisp environments.
 
 ## Author ##
 
