@@ -102,13 +102,13 @@ some of the following:
 - Re-introduction of the OR conditional element.
 - Performance tuning using SBCL's profiler, locating hotspots in any areas of the code (particularly the inference
   engine and compiler).
-- Add loggingg to strategic locations.
 - Anything else I feel like adding.
 
 ### Completed Features ###
 
 - Support for Quicklisp.
 - Logger selected. We'll be using [log4cl](https://github.com/7max/log4cl).
+- Log messages inserted into strategic points, replacing format/error forms.
 
 ## Documentation ##
 
