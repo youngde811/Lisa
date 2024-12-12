@@ -22,27 +22,19 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;;; Description: Convenience interface for loading Lisa from scratch.
+;; Description: This sample Lisp file may be used to create a custom sbcl core file, containing whatever packages
+;; one wishes to have added to base sbcl.
 
 (in-package :cl-user)
 
-#-sbcl
-(error "For now, this file is suitable only for SBCL 2.4.11 and later.")
+(mapc #'require '(:sb-bsd-sockets :sb-posix :sb-introspect :sb-cltl2 :asdf :uiop))
 
-(defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
+#-quicklisp
+(let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
+                                       (user-homedir-pathname))))
+  (when (probe-file quicklisp-init)
+    (load quicklisp-init)))
 
-;;; There's a bug in Lisa that is creating a symbol in the COMMON-LISP package. I need
-;;; to track that down. Until then, we unlock that package in SBCL.
+;;; Be sure to change the core target to something suitable for your environment.
 
-(sb-ext:unlock-package :common-lisp)
-
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (unless (find-package :asdf)
-    (load (merge-pathnames "lib/asdf/asdf" *install-root*)))
-  (unless (find-package :ql)
-    (error "Lisa requires Quicklisp for dependency resolution. Please set that up first.")))
-
-(ql:quickload :log4cl)
-
-(push *install-root* asdf:*central-registry*)
-(asdf:operate 'asdf:load-op :lisa :force t)
+(save-lisp-and-die (concatenate 'string (sb-posix:getcwd) "/sbcl/sbcl-lisa.core"))

@@ -41,89 +41,105 @@
 (in-package :lisa-system)
 
 (defsystem lisa
-    :name "Lisa"
-    :author "David E. Young"
-    :maintainer "David E. Young"
-    :licence "LGPL"
-    :description "The Lisa expert system shell"
+  :name "Lisa"
+  :author "David E. Young"
+  :maintainer "David E. Young"
+  :licence "MIT"
+  :description "The Lisa Expert System Shell"
+  :depends-on ("log4cl")
+  :components
+  ((:module src
     :components
-    ((:module src
-              :components
-              ((:module packages
-                        :components
-                        ((:file "pkgdecl")))
-               (:module utils
-                        :components
-                        ((:file "compose")
-                         (:file "utils"))
-                        :serial t)
-               (:module belief-systems
-                        :components
-                        ((:file "belief")
-                         (:file "certainty-factors"))
-                        :serial t)
-               (:module reflect
-                        :components
-                        ((:file "reflect")))
-               (:module core
-                        :components
-                        ((:file "preamble")
-                         (:file "conditions")
-                         (:file "deffacts")
-                         (:file "fact")
-                         (:file "watches")
-                         (:file "activation")
-                         (:file "heap")
-                         (:file "conflict-resolution-strategies")
-                         (:file "context")
-                         (:file "rule")
-                         (:file "pattern")
-                         (:file "rule-parser")
-                         (:file "fact-parser")
-                         (:file "language")
-                         (:file "tms-support")
-                         (:file "rete")
-                         (:file "belief-interface")
-                         (:file "meta")
-                         (:file "binding")
-                         (:file "token")
-                         (:file "retrieve"))
-                        :serial t)
-               (:module implementations
-                        :components
-                        ((:file "workarounds")
-                         #+:lispworks
-                         (:file "lispworks-auto-notify")
-                         #+:cmucl
-                         (:file "cmucl-auto-notify")
-                         #+:allegro
-                         (:file "allegro-auto-notify"))
-                        :serial t)
-               (:module rete
-                        :pathname "rete/reference/"
-                        :components
-                        ((:file "node-tests")
-                         (:file "shared-node")
-                         (:file "successor")
-                         (:file "node-pair")
-                         (:file "terminal-node")
-                         (:file "node1")
-                         (:file "join-node")
-                         (:file "node2")
-                         (:file "node2-not")
-                         (:file "node2-test")
-                         (:file "node2-exists")
-                         (:file "rete-compiler")
-                         (:file "tms")
-                         (:file "network-ops")
-                         (:file "network-crawler"))
-                        :serial t)
-               (:module config
-                        :components
-                        ((:file "config")
-                         (:file "epilogue"))
-                        :serial t))
-              :serial t)))
+    ((:module packages
+      :components
+      ((:file "pkgdecl")))
+     (:module utils
+      :components
+      ((:file "compose")
+       (:file "utils"))
+      :serial t)
+     (:module belief-systems
+      :components
+      ((:file "belief")
+       (:file "certainty-factors"))
+      :serial t)
+     (:module reflect
+      :components
+      ((:file "reflect")))
+     (:module core
+      :components
+      ((:file "preamble")
+       (:file "conditions")
+       (:file "deffacts")
+       (:file "fact")
+       (:file "watches")
+       (:file "activation")
+       (:file "heap")
+       (:file "conflict-resolution-strategies")
+       (:file "context")
+       (:file "rule")
+       (:file "pattern")
+       (:file "rule-parser")
+       (:file "fact-parser")
+       (:file "language")
+       (:file "tms-support")
+       (:file "rete")
+       (:file "belief-interface")
+       (:file "meta")
+       (:file "binding")
+       (:file "token")
+       (:file "retrieve"))
+      :serial t)
+     (:module implementations
+      :components
+      ((:file "workarounds")
+       #+:lispworks
+       (:file "lispworks-auto-notify")
+       #+:cmucl
+       (:file "cmucl-auto-notify")
+       #+:allegro
+       (:file "allegro-auto-notify"))
+      :serial t)
+     (:module rete
+      :pathname "rete/reference/"
+      :components
+      ((:file "node-tests")
+       (:file "shared-node")
+       (:file "successor")
+       (:file "node-pair")
+       (:file "terminal-node")
+       (:file "node1")
+       (:file "join-node")
+       (:file "node2")
+       (:file "node2-not")
+       (:file "node2-test")
+       (:file "node2-exists")
+       (:file "rete-compiler")
+       (:file "tms")
+       (:file "network-ops")
+       (:file "network-crawler"))
+      :serial t)
+     (:module config
+      :components
+      ((:file "config")
+       (:file "epilogue"))
+      :serial t))
+    :serial t)))
+
+#-log4cl
+(defsystem lisa-logger
+  :name "Lisa-Logger"
+  :author "David E. Young"
+  :maintainer "David E. Young"
+  :licence "MIT"
+  :description "Default logger for Lisa, which really is useless as Lisa expects LOG4CL."
+  :depends-on ("lisa")
+  :components
+  ((:module src
+    :components
+    ((:module logger
+      :components
+      ((:file "logger")))))))
 
 (defvar *lisa-root-pathname*
   (make-pathname :directory
@@ -140,6 +156,7 @@
         ("lib;**;*.*" ,(make-lisa-path "lib/**/"))
         ("config;*.*" ,(make-lisa-path "config/"))
         ("debugger;*.*" ,(make-lisa-path "src/debugger/"))
+        ("examples;*.*", (make-lisa-path "examples/**"))
         ("contrib;**;" ,(make-lisa-path "contrib/**/"))))
 
 (defun lisa-debugger ()
@@ -150,12 +167,12 @@
 
 #+:allegro
 (setf system:*require-search-list*
-  (append system:*require-search-list*
-          `(:newest ,(lisa-debugger))))
+      (append system:*require-search-list*
+              `(:newest ,(lisa-debugger))))
 
 #+:clisp
 (setf custom:*load-paths*
-  (append custom:*load-paths* `(,(lisa-debugger))))
+      (append custom:*load-paths* `(,(lisa-debugger))))
 
 #+:openmcl
 (pushnew (pathname-directory (lisa-debugger)) ccl:*module-search-path* :test #'equal)
@@ -165,9 +182,9 @@
   (lw:defadvice (require lisa-require :around)
       (module-name &optional pathname)
     (let ((lisa-module
-           (find module-name loadable-modules
-                 :test #'string=
-                 :key #'car)))
+            (find module-name loadable-modules
+                  :test #'string=
+                  :key #'car)))
       (if (null lisa-module)
           (lw:call-next-advice module-name pathname)
-        (lw:call-next-advice module-name (cdr lisa-module))))))
+          (lw:call-next-advice module-name (cdr lisa-module))))))
