@@ -39,7 +39,8 @@ T
 CL-USER> (in-package :lisa-mab)
 #<PACKAGE "LISA-MAB">
 LISA-MAB> (run-mab)
-Starting run.
+<INFO> [15:00:26] lisa-mab mab.lisp (run-mab repeat-mab) - Starting run.
+
 Monkey jumps off the GREEN-COUCH onto the floor.
 Monkey walks to T2-2.
 Monkey climbs onto the RED-COUCH.
