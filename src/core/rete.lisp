@@ -317,7 +317,7 @@
   (let ((context
          (gethash (make-context-name defined-name) (rete-contexts rete))))
     (if (and (null context) errorp)
-        (error "There's no context named: ~A" defined-name)
+        (log:error "There's no context named: ~A" defined-name)
       context)))
 
 (defun register-new-context (rete context)

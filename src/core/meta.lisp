@@ -46,8 +46,9 @@
   non-nil, signals an error if no binding is found."
   (let ((meta-fact (find-meta-object (inference-engine) symbolic-name)))
     (when (and errorp (null meta-fact))
-      (log:fatal "This fact does not have a registered meta class: ~S" symbolic-name)
-      (error "This fact does not have a registered meta class: ~S" symbolic-name))
+      (let ((msg "This fact does not have a registered meta class: ~S" symbolic-name))
+        (log:error msg)
+        (error msg)))
     meta-fact))
 
 ;;; Corrected version courtesy of Aneil Mallavarapu...
@@ -92,11 +93,9 @@
              (when (find-class class-name nil)
                (acquire-meta-data class-name)
                (return))
-             (cerror "Enter a template definition now."
-                     "Lisa doesn't know about the template named by (~S)." class-name)
-             (format t "Enter a DEFTEMPLATE form: ")
-             (eval (read))
-             (fresh-line))))
+             (let ((msg "Lisa doesn't know about the template named by (~S)." class-name))
+               (log:error msg)
+               (error msg)))))
     (let ((meta-data (find-meta-object (inference-engine) class-name)))
       (when (null meta-data)
         (ensure-class-definition)

@@ -28,8 +28,9 @@
   ((existing-fact :reader duplicate-fact-existing-fact
                   :initarg :existing-fact))
   (:report (lambda (condition strm)
-             (format strm "Lisa detected an attempt to assert a duplicate for: ~S"
-                     (duplicate-fact-existing-fact condition)))))
+             (declare (ignore strm))
+             (log-warn "Lisa detected an attempt to assert a duplicate for: ~S"
+                       (duplicate-fact-existing-fact condition)))))
                   
 (define-condition parsing-error (error)
   ((text :initarg :text
@@ -39,31 +40,35 @@
              :initform nil
              :reader location))
   (:report (lambda (condition strm)
-             (format strm "Parsing error: ~A" (text condition)))))
+             (declare (ignore strm))
+             (let ((msg "Parsing error: ~A" (text condition)))
+               (log:error msg)
+               (error msg)))))
 
 (define-condition slot-parsing-error (parsing-error)
   ((slot-name :initarg :slot-name
               :initform nil
               :reader slot-name))
   (:report (lambda (condition strm)
-             (format strm "Slot parsing error: slot ~A, pattern location ~A"
-                     (slot-name condition) (location condition))
-             (when (text condition)
-               (format strm " (~A)" (text condition))))))
+             (declare (ignore strm))
+             (let ((msg "Slot parsing error: slot ~A, pattern location ~A, text ~A"
+                        (slot-name condition) (location condition) (text condition)))
+               (log:error msg)
+               (error msg)))))
 
 (define-condition class-parsing-error (parsing-error)
   ((class-name :initarg :class-name
                :initform nil
                :reader class-name))
   (:report (lambda (condition strm)
-             (format strm "Class parsing error: ~A, ~A" (class-name condition) (text condition)))))
+             (declare (ignore strm))
+             (log:error "Class parsing error: ~A, ~A" (class-name condition) (text condition)))))
 
 (define-condition rule-parsing-error (parsing-error)
   ((rule-name :initarg :rule-name
               :initform nil
               :reader rule-name))
   (:report (lambda (condition strm)
-             (format strm "Rule parsing error: rule name ~A, pattern location ~A"
-                     (rule-name condition) (location condition))
-             (when (text condition)
-               (format strm " (~A)" (text condition))))))
+             (declare (ignore strm))
+             (log:error "Rule parsing error: rule name ~A, pattern location ~A text ~A",
+                        (rule-name condition) (location condition) (text condition)))))
