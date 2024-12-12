@@ -97,19 +97,23 @@ After taking an eleven-year hiatus, as of December 2024 I've decided to resume w
 and capabilities. The fundamental architecture will not change, as I'm quite happy with it. But, Lisa needs at least
 some of the following:
 
-- A flexible and configurable logging system; something akin to Log4J perhaps.
 - A non-invasive metrics-gathering system for instrumentation. OpenTelemetry will not be considered, as it has zero
   support for Common Lisp.
 - Re-introduction of the OR conditional element.
 - Performance tuning using SBCL's profiler, locating hotspots in any areas of the code (particularly the inference
   engine and compiler).
-- Support for Quicklisp.
 - Anything else I feel like adding.
+
+### Completed Features ###
+
+- Support for Quicklisp.
+- Logger selected. We'll be using [log4cl](https://github.com/7max/log4cl).
+- Log messages inserted into strategic points, replacing format/error forms.
 
 ## Documentation ##
 
 Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Home) for complete details and documentation. In
-particular, read the _Getting Started_ section first for details on using SBCL and Emacs.
+particular, read the _Getting Started_ section first for details on using SBCL with Emacs.
 
 **NB**: Lisa is currently being developed using SBCL only; no testing on other Lisp implementations is on the
 schedule. However, the core code here represents Lisa version 3.2 as found on [Sourceforge](https://sourceforge.net/),

@@ -126,8 +126,7 @@
       :serial t))
     :serial t)))
 
-#-log4cl
-(defsystem lisa-logger
+(defsystem lisa/lisa-logger
   :name "Lisa-Logger"
   :author "David E. Young"
   :maintainer "David E. Young"
@@ -139,7 +138,10 @@
     :components
     ((:module logger
       :components
-      ((:file "logger")))))))
+      #+log4cl
+      ((:file "logger"))
+      #-log4cl
+      ((:file "faux-logger")))))))
 
 (defvar *lisa-root-pathname*
   (make-pathname :directory

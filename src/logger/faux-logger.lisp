@@ -22,29 +22,14 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;;; Description: Convenience interface for loading Lisa from scratch.
-
-(in-package :cl-user)
-
-#-sbcl
-(error "For now, this file is suitable only for SBCL 2.4.11 and later.")
-
-(defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
-
-;;; There's a bug in Lisa that is creating a symbol in the COMMON-LISP package. I need
-;;; to track that down. Until then, we unlock that package in SBCL.
-
-(sb-ext:unlock-package :common-lisp)
+;; Description: This package exists solely in case someone does not load/use the
+;; log4cl logging package used by default.
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (unless (find-package :asdf)
-    (load (merge-pathnames "lib/asdf/asdf" *install-root*)))
-  (unless (find-package :ql)
-    (error "Lisa requires Quicklisp for dependency resolution. Please set that up first.")))
+  (defpackage "LISA.LOGGER"
+    (:use "COMMON-LISP")
+    (:nicknames "LOG")))
 
-(ql:quickload :log4cl)
-(push :log4cl *features*)
+(in-package :lisa.logger)
 
-(push *install-root* asdf:*central-registry*)
-(asdf:operate 'asdf:load-op :lisa :force t)
-(asdf:operate 'asdf:load-op :lisa/lisa-logger :force t)
+

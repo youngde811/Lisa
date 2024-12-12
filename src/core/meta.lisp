@@ -45,10 +45,9 @@
   "Locates the META-FACT instance associated with SYMBOLIC-NAME. If ERRORP is
   non-nil, signals an error if no binding is found."
   (let ((meta-fact (find-meta-object (inference-engine) symbolic-name)))
-    (when errorp
-      (cl:assert (not (null meta-fact)) nil
-        "This fact name does not have a registered meta class: ~S"
-        symbolic-name))
+    (when (and errorp (null meta-fact))
+      (log:error "This fact does not have a registered meta class: ~S" symbolic-name)
+      (error t))
     meta-fact))
 
 ;;; Corrected version courtesy of Aneil Mallavarapu...
@@ -93,11 +92,8 @@
              (when (find-class class-name nil)
                (acquire-meta-data class-name)
                (return))
-             (cerror "Enter a template definition now."
-                     "Lisa doesn't know about the template named by (~S)." class-name)
-             (format t "Enter a DEFTEMPLATE form: ")
-             (eval (read))
-             (fresh-line))))
+             (log:error "Lisa doesn't know about the template named by (~S)." class-name)
+             (error t))))
     (let ((meta-data (find-meta-object (inference-engine) class-name)))
       (when (null meta-data)
         (ensure-class-definition)

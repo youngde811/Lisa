@@ -79,7 +79,9 @@
     (symbol (symbol-name defined-name))
     (string defined-name)
     (otherwise
-     (error "The context name must be a string designator."))))
+     (let ((msg "The context name must be a string designator."))
+       (log:error msg)
+       (error msg)))))
 
 (defmacro with-context (context &body body)
   `(let ((*active-context* ,context))
