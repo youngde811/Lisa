@@ -59,6 +59,7 @@
 (defvar *consider-taxonomy-when-reasoning* nil)
 (defvar *allow-duplicate-facts* t)
 (defvar *use-fancy-assert* t)
+(defvar *clear-handlers* (list))
 
 (defun consider-taxonomy ()
   *consider-taxonomy-when-reasoning*)
@@ -79,8 +80,6 @@
   `(setf *use-fancy-assert* ,new-value))
 
 (defclass inference-engine-object () ())
-
-(defvar *clear-handlers* (list))
 
 (defmacro register-clear-handler (tag func)
   `(eval-when (:load-toplevel)

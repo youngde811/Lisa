@@ -187,7 +187,7 @@ Inspired by Paul Graham, <On Lisp>, p. 145."
   #+gcl (lisp:bye code)
   #+lispworks (lw:quit :status code)
   #+lucid (lcl:quit code)
-  #+sbcl (sb-ext:quit :unix-code (typecase code (number code) (null 0) (t 1)))
+  #+sbcl (sb-ext:quit :unix-status (typecase code (number code) (null 0) (t 1)))
   #-(or allegro clisp cmu cormanlisp gcl lispworks lucid sbcl)
   (error 'not-implemented :proc (list 'quit code)))
 

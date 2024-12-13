@@ -70,23 +70,21 @@
            (run-query ,query))))))
 
 (defmacro retrieve ((&rest varlist) &body body)
-  (flet ((make-query-binding (var)
-           `(cons ',var ,var)))
-    (let ((query-name (gensym))
-          (query (gensym)))
-      `(with-inference-engine
-          ((make-query-engine (inference-engine)))
-         (let* ((,query-name (gensym))
-                (,query
-                 (defquery ',query-name
-                           (query-fact)
-                           ,@body
-                           =>
-                           (push (list ,@(mapcar #'(lambda (var)
-                                                     var)
-                                                 varlist))
-                                 *query-result*))))
-           (run-query ,query))))))
+  (let ((query-name (gensym))
+        (query (gensym)))
+    `(with-inference-engine
+         ((make-query-engine (inference-engine)))
+       (let* ((,query-name (gensym))
+              (,query
+                (defquery ',query-name
+                  (query-fact)
+                  ,@body
+                  =>
+                  (push (list ,@(mapcar #'(lambda (var)
+                                            var)
+                                        varlist))
+                        *query-result*))))
+         (run-query ,query)))))
 
 (defmacro with-simple-query ((var value) query &body body)
   "For each variable/instance pair in a query result, invoke BODY with VAR

@@ -26,7 +26,7 @@
 
 (in-package :lisa)
 
-(defconstant *rule-separator* '=>)
+(defconstant RULE-SEPARATOR '=>)
 
 (defvar *binding-table*)
 (defvar *current-defrule*)
@@ -240,7 +240,7 @@
                 :bindings (collect-bindings actions :errorp nil)
                 :actions actions)))
       (multiple-value-bind (lhs remains)
-          (utils:find-before *rule-separator* body :test #'eq)
+          (utils:find-before RULE-SEPARATOR body :test #'eq)
         (unless remains
           (error 'rule-parsing-error :text "missing rule separator"))
         (values (parse-lhs (preprocess-left-side lhs))
