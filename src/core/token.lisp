@@ -26,7 +26,7 @@
 
 (defclass token ()
   ((facts :initform
-          (make-array 0 :adjustable t :fill-pointer t)
+          (make-array 64 :initial-element nil :adjustable t :fill-pointer 0)
           :type vector
           :accessor token-facts)
    (not-counter :initform 0
@@ -35,6 +35,8 @@
                    :accessor token-exists-counter)
    (hash-code :initform (list)
               :accessor token-hash-code)
+   (fact-count :initform 0
+               :accessor token-fact-count) ; big performance optimization
    (contents :initform nil
              :reader token-contents)))
 
@@ -64,7 +66,7 @@
 (defun token-make-fact-list (token &key (detailp t) (debugp nil))
   (let* ((facts (list))
          (vector (token-facts token))
-         (length (length vector)))
+         (length (token-fact-count token)))
     (dotimes (i length)
       (let ((fact (aref vector i)))
         (if debugp
@@ -74,21 +76,19 @@
                   facts)))))
     (nreverse facts)))
 
-(defun token-fact-count (token)
-  (length (token-facts token)))
-
 (defun token-find-fact (token address)
   (aref (slot-value token 'facts) address))
 
 (defun token-top-fact (token)
   (with-slots ((fact-vector facts)) token
-    (aref fact-vector (1- (length fact-vector)))))
+    (aref fact-vector (1- (token-fact-count token)))))
 
 (defun token-push-fact (token fact)
   (with-accessors ((fact-vector token-facts)
                    (hash-code token-hash-code)) token
     (vector-push-extend fact fact-vector)
     (push fact hash-code)
+    (incf (token-fact-count token))
     token))
 
 (defun token-pop-fact (token)
@@ -96,6 +96,7 @@
                    (hash-code token-hash-code)) token
     (unless (zerop (fill-pointer fact-vector))
       (pop hash-code)
+      (decf (token-fact-count token))
       (aref fact-vector (decf (fill-pointer fact-vector))))))
 
 (defun replicate-token (token &key (token-class nil))
@@ -104,7 +105,7 @@
                             (find-class token-class)
                           (class-of token)))))
     (with-slots ((existing-fact-vector facts)) token
-      (let ((length (length existing-fact-vector)))
+      (let ((length (token-fact-count token)))
         (dotimes (i length)
           (token-push-fact new-token (aref existing-fact-vector i)))))
     new-token))
