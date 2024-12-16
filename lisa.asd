@@ -77,8 +77,9 @@
        (:file "heap")
        (:file "conflict-resolution-strategies")
        (:file "context")
-       (:file "rule")
        (:file "pattern")
+       (:file "rule")
+       (:file "binding")
        (:file "rule-parser")
        (:file "fact-parser")
        (:file "language")
@@ -86,7 +87,6 @@
        (:file "rete")
        (:file "belief-interface")
        (:file "meta")
-       (:file "binding")
        (:file "token")
        (:file "retrieve"))
       :serial t)
@@ -104,8 +104,8 @@
       :pathname "rete/reference/"
       :components
       ((:file "node-tests")
-       (:file "shared-node")
        (:file "successor")
+       (:file "shared-node")
        (:file "node-pair")
        (:file "terminal-node")
        (:file "node1")

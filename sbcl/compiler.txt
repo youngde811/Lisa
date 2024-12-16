@@ -1,0 +1,405 @@
+; SLIME 2.30
+CL-USER> (load "install")
+To load "log4cl":
+  Load 1 ASDF system:
+    log4cl
+; Loading "log4cl"
+..
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/packages/pkgdecl.lisp" (written 12 DEC 2024 09:39:08 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/packages/pkgdecl-tmpUX5S4ADN.fasl
+; compilation finished in 0:00:00.011
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/utils/compose.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/utils/compose-tmp10401X32.fasl
+; compilation finished in 0:00:00.009
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/utils/utils.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; file: /Users/davidyoung/devel/projects/github/Lisa/src/utils/utils.lisp
+; in: DEFUN FIND-BEFORE
+;     (FUNCALL LISA.UTILS::TEST LISA.UTILS::ITEM (CAR SEQUENCE))
+; 
+; note: unable to
+;   optimize away possible call to FDEFINITION at runtime
+; because:
+;   TEST is not known to be a function
+
+;     (FUNCALL LISA.UTILS::TEST LISA.UTILS::OBJ LISA.UTILS::ITEM)
+; 
+; note: unable to
+;   optimize away possible call to FDEFINITION at runtime
+; because:
+;   TEST is not known to be a function
+
+; in: DEFUN FIND-AFTER
+;     (FUNCALL LISA.UTILS::TEST LISA.UTILS::ITEM (FIRST SEQUENCE))
+; 
+; note: unable to
+;   optimize away possible call to FDEFINITION at runtime
+; because:
+;   TEST is not known to be a function
+
+; in: DEFUN FIND-IF-AFTER
+;     (FUNCALL LISA.UTILS::PREDICATE (FIRST SEQUENCE))
+; 
+; note: unable to
+;   optimize away possible call to FDEFINITION at runtime
+; because:
+;   PREDICATE is not known to be a function
+
+; in: DEFUN QUIT
+;     (QUIT :UNIX-CODE
+;           (TYPECASE LISA.UTILS::CODE (NUMBER LISA.UTILS::CODE) (NULL 0) (T 1)))
+; 
+; caught STYLE-WARNING:
+;   :UNIX-CODE is not a known argument keyword.
+
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/utils/utils-tmpZ7CBRM0G.fasl
+; compilation finished in 0:00:00.043
+WARNING:
+   Lisp compilation had style-warnings while
+   compiling #<CL-SOURCE-FILE "lisa" "src" "utils" "utils">
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/belief-systems/belief.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/belief-systems/belief-tmp9OZEQ0G2.fasl
+; compilation finished in 0:00:00.010
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/belief-systems/certainty-factors.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/belief-systems/certainty-factors-tmpB2JTL1W9.fasl
+; compilation finished in 0:00:00.015
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/reflect/reflect.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/reflect/reflect-tmpP3BI68WQ.fasl
+; compilation finished in 0:00:00.015
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/preamble.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; file: /Users/davidyoung/devel/projects/github/Lisa/src/core/preamble.lisp
+; in: DEFVAR *CLEAR-HANDLERS*
+;     (LIST)
+; 
+; note: deleting unreachable code
+
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/preamble-tmpQDARA81Z.fasl
+; compilation finished in 0:00:00.021
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/conditions.lisp" (written 12 DEC 2024 03:03:05 PM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/conditions-tmpYEMMM7SE.fasl
+; compilation finished in 0:00:00.015
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/deffacts.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/deffacts-tmp73HU0RPK.fasl
+; compilation finished in 0:00:00.009
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/fact.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/fact-tmpIO5N7K88.fasl
+; compilation finished in 0:00:00.019
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/watches.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/watches-tmpCM21U60Z.fasl
+; compilation finished in 0:00:00.014
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/activation.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/activation-tmp9DT7SEFG.fasl
+; compilation finished in 0:00:00.009
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/heap.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/heap-tmp8065ESJT.fasl
+; compilation finished in 0:00:00.032
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/conflict-resolution-strategies.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/conflict-resolution-strategies-tmp7S8Z6FGF.fasl
+; compilation finished in 0:00:00.016
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/context.lisp" (written 12 DEC 2024 03:03:05 PM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/context-tmpSIT3QPKP.fasl
+; compilation finished in 0:00:00.013
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/rule.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/rule-tmpE0PA0714.fasl
+; compilation finished in 0:00:00.015
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/pattern.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; file: /Users/davidyoung/devel/projects/github/Lisa/src/core/pattern.lisp
+; in: DEFSTRUCT PARSED-PATTERN
+;     (DEFSTRUCT LISA::PARSED-PATTERN
+;       "Represents the canonical form of a pattern analysed by the DEFRULE parser."
+;       (CLASS NIL :TYPE SYMBOL)
+;       (LISA::SLOTS NIL)
+;       (LISA::ADDRESS 0 :TYPE INTEGER)
+;       (LISA::PATTERN-BINDING NIL)
+;       (LISA::TEST-BINDINGS NIL :TYPE LIST)
+;       (LISA::BINDING-SET NIL :TYPE LIST)
+;       (LISA:LOGICAL NIL :TYPE SYMBOL)
+;       (LISA::SUB-PATTERNS NIL :TYPE LIST)
+;       (TYPE :GENERIC :TYPE SYMBOL))
+; --> EVAL-WHEN 
+; ==>
+;   (SB-KERNEL::%COMPILER-DEFSTRUCT
+;    '#<SB-KERNEL:DEFSTRUCT-DESCRIPTION LISA::PARSED-PATTERN {700778A2F3}>
+;    '#(#<SB-KERNEL:LAYOUT for T {7003033803}>
+;       #<SB-KERNEL:LAYOUT (ID=1) for STRUCTURE-OBJECT {7003033883}>))
+; 
+; caught STYLE-WARNING:
+;   Previously compiled calls to LISA::PARSED-PATTERN-CLASS,
+;   LISA::PARSED-PATTERN-ADDRESS and LISA::PARSED-PATTERN-BINDING-SET could not be
+;   inlined because the structure definition for LISA::PARSED-PATTERN was not yet
+;   seen. To avoid this warning, DEFSTRUCT should precede references to the
+;   affected functions, or they must be declared locally notinline at each call
+;   site.
+
+; in: DEFSTRUCT RULE-ACTIONS
+;     (DEFSTRUCT LISA::RULE-ACTIONS
+;       (LISA:BINDINGS NIL :TYPE LIST)
+;       (LISA::ACTIONS NIL :TYPE LIST))
+; --> EVAL-WHEN 
+; ==>
+;   (SB-KERNEL::%COMPILER-DEFSTRUCT
+;    '#<SB-KERNEL:DEFSTRUCT-DESCRIPTION LISA::RULE-ACTIONS {7007CE6B03}>
+;    '#(#<SB-KERNEL:LAYOUT for T {7003033803}>
+;       #<SB-KERNEL:LAYOUT (ID=1) for STRUCTURE-OBJECT {7003033883}>))
+; 
+; caught STYLE-WARNING:
+;   Previously compiled calls to LISA::RULE-ACTIONS-BINDINGS and
+;   LISA::RULE-ACTIONS-ACTIONS could not be inlined because the structure
+;   definition for LISA::RULE-ACTIONS was not yet seen. To avoid this warning,
+;   DEFSTRUCT should precede references to the affected functions, or they must be
+;   declared locally notinline at each call site.
+
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/pattern-tmpJRWHHVG0.fasl
+; compilation finished in 0:00:00.035
+WARNING:
+   Lisp compilation had style-warnings while
+   compiling #<CL-SOURCE-FILE "lisa" "src" "core" "pattern">
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/rule-parser.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; file: /Users/davidyoung/devel/projects/github/Lisa/src/core/rule-parser.lisp
+; in: DEFCONSTANT *RULE-SEPARATOR*
+;     (DEFCONSTANT LISA::*RULE-SEPARATOR* 'LISA:=>)
+; ==>
+;   (SB-IMPL::%DEFCONSTANT 'LISA::*RULE-SEPARATOR* 'LISA:=>
+;                          (SB-C:SOURCE-LOCATION))
+; 
+; caught STYLE-WARNING:
+;   Defining (*RULE-SEPARATOR*) as a constant, even though the name follows
+;   the usual naming convention (names like *FOO*) for special variables
+
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/rule-parser-tmp4WZVROCX.fasl
+; compilation finished in 0:00:00.038
+WARNING:
+   Lisp compilation had style-warnings while
+   compiling #<CL-SOURCE-FILE "lisa" "src" "core" "rule-parser">
+STYLE-WARNING:
+   Defining (*RULE-SEPARATOR*) as a constant, even though the name follows
+the usual naming convention (names like *FOO*) for special variables
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/fact-parser.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/fact-parser-tmpA0I3UKX8.fasl
+; compilation finished in 0:00:00.012
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/language.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/language-tmp267Y2N80.fasl
+; compilation finished in 0:00:00.021
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/tms-support.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/tms-support-tmpOUPE5FSJ.fasl
+; compilation finished in 0:00:00.008
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/rete.lisp" (written 12 DEC 2024 03:03:05 PM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/rete-tmpIGHCU6ZA.fasl
+; compilation finished in 0:00:00.052
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/belief-interface.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/belief-interface-tmpBO0TUGLK.fasl
+; compilation finished in 0:00:00.007
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/meta.lisp" (written 12 DEC 2024 03:03:05 PM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/meta-tmpIIXPIQNW.fasl
+; compilation finished in 0:00:00.009
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/binding.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; file: /Users/davidyoung/devel/projects/github/Lisa/src/core/binding.lisp
+; in: DEFSTRUCT BINDING
+;     (DEFSTRUCT (LISA::BINDING (:TYPE LIST) (:CONSTRUCTOR LISA::%MAKE-BINDING))
+;       VARIABLE
+;       LISA::ADDRESS
+;       LISA::SLOT-NAME)
+; --> DECLAIM EVAL-WHEN 
+; ==>
+;   (SB-C::%PROCLAIM '(INLINE LISA::BINDING-ADDRESS (SETF LISA::BINDING-ADDRESS))
+;                    (SB-C:SOURCE-LOCATION))
+; 
+; caught STYLE-WARNING:
+;   Proclaiming LISA::BINDING-ADDRESS to be INLINE, but 1 call to it was previously
+;   compiled. A declaration of NOTINLINE at the call site will eliminate this
+;   warning, as will proclaiming and defining the function before its first
+;   potential use.
+
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/binding-tmpOHM494YR.fasl
+; compilation finished in 0:00:00.011
+WARNING:
+   Lisp compilation had style-warnings while
+   compiling #<CL-SOURCE-FILE "lisa" "src" "core" "binding">
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/token.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; file: /Users/davidyoung/devel/projects/github/Lisa/src/core/token.lisp
+; in: DEFUN TOKEN-TOP-FACT
+;     (LENGTH LISA::FACT-VECTOR)
+; 
+; note: unable to
+;   optimize
+; due to type uncertainty:
+;   The first argument is a SEQUENCE, not a VECTOR.
+
+;     (AREF LISA::FACT-VECTOR (1- (LENGTH LISA::FACT-VECTOR)))
+; 
+; note: unable to
+;   avoid runtime dispatch on array element type
+; because:
+;   Upgraded element type of array is not known at compile time.
+; 
+; note: unable to
+;   optimize
+; due to type uncertainty:
+;   The first argument is a VECTOR, not a SIMPLE-STRING.
+
+; in: DEFUN TOKEN-PUSH-FACT
+;     (VECTOR-PUSH-EXTEND LISA:FACT LISA::FACT-VECTOR)
+; 
+; note: unable to
+;   optimize
+; because:
+;   Upgraded element type of array is not known at compile time.
+
+; in: DEFUN REPLICATE-TOKEN
+;     (LENGTH LISA::EXISTING-FACT-VECTOR)
+; 
+; note: unable to
+;   optimize
+; due to type uncertainty:
+;   The first argument is a SEQUENCE, not a VECTOR.
+
+;     (AREF LISA::EXISTING-FACT-VECTOR LISA::I)
+; 
+; note: unable to
+;   avoid runtime dispatch on array element type
+; because:
+;   Upgraded element type of array is not known at compile time.
+; 
+; note: unable to
+;   optimize
+; due to type uncertainty:
+;   The first argument is a VECTOR, not a SIMPLE-STRING.
+
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/token-tmpOVFB07XF.fasl
+; compilation finished in 0:00:00.016
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/core/retrieve.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; file: /Users/davidyoung/devel/projects/github/Lisa/src/core/retrieve.lisp
+; in: DEFMACRO RETRIEVE
+;     (LISA::MAKE-QUERY-BINDING (LISA::VAR) `(CONS ',LISA::VAR ,LISA::VAR))
+; 
+; note: deleting unused function
+;   (FLET MAKE-QUERY-BINDING :IN RETRIEVE)
+
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/core/retrieve-tmpG6VFGMYP.fasl
+; compilation finished in 0:00:00.009
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/implementations/workarounds.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/implementations/workarounds-tmp4QIPRMOF.fasl
+; compilation finished in 0:00:00.004
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node-tests.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node-tests-tmpGW0QV22K.fasl
+; compilation finished in 0:00:00.016
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/shared-node.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; file: /Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/shared-node.lisp
+; in: DEFMETHOD PASS-TOKEN-TO-SUCCESSORS (SHARED-NODE T)
+;     (FUNCALL (LISA::SUCCESSOR-CONNECTOR LISA::SUCCESSOR)
+;              (LISA::SUCCESSOR-NODE LISA::SUCCESSOR) LISA:TOKEN)
+; 
+; note: unable to
+;   optimize away possible call to FDEFINITION at runtime
+; because:
+;   callable expression is not known to be a function
+
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/shared-node-tmp2K9J0HSR.fasl
+; compilation finished in 0:00:00.009
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/successor.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/successor-tmpP44I4E0Y.fasl
+; compilation finished in 0:00:00.007
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node-pair.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node-pair-tmp63LQ7EX6.fasl
+; compilation finished in 0:00:00.004
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/terminal-node.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/terminal-node-tmp86F1A8FB.fasl
+; compilation finished in 0:00:00.007
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node1.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node1-tmpH7D4HL98.fasl
+; compilation finished in 0:00:00.007
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/join-node.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/join-node-tmpCDM7YXYI.fasl
+; compilation finished in 0:00:00.012
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node2.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node2-tmpLM57P5P.fasl
+; compilation finished in 0:00:00.018
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node2-not.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node2-not-tmpZE69DN33.fasl
+; compilation finished in 0:00:00.015
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node2-test.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node2-test-tmpG8099TO3.fasl
+; compilation finished in 0:00:00.006
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node2-exists.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/node2-exists-tmpTASQCYAW.fasl
+; compilation finished in 0:00:00.015
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/rete-compiler.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/rete-compiler-tmp35U57IV6.fasl
+; compilation finished in 0:00:00.019
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/tms.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/tms-tmpTZOONXRW.fasl
+; compilation finished in 0:00:00.006
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/network-ops.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/network-ops-tmpWN0UKDSV.fasl
+; compilation finished in 0:00:00.018
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/network-crawler.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/rete/reference/network-crawler-tmpBF3HHBTQ.fasl
+; compilation finished in 0:00:00.010
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/config/config.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/config/config-tmpGYUNPZCY.fasl
+; compilation finished in 0:00:00.003
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/config/epilogue.lisp" (written 09 DEC 2024 11:24:13 AM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/config/epilogue-tmpD68Q8WCA.fasl
+; compilation finished in 0:00:00.035
+; 
+; compilation unit finished
+;   caught 5 STYLE-WARNING conditions
+;   printed 14 notes
+; compiling file "/Users/davidyoung/devel/projects/github/Lisa/src/logger/logger.lisp" (written 12 DEC 2024 03:03:05 PM):
+
+; wrote /Users/davidyoung/.cache/common-lisp/sbcl-2.4.11-macosx-arm64/Users/davidyoung/devel/projects/github/Lisa/src/logger/logger-tmp7MK9KM9C.fasl
+; compilation finished in 0:00:00.009
+T
+CL-USER> 

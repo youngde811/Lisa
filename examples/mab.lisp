@@ -28,7 +28,8 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (when (not (find-package "LISA-MAB"))
     (defpackage "LISA-MAB"
-      (:use "LISA-LISP"))))
+      (:use "LISA-LISP")
+      (:export "RUN-MAB"))))
 
 (in-package "LISA-MAB")
 
@@ -344,22 +345,10 @@
   (assert (goal-is-to (action hold) (argument-1 ?obj)
                       (argument-2 empty))))
 
-#+ignore
 (defrule satisfy-hunger ()
   (?goal (goal-is-to (action eat) (argument-1 ?name)))
   (?monkey (monkey (holding ?name)))
   (?thing (thing (name ?name)))
-  =>
-  (format t "Monkey eats the ~A.~%" ?name)
-  (modify ?monkey (holding blank))
-  (retract ?goal)
-  (retract ?thing))
-
-(defrule satisfy-hunger ()
-  (?goal (goal-is-to (action eat) (argument-1 ?name)))
-  (?monkey (monkey (holding ?name)))
-  (?thing (thing (name ?thing-name)))
-  (test (eql ?name ?thing-name))
   =>
   (format t "Monkey eats the ~A.~%" ?name)
   (modify ?monkey (holding blank))
@@ -436,7 +425,7 @@
 (defun run-mab (&optional (ntimes 1))
   (flet ((repeat-mab ()
            (dotimes (i ntimes)
-             (log:info "Starting run.~%")
+             (log:info "Starting run...")
              (reset)
              (run))))
     (time (repeat-mab))))
