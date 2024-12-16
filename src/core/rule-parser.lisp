@@ -244,7 +244,7 @@
         (unless remains
           (error 'rule-parsing-error :text "missing rule separator"))
         (values (parse-lhs (preprocess-left-side lhs))
-                (parse-rhs (utils:find-after *rule-separator* remains :test #'eq)))))))
+                (parse-rhs (utils:find-after RULE-SEPARATOR remains :test #'eq)))))))
 
 ;;; The conditional element parsers...
 
