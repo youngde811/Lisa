@@ -59,7 +59,7 @@
 (defvar *consider-taxonomy-when-reasoning* nil)
 (defvar *allow-duplicate-facts* t)
 (defvar *use-fancy-assert* t)
-(defvar *clear-handlers* (list))
+(defvar *clear-handlers* nil)
 
 (defun consider-taxonomy ()
   *consider-taxonomy-when-reasoning*)

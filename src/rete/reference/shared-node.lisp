@@ -43,7 +43,6 @@
   (plusp (node-use-count self)))
 
 (defmethod pass-token-to-successors ((self shared-node) token)
-  (declare (optimize (speed 3) (debug 1) (safety 0)))
   (loop for successor being the hash-values of (shared-node-successors self)
       do (funcall (successor-connector successor)
                   (successor-node successor)

@@ -104,8 +104,8 @@
       :pathname "rete/reference/"
       :components
       ((:file "node-tests")
-       (:file "shared-node")
        (:file "successor")
+       (:file "shared-node")
        (:file "node-pair")
        (:file "terminal-node")
        (:file "node1")

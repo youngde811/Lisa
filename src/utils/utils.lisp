@@ -32,7 +32,6 @@
 (defun find-before (item sequence &key (test #'eql))
   "Returns both that portion of SEQUENCE that occurs before ITEM and
   the rest of SEQUENCE anchored at ITEM, or NIL otherwise."
-  (declare (optimize (speed 3) (safety 1) (debug 1)))
   (labels ((find-item (obj seq test val valend)
 	     (let ((item (first seq)))
                (cond ((null seq)
@@ -51,7 +50,6 @@
 (defun find-after (item sequence &key (test #'eql))
   "Returns that portion of SEQUENCE that occurs after ITEM, or NIL
   otherwise."
-  (declare (optimize (speed 3) (safety 1) (debug 1)))
   (cond ((null sequence)
          (values nil))
         ((funcall test item (first sequence))
@@ -59,7 +57,6 @@
         (t (find-after item (rest sequence) :test test))))
 
 (defun find-if-after (predicate sequence)
-  (declare (optimize (speed 3) (safety 1) (debug 1)))
   (cond ((null sequence)
          (values nil))
         ((funcall predicate (first sequence))
