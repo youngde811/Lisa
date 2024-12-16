@@ -28,7 +28,8 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (when (not (find-package "LISA-MAB"))
     (defpackage "LISA-MAB"
-      (:use "LISA-LISP"))))
+      (:use "LISA-LISP")
+      (:export "RUN-MAB"))))
 
 (in-package "LISA-MAB")
 
