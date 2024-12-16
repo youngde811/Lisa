@@ -443,7 +443,7 @@
 (defun run-mab (&optional (ntimes 1))
   (flet ((repeat-mab ()
            (dotimes (i ntimes)
-             (log:info "Starting run.~%")
+             (log:info "Starting run...")
              (reset)
              (run))))
     (time (repeat-mab))))

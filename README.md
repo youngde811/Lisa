@@ -40,7 +40,6 @@ CL-USER> (in-package :lisa-mab)
 #<PACKAGE "LISA-MAB">
 LISA-MAB> (run-mab)
 <INFO> [15:00:26] lisa-mab mab.lisp (run-mab repeat-mab) - Starting run.
-
 Monkey jumps off the GREEN-COUCH onto the floor.
 Monkey walks to T2-2.
 Monkey climbs onto the RED-COUCH.
@@ -101,8 +100,6 @@ some of the following:
 - A non-invasive metrics-gathering system for instrumentation. OpenTelemetry will not be considered, as it has zero
   support for Common Lisp.
 - Re-introduction of the OR conditional element.
-- Performance tuning using SBCL's profiler, locating hotspots in any areas of the code (particularly the inference
-  engine and compiler).
 - Anything else I feel like adding.
 
 ### Completed Features ###
@@ -110,6 +107,7 @@ some of the following:
 - Support for Quicklisp.
 - Logger selected. We'll be using [log4cl](https://github.com/7max/log4cl).
 - Log messages inserted into strategic points, replacing format/error forms.
+- Significant optimizations using Slime and SBCL's deterministic profiler.
 
 ## Documentation ##
 
