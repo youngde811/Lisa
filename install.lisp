@@ -29,18 +29,18 @@
 #-sbcl
 (error "For now, this file is suitable only for SBCL 2.4.11 and later.")
 
+#-asdf
+(error "ASDF is required to use Lisa; please make it available within your Lisp.")
+
+#-quicklisp
+(error "Lisa requires Quicklisp for dependency resolution. Please set that up first.")
+
 (defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
 
 ;;; There's a bug in Lisa that is creating a symbol in the COMMON-LISP package. I need
 ;;; to track that down. Until then, we unlock that package in SBCL.
 
 (sb-ext:unlock-package :common-lisp)
-
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (unless (find-package :asdf)
-    (load (merge-pathnames "lib/asdf/asdf" *install-root*)))
-  (unless (find-package :ql)
-    (error "Lisa requires Quicklisp for dependency resolution. Please set that up first.")))
 
 (ql:quickload :log4cl)
 (push :log4cl *features*)
