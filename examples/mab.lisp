@@ -344,22 +344,10 @@
   (assert (goal-is-to (action hold) (argument-1 ?obj)
                       (argument-2 empty))))
 
-#+ignore
 (defrule satisfy-hunger ()
   (?goal (goal-is-to (action eat) (argument-1 ?name)))
   (?monkey (monkey (holding ?name)))
   (?thing (thing (name ?name)))
-  =>
-  (format t "Monkey eats the ~A.~%" ?name)
-  (modify ?monkey (holding blank))
-  (retract ?goal)
-  (retract ?thing))
-
-(defrule satisfy-hunger ()
-  (?goal (goal-is-to (action eat) (argument-1 ?name)))
-  (?monkey (monkey (holding ?name)))
-  (?thing (thing (name ?thing-name)))
-  (test (eql ?name ?thing-name))
   =>
   (format t "Monkey eats the ~A.~%" ?name)
   (modify ?monkey (holding blank))
