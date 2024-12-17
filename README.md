@@ -39,7 +39,7 @@ T
 CL-USER> (in-package :lisa-mab)
 #<PACKAGE "LISA-MAB">
 LISA-MAB> (run-mab)
-<INFO> [15:00:26] lisa-mab mab.lisp (run-mab repeat-mab) - Starting run.
+<INFO> [15:00:26] lisa-mab mab.lisp (run-mab repeat-mab) - Starting run...
 Monkey jumps off the GREEN-COUCH onto the floor.
 Monkey walks to T2-2.
 Monkey climbs onto the RED-COUCH.
@@ -81,6 +81,7 @@ Monkey opens the BLUE-CHEST with the BLUE-KEY revealing the BANANAS.
 Monkey drops the BLUE-KEY.
 Monkey climbs onto the BLUE-CHEST.
 Monkey grabs the BANANAS.
+Monkey eats the BANANAS.
 Evaluation took:
   0.028 seconds of real time
   0.028730 seconds of total run time (0.027518 user, 0.001212 system)
@@ -89,6 +90,28 @@ Evaluation took:
   13,727,952 bytes consed
   
 NIL
+```
+
+Another interesting problem is MYCIN, an early backward chaining expert system that used artificial intelligence to
+identify bacteria causing severe infections, such as bacteremia and meningitis, and to recommend antibiotics, with the
+dosage adjusted for patient's body weight. Lisa uses a forward-chaining version borrowed from Peter Norvig's "Principles
+of Artificial Intelligence: Case Studies in Common Lisp". The run output is brief, but the rulebase in
+_examples/mycin.lisp_ is an interesting study, as it illustrates Lisa's implementation of Certainty Factors:
+
+```lisp
+CL-USER> (load "examples/mycin")
+T
+CL-USER> (in-package :lisa-user)
+#<PACKAGE "LISA-USER">
+LISA-USER> (culture-1)
+Identity: PSEUDOMONAS (0.760)
+Identity: ENTEROBACTERIACEAE (0.800)
+5
+LISA-USER> (culture-2)
+Identity: PSEUDOMONAS (0.646)
+Identity: BACTEROIDES (0.720)
+5
+LISA-USER> 
 ```
 
 ## Upcoming Plans ##
