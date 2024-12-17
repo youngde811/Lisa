@@ -94,8 +94,8 @@ NIL
 
 Another interesting problem is MYCIN, an early backward chaining expert system that used artificial intelligence to
 identify bacteria causing severe infections, such as bacteremia and meningitis, and to recommend antibiotics, with the
-dosage adjusted for patient's body weight. Lisa uses a forward-chaining version borrowed from Peter Norvig's "Principles
-of Artificial Intelligence: Case Studies in Common Lisp". The run output is brief, but the rulebase in
+dosage adjusted for patient's body weight. Lisa uses a forward-chaining version borrowed from Peter Norvig's _"Principles
+of Artificial Intelligence: Case Studies in Common Lisp"_. The run output is brief, but the rulebase in
 _examples/mycin.lisp_ is an interesting study, as it illustrates Lisa's implementation of Certainty Factors:
 
 ```lisp
