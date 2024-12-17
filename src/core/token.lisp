@@ -24,9 +24,11 @@
 
 (in-package :lisa)
 
+(defconstant FACT-VEC-INIT-LEN 64)
+
 (defclass token ()
   ((facts :initform
-          (make-array 64 :initial-element nil :adjustable t :fill-pointer 0)
+          (make-array FACT-VEC-INIT-LEN :initial-element nil :adjustable t :fill-pointer 0)
           :type vector
           :accessor token-facts)
    (not-counter :initform 0
@@ -36,6 +38,7 @@
    (hash-code :initform (list)
               :accessor token-hash-code)
    (fact-count :initform 0
+               :type fixnum
                :accessor token-fact-count) ; big performance optimization
    (contents :initform nil
              :reader token-contents)))
@@ -88,8 +91,8 @@
                    (hash-code token-hash-code)) token
     (vector-push-extend fact fact-vector)
     (push fact hash-code)
-    (incf (token-fact-count token))
-    token))
+    (incf (token-fact-count token)))
+  token)
 
 (defun token-pop-fact (token)
   (with-accessors ((fact-vector token-facts)
