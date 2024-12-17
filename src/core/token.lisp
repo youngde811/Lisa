@@ -85,7 +85,7 @@
   (with-slots ((fact-vector facts)) token
     (aref fact-vector (1- (token-fact-count token)))))
 
-;;; Using WITH-SLOTS yields a 2x reduction in runtime.
+;;; Using WITH-SLOTS yields a 2x improvement in CPU usage during profiling.
 
 (defun token-push-fact (token fact)
   (with-slots ((fact-vector facts)
@@ -96,6 +96,16 @@
     (incf fact-count))
   token)
 
+(defun token-pop-fact (token)
+  (with-slots ((fact-vector facts)
+               (hash-code hash-code)
+               (fact-count fact-count)) token
+    (unless (zerop (fill-pointer fact-vector))
+      (pop hash-code)
+      (decf fact-count)
+      (aref fact-vector (decf (fill-pointer fact-vector))))))
+
+#+ignore
 (defun token-pop-fact (token)
   (with-accessors ((fact-vector token-facts)
                    (hash-code token-hash-code)) token
