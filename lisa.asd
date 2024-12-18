@@ -93,6 +93,8 @@
      (:module implementations
       :components
       ((:file "workarounds")
+       #+:sbcl
+       (:file "sbcl-auto-notify")
        #+:lispworks
        (:file "lispworks-auto-notify")
        #+:cmucl
