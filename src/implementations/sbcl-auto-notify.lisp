@@ -27,7 +27,7 @@
 ;; of Lisa's control, are picked up via the MOP protocol and synchronized
 ;; with KB facts.
 
-;; This file courtesy of Fred Gilham.
+;; This file adapted to SBCL using Fred Gilham's submission for CMUCL.
 
 (in-package :lisa)
 
@@ -38,16 +38,16 @@
   (let ((*ignore-this-instance* self))
     (call-next-method)))
 
-(defmethod (setf mop:slot-value-using-class) :after (new-value (class standard-kb-class) instance slot)
+(defmethod (setf sb-mop:slot-value-using-class) :after (new-value (class standard-kb-class) instance slot)
   (declare (ignore new-value))
   (flet ((ignore-instance (object)
            (and (boundp '*ignore-this-instance*)
                 (eq object *ignore-this-instance*))))
     (unless (ignore-instance class)
       (mark-instance-as-changed 
-       instance :slot-id (mop:slot-definition-name slot)))))
+       instance :slot-id (sb-mop:slot-definition-name slot)))))
 
-(defmethod mop:validate-superclass ((class standard-kb-class) (superclass standard-class))
+(defmethod sb-mop:validate-superclass ((class standard-kb-class) (superclass standard-class))
   t)
 
 (eval-when (:load-toplevel)
