@@ -45,6 +45,9 @@
 (ql:quickload :log4cl)
 (push :log4cl *features*)
 
+(ql:quickload :alexandria)
+(push :alexandria *features*)
+
 (push *install-root* asdf:*central-registry*)
 (asdf:operate 'asdf:load-op :lisa :force t)
 (asdf:operate 'asdf:load-op :lisa/lisa-logger :force t)

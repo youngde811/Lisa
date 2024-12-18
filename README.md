@@ -120,9 +120,9 @@ After taking an eleven-year hiatus, as of December 2024 I've decided to resume w
 and capabilities. The fundamental architecture will not change, as I'm quite happy with it. But, Lisa needs at least
 some of the following:
 
-- A non-invasive metrics-gathering system for instrumentation. OpenTelemetry will not be considered, as it has zero
-  support for Common Lisp.
 - Re-introduction of the OR conditional element.
+- More detailed performance analysis.
+- See if the AUTO-NOTIFY feature might be ported to SBCL.
 - Anything else I feel like adding.
 
 ### Completed Features ###
