@@ -82,8 +82,9 @@
   (aref (slot-value token 'facts) address))
 
 (defun token-top-fact (token)
-  (with-slots ((fact-vector facts)) token
-    (aref fact-vector (1- (token-fact-count token)))))
+  (with-slots ((fact-vector facts)
+               (fact-count fact-count)) token
+    (aref fact-vector (1- fact-count))))
 
 ;;; Using WITH-SLOTS yields a 2x improvement in CPU usage during profiling.
 
