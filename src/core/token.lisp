@@ -105,15 +105,6 @@
       (decf fact-count)
       (aref fact-vector (decf (fill-pointer fact-vector))))))
 
-#+ignore
-(defun token-pop-fact (token)
-  (with-accessors ((fact-vector token-facts)
-                   (hash-code token-hash-code)) token
-    (unless (zerop (fill-pointer fact-vector))
-      (pop hash-code)
-      (decf (token-fact-count token))
-      (aref fact-vector (decf (fill-pointer fact-vector))))))
-
 (defun replicate-token (token &key (token-class nil))
   (let ((new-token 
          (make-instance (if token-class
@@ -123,6 +114,26 @@
       (let ((length (token-fact-count token)))
         (dotimes (i length)
           (token-push-fact new-token (aref existing-fact-vector i)))))
+    new-token))
+
+;;; Alexandria's COPY-ARRAY function is supposed to be fast, but on SBCL it's
+;;; 4x slower than the approach used above.
+
+#+ignore
+(defun replicate-token (token &key (token-class nil))
+  (let ((new-token 
+         (make-instance (if token-class
+                            (find-class token-class)
+                          (class-of token)))))
+    (with-slots ((existing-fact-vector facts)
+                 (existing-token-hash hash-code)
+                 (existing-token-fact-count fact-count)) token
+      (with-slots ((new-token-facts facts)
+                   (new-token-hash hash-code)
+                   (new-token-fact-count fact-count)) new-token
+        (setf new-token-facts (alexandria:copy-array existing-fact-vector))
+        (setf new-token-hash existing-token-hash)
+        (setf new-token-fact-count existing-token-fact-count)))
     new-token))
 
 (defmethod hash-key ((self token))
