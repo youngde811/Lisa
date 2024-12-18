@@ -122,7 +122,6 @@ some of the following:
 
 - Re-introduction of the OR conditional element.
 - More detailed performance analysis.
-- See if the AUTO-NOTIFY feature might be ported to SBCL.
 - Anything else I feel like adding.
 
 ### Completed Features ###
@@ -131,6 +130,7 @@ some of the following:
 - Logger selected. We'll be using [log4cl](https://github.com/7max/log4cl).
 - Log messages inserted into strategic points, replacing format/error forms.
 - Significant optimizations using Slime and SBCL's deterministic profiler.
+- Ported auto-notification to SBCL.
 
 ## Documentation ##
 
