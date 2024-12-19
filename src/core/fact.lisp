@@ -96,9 +96,11 @@
     slots))
 
 (defmethod get-slot-value ((self fact) (slot-name symbol))
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
   "Returns the value associated with a slot name. FACT is a FACT instance;
   SLOT-NAME is a SLOT-NAME instance."
-  (gethash slot-name (fact-slot-table self)))
+  (with-slots ((slot-table slot-table)) self
+    (gethash slot-name slot-table)))
 
 (defmethod get-slot-value ((self fact) (slot-name (eql :object)))
   (fact-clos-instance self))

@@ -29,6 +29,7 @@
 (defclass token ()
   ((facts :initform
           (make-array FACT-VEC-INIT-LEN :initial-element nil :adjustable t :fill-pointer 0)
+          :type vector
           :accessor token-facts)
    (not-counter :initform 0
                 :accessor token-not-counter)
@@ -89,30 +90,36 @@
 ;;; Using WITH-SLOTS yields a 2x improvement in CPU usage during profiling.
 
 (defun token-push-fact (token fact)
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
   (with-slots ((fact-vector facts)
                (fact-count fact-count)
                (hash-code hash-code)) token
+    (declare (type fixnum fact-count))
     (vector-push-extend fact fact-vector)
     (push fact hash-code)
     (incf fact-count))
   token)
 
 (defun token-pop-fact (token)
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
   (with-slots ((fact-vector facts)
                (hash-code hash-code)
                (fact-count fact-count)) token
+    (declare (type fixnum fact-count))
     (unless (zerop (fill-pointer fact-vector))
       (pop hash-code)
       (decf fact-count)
       (aref fact-vector (decf (fill-pointer fact-vector))))))
 
 (defun replicate-token (token &key (token-class nil))
-  (let ((new-token 
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
+  (let ((new-token
          (make-instance (if token-class
                             (find-class token-class)
                           (class-of token)))))
     (with-slots ((existing-fact-vector facts)) token
       (let ((length (token-fact-count token)))
+        (declare (type fixnum length))
         (dotimes (i length)
           (token-push-fact new-token (aref existing-fact-vector i)))))
     new-token))
