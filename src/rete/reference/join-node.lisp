@@ -66,6 +66,17 @@
 (defun right-memory-count (join-node)
   (hash-table-count (join-node-right-memory join-node)))
 
+(defun test-tokens (join-node left-tokens right-token)
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
+  (token-push-fact left-tokens (token-top-fact right-token))
+  (prog1
+      (every #'(lambda (test)
+                 (declare (type function test))
+                 (funcall test left-tokens))
+             (join-node-tests join-node))
+    (token-pop-fact left-tokens)))
+
+#+ignore
 (defmethod test-tokens ((self join-node) left-tokens right-token)
   (declare (optimize (speed 3) (safety 0) (debug 0)))
   (token-push-fact left-tokens (token-top-fact right-token))
