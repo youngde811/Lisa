@@ -102,14 +102,18 @@
 (defun find-slot-binding (var &key (errorp t))
   "Given a variable, retrieve the binding object for it."
   (let ((binding (gethash var *binding-table*)))
-    (when errorp
-      (cl:assert binding nil "Missing slot binding for variable ~A" var))
+    (unless binding
+      (when errorp
+        (log:error "Missing slot binding for variable ~A" var)
+        (error :unrecoverable)))
     binding))
 
 (defun set-pattern-binding (var location)
-  (cl:assert (not (gethash var *binding-table*)) nil "This is a duplicate pattern binding: ~A" var)
+  (unless (not (gethash var *binding-table*))
+    (log:error "This is a duplicate pattern binding: ~A" var)
+    (error :unrecoverable))
   (setf (gethash var *binding-table*)
-    (make-binding var location :pattern)))
+        (make-binding var location :pattern)))
 
 (defun collect-bindings (forms &key (errorp t))
   (let ((bindings (list)))
