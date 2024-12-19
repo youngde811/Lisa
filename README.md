@@ -1,5 +1,7 @@
 <sub>_"Even in our sleep, pain which cannot forget falls drop by drop upon the heart, until, in our own despair, against our will, comes wisdom through the awful grace of God."_ -- Aeschylus<sub>
 
+![_Always Remember_](images/powmia.png "POW-MIA")
+
 # Welcome to the Lisa Project #
 
 Lisa is a production-quality, forward-chaining expert-system shell, developed atop an optimized implementation of
