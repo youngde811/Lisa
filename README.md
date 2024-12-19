@@ -1,6 +1,6 @@
 <sub>_"Even in our sleep, pain which cannot forget falls drop by drop upon the heart, until, in our own despair, against our will, comes wisdom through the awful grace of God."_ -- Aeschylus<sub>
 
-![_Always Remember_](images/powmia.png "POW-MIA")
+![_Always Remember_](images/powmia.png "Always Remember")
 
 # Welcome to the Lisa Project #
 
@@ -143,6 +143,11 @@ particular, read the _Getting Started_ section first for details on using SBCL w
 schedule. However, the core code here represents Lisa version 3.2 as found on [Sourceforge](https://sourceforge.net/),
 which should run properly on the Lisp implementations mentioned above. **A word of caution however**: folks NOT using
 Emacs and SBCL are on their own at this time, until I'm able to begin regression testing with other Lisp environments.
+
+## References ##
+
+- The [SBCL](https://www.sbcl.org/) home page.
+- [Emacs](https://emacsformacos.com/) for MacOS.
 
 ## Author ##
 
