@@ -33,8 +33,6 @@
 
 (in-package "LISA-MAB")
 
-(make-inference-engine)
-
 (deftemplate monkey ()
   (slot location)
   (slot on-top-of)

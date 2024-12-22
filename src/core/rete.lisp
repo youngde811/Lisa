@@ -270,6 +270,7 @@
 
 (defmethod reset-engine ((self rete))
   (reset-network (rete-network self))
+  (forget-all-facts self)
   (set-initial-state self)
   (assert (initial-fact))
   (assert-autofacts self)

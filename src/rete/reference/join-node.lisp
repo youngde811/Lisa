@@ -111,7 +111,7 @@
   (clear-memories self)
   (pass-tokens-to-successor self left-tokens))
 
-(defmethod accept-token-from-right ((self join-node) (left-tokens reset-token))
+(defmethod accept-token-from-right ((self join-node) (right-token reset-token))
   nil)
 
 (defmethod print-object ((self join-node) strm)
