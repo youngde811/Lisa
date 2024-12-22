@@ -126,7 +126,9 @@
                                     (binding-slot-name binding))))
                              bindings))
                (funcall predicate))))))
-    (if negated-p (complement test) test)))
+    (if negated-p
+        (complement test)
+      test)))
 
 (defun make-intra-pattern-predicate (forms bindings negated-p)
   (let* ((special-vars
