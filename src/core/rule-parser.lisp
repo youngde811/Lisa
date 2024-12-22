@@ -287,6 +287,7 @@
            (bindings (collect-bindings form)))
       (make-parsed-pattern :test-bindings bindings
                            :type :test
+                           :slots form
                            :pattern-binding nil
                            :binding-set (make-binding-set)
                            :logical *in-logical-pattern-p*
