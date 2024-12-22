@@ -22,20 +22,33 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
+;;; Description: This tiny rulebase was written to verify a fix to Lisa's TEST
+;;; conditional element, reported by Gaston Pepe.
+
 (in-package :lisa-user)
 
 (deftemplate hobbit ()
     (slot name))
 
-(defrule check-hobbit ()
+(defrule check-frodo ()
   (hobbit (name ?name))
   (test (equal ?name "frodo"))
   =>
-  (format t "check-hobbit fired!~%"))
+  (format t "Frodo found!~%")
+  (assert (hobbit (name "bilbo"))))
 
-(deffacts hobbit-facts ()
-  (hobbit (name "frodo")))
+(defrule check-bilbo ()
+  (hobbit (name ?name))
+  (test (or (equal ?name "bilbo")
+            (equal ?name "pippin")))
+  =>
+  (format t "Frodo's bud ~A found!~%" ?name))
 
-(defun test-hobbits ()
+(defun hobbits ()
   (reset)
-  (run))
+  (assert (hobbit (name "frodo")))
+  (run)
+  (facts)
+  (reset)
+  (facts)
+  t)
