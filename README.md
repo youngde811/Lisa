@@ -35,11 +35,49 @@ aspects of the directory structure were reorganized.
 Lisa successfully loads and runs on SBCL 2.4.11, and the Monkey and Bananas test suite, a classic AI planning problem,
 completes successfully:
 
+_Load the MaB rulebase_:
+
 ```lisp
 CL-USER> (load "examples/mab.lisp")
 T
-CL-USER> (in-package :lisa-mab)
-#<PACKAGE "LISA-MAB">
+```
+
+_Some sample rules from examples/mab.lisp_:
+
+```lisp
+(defrule hold-chest-to-put-on-floor ()
+  (goal-is-to (action unlock) (argument-1 ?chest))
+  (thing (name ?chest) (on-top-of (not floor)) (weight light))
+  (monkey (holding (not ?chest)))
+  (not (goal-is-to (action hold) (argument-1 ?chest)))
+  =>
+  (assert (goal-is-to (action hold) (argument-1 ?chest)
+                      (argument-2 empty))))
+
+(defrule put-chest-on-floor ()
+  (goal-is-to (action unlock) (argument-1 ?chest))
+  (?monkey (monkey (location ?place) (on-top-of ?on) (holding ?chest)))
+  (?thing (thing (name ?chest)))
+  =>
+  (format t "Monkey throws the ~A off the ~A onto the floor.~%" ?chest ?on)
+  (modify ?monkey (holding blank))
+  (modify ?thing (location ?place) (on-top-of floor)))
+
+(defrule get-key-to-unlock ()
+  (goal-is-to (action unlock) (argument-1 ?obj))
+  (thing (name ?obj) (on-top-of floor))
+  (chest (name ?obj) (unlocked-by ?key))
+  (monkey (holding (not ?key)))
+  (not (goal-is-to (action hold) (argument-1 ?key)))
+  =>
+  (assert (goal-is-to (action hold) (argument-1 ?key)
+                      (argument-2 empty))))
+...
+```
+
+_And, partial run output_:
+
+```lisp
 LISA-MAB> (run-mab)
 <INFO> [15:00:26] lisa-mab mab.lisp (run-mab repeat-mab) - Starting run...
 Monkey jumps off the GREEN-COUCH onto the floor.
@@ -51,33 +89,7 @@ Monkey throws the RED-CHEST off the BIG-PILLOW onto the floor.
 Monkey jumps off the BIG-PILLOW onto the floor.
 Monkey walks to T1-3.
 Monkey grabs the RED-KEY.
-Monkey walks to T2-2 holding the RED-KEY.
-Monkey opens the RED-CHEST with the RED-KEY revealing the LADDER.
-Monkey drops the RED-KEY.
-Monkey climbs onto the RED-CHEST.
-Monkey grabs the LADDER.
-Monkey jumps off the RED-CHEST onto the floor.
-Monkey walks to T7-7 holding the LADDER.
-Monkey drops the LADDER.
-Monkey climbs onto the LADDER.
-Monkey grabs the BLUE-CHEST.
-Monkey throws the BLUE-CHEST off the LADDER onto the floor.
-Monkey jumps off the LADDER onto the floor.
-Monkey grabs the LADDER.
-Monkey walks to T8-8 holding the LADDER.
-Monkey drops the LADDER.
-Monkey climbs onto the LADDER.
-Monkey grabs the GREEN-CHEST.
-Monkey throws the GREEN-CHEST off the LADDER onto the floor.
-Monkey jumps off the LADDER onto the floor.
-Monkey walks to T2-2.
-Monkey grabs the RED-KEY.
-Monkey walks to T8-8 holding the RED-KEY.
-Monkey opens the GREEN-CHEST with the RED-KEY revealing the BLUE-KEY.
-Monkey drops the RED-KEY.
-Monkey climbs onto the GREEN-CHEST.
-Monkey grabs the BLUE-KEY.
-Monkey jumps off the GREEN-CHEST onto the floor.
+...
 Monkey walks to T7-7 holding the BLUE-KEY.
 Monkey opens the BLUE-CHEST with the BLUE-KEY revealing the BANANAS.
 Monkey drops the BLUE-KEY.
@@ -123,13 +135,12 @@ and capabilities. The fundamental architecture will not change, as I'm quite hap
 some of the following:
 
 - Re-introduction of the OR conditional element.
-- More detailed performance analysis.
 - Anything else I feel like adding.
 
 ### Completed Features ###
 
 - Support for Quicklisp.
-- Logger selected. We'll be using [log4cl](https://github.com/7max/log4cl).
+- Logger selected: [log4cl](https://github.com/7max/log4cl).
 - Log messages inserted into strategic points, replacing format/error forms.
 - Significant optimizations using Slime and SBCL's deterministic profiler.
 - Ported auto-notification to SBCL.
