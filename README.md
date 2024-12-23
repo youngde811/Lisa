@@ -35,13 +35,6 @@ aspects of the directory structure were reorganized.
 Lisa successfully loads and runs on SBCL 2.4.11, and the Monkey and Bananas test suite, a classic AI planning problem,
 completes successfully:
 
-_Load the MaB rulebase_:
-
-```lisp
-CL-USER> (load "examples/mab.lisp")
-T
-```
-
 _Some sample rules from examples/mab.lisp_:
 
 ```lisp
@@ -75,9 +68,13 @@ _Some sample rules from examples/mab.lisp_:
 ...
 ```
 
-_And, partial run output_:
+_Loading MaB, and a partial run output_:
 
 ```lisp
+CL-USER> (load "examples/mab.lisp")
+T
+CL-USER> (in-package :lisa-mab)
+LISA-MAB> #<PACKAGE "LISA-MAB">
 LISA-MAB> (run-mab)
 <INFO> [15:00:26] lisa-mab mab.lisp (run-mab repeat-mab) - Starting run...
 Monkey jumps off the GREEN-COUCH onto the floor.
