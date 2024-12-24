@@ -37,6 +37,7 @@
 (defvar *conditional-elements-table*
   '((exists . parse-exists-pattern)
     (not . parse-not-pattern)
+    (or . parse-or-pattern)
     (test . parse-test-pattern)))
 
 (defun extract-rule-headers (body)
