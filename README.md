@@ -125,22 +125,25 @@ Identity: BACTEROIDES (0.720)
 LISA-USER> 
 ```
 
+### Recent Features ###
+
+- Support for Quicklisp. See _install.lisp_ for details, as Lisa does not yet have full Quicklisp integration.
+- Logger selected: [log4cl](https://github.com/7max/log4cl).
+- Log messages inserted into strategic points, replacing format/error forms.
+- Significant optimizations using Slime and SBCL's deterministic profiler.
+- Fixed the long-broken TEST conditional element.
+- Ported auto-notification to SBCL.
+
 ## Upcoming Plans ##
 
 After taking an eleven-year hiatus, as of December 2024 I've decided to resume work on Lisa, adding some modern features
 and capabilities. The fundamental architecture will not change, as I'm quite happy with it. But, Lisa needs at least
 some of the following:
 
-- Re-introduction of the OR conditional element.
+- Re-introduction of the OR conditional element. At one time Lisa had a functioning OR CE, but my implementation sucked
+  so I yanked it after awhile. However, I've devised an elegant and efficient way of re-implementing OR, and that is now
+  my priority.
 - Anything else I feel like adding.
-
-### Completed Features ###
-
-- Support for Quicklisp.
-- Logger selected: [log4cl](https://github.com/7max/log4cl).
-- Log messages inserted into strategic points, replacing format/error forms.
-- Significant optimizations using Slime and SBCL's deterministic profiler.
-- Ported auto-notification to SBCL.
 
 ## Documentation ##
 
