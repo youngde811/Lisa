@@ -131,7 +131,7 @@ LISA-USER>
 - Logger selected: [log4cl](https://github.com/7max/log4cl).
 - Log messages inserted into strategic points, replacing format/error forms.
 - Significant optimizations using Slime and SBCL's deterministic profiler.
-- Fixed the long-broken TEST conditional element.
+- Fixed the long-broken TEST and LOGICAL conditional elements.
 - Ported auto-notification to SBCL.
 
 ## Upcoming Plans ##

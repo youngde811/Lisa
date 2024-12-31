@@ -37,6 +37,7 @@
 (defvar *conditional-elements-table*
   '((exists . parse-exists-pattern)
     (not . parse-not-pattern)
+    (or . parse-or-pattern)
     (test . parse-test-pattern)))
 
 (defun extract-rule-headers (body)
@@ -61,7 +62,7 @@
 
 (defun preprocess-left-side (lhs)
   (when (or (null lhs)
-            (find (caar lhs) *special-initial-elements*))
+            (not (find (caar lhs) *special-initial-elements*)))
     (push (list 'initial-fact) lhs))
   (if (active-rule)
       (fixup-runtime-bindings lhs)
@@ -228,12 +229,13 @@
                           :rule-name *current-defrule*
                           :location *current-defrule-pattern-location*))
                  (cond ((null pattern-list)
-                        (unless *in-logical-pattern-p*
+                        (if *in-logical-pattern-p*
+                            patterns
                           (nreverse patterns)))
                        ;; logical CEs are "special"; they don't have their own parser.
                        ((logical-element-p pattern)
                         (let ((*in-logical-pattern-p* t))
-                          (parse-lhs (rest pattern))))
+                          (parse-lhs (rest pattern)) patterns))
                        (t
                         (push (funcall (find-conditional-element-parser (first pattern)) pattern
                                        (1- (incf location)))
