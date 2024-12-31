@@ -220,6 +220,7 @@
   (let ((*root-nodes* (rete-roots rete-network))
         (*rule-specific-nodes* (list))
         (*leaf-nodes* (make-array (length patterns)))
+        ; (*leaf-nodes* (make-array (if (zerop (length patterns)) 1 (length patterns))))
         (*logical-block-marker* (rule-logical-marker rule))
         (*node-test-table* (node-test-cache rete-network)))
     (add-intra-pattern-nodes patterns)

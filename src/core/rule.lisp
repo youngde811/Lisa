@@ -170,6 +170,7 @@
            (delete-duplicates
             (loop for pattern in patterns
                 append (parsed-pattern-binding-set pattern)))))
+    (format t "make-rule: patterns: ~A~%" patterns)
     (compile-rule
      (make-instance 'rule 
        :short-name name 

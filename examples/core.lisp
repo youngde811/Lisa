@@ -114,14 +114,12 @@
   (format t "variable-rule fired: ~S~%" ?sam)
   (modify ?sam (name samwise)))
 
-#+ignore
 (defrule logical-1 ()
   (logical
    (frodo))
   =>
   (assert (bilbo)))
 
-#+ignore
 (defrule logical-2 ()
   (logical
    (bilbo))

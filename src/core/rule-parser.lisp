@@ -221,6 +221,8 @@
   (let ((location 0)
         (patterns (list)))
     (labels ((parse-lhs (pattern-list)
+               (format t "pattern-list: ~A~%" pattern-list)
+               (format t "patterns: ~A~%" patterns)
                (let ((pattern (first pattern-list))
                      (*current-defrule-pattern-location* location))
                  (unless (listp pattern)
