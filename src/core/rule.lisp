@@ -129,10 +129,7 @@
 
 (defun find-any-logical-boundaries (patterns)
   (flet ((ensure-logical-blocks-are-valid (addresses)
-           (cl:assert (and (= (first (last addresses)) 1)
-                           (eq (parsed-pattern-class (first patterns))
-                               'initial-fact)) nil
-             "Logical patterns must appear first within a rule.")
+           (cl:assert (= (first (last addresses)) 0) nil "Logical patterns must appear first within a rule.")
            ;; BUG FIX - FEB 17, 2004 - Aneil Mallavarapu
            ;;         - replaced: 
            ;; (reduce #'(lambda (first second) 
@@ -170,7 +167,6 @@
            (delete-duplicates
             (loop for pattern in patterns
                 append (parsed-pattern-binding-set pattern)))))
-    (format t "make-rule: patterns: ~A~%" patterns)
     (compile-rule
      (make-instance 'rule 
        :short-name name 
