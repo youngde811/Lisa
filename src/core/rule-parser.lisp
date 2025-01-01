@@ -62,7 +62,7 @@
 
 (defun preprocess-left-side (lhs)
   (when (or (null lhs)
-            (not (find (caar lhs) *special-initial-elements*)))
+            (find (caar lhs) *special-initial-elements*))
     (push (list 'initial-fact) lhs))
   (if (active-rule)
       (fixup-runtime-bindings lhs)
@@ -229,9 +229,7 @@
                           :rule-name *current-defrule*
                           :location *current-defrule-pattern-location*))
                  (cond ((null pattern-list)
-                        (if *in-logical-pattern-p*
-                            patterns
-                          (nreverse patterns)))
+                        patterns)
                        ;; logical CEs are "special"; they don't have their own parser.
                        ((logical-element-p pattern)
                         (let ((*in-logical-pattern-p* t))
@@ -240,6 +238,7 @@
                         (push (funcall (find-conditional-element-parser (first pattern)) pattern
                                        (1- (incf location)))
                               patterns)
+                        (format t "PATTERNS: ~A~%: " patterns)
                         (parse-lhs (rest pattern-list))))))
              (parse-rhs (actions)
                (make-rule-actions
@@ -249,7 +248,7 @@
           (utils:find-before RULE-SEPARATOR body :test #'eq)
         (unless remains
           (error 'rule-parsing-error :text "missing rule separator"))
-        (values (parse-lhs (preprocess-left-side lhs))
+        (values (reverse (parse-lhs (preprocess-left-side lhs)))
                 (parse-rhs (utils:find-after RULE-SEPARATOR remains :test #'eq)))))))
 
 ;;; The conditional element parsers...
@@ -310,6 +309,7 @@
 (defun define-rule (name body &key (salience 0) (context nil) (auto-focus nil) (belief nil))
   (let ((*current-defrule* name))
     (with-rule-components ((doc-string lhs rhs) body)
+      (format t "DEFINE-RULE: LHS: ~A~%" lhs)
       (make-rule name (inference-engine) lhs rhs
                  :doc-string doc-string
                  :salience salience
