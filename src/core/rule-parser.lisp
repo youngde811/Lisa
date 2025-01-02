@@ -32,7 +32,6 @@
 (defvar *current-defrule*)
 (defvar *current-defrule-pattern-location*)
 (defvar *in-logical-pattern-p* nil)
-(defvar *in-or-pattern-p* nil)
 (defvar *or-jump-address* 0)
 (defvar *special-initial-elements* '(not exists logical))
 
@@ -243,8 +242,7 @@
                           (parse-lhs (rest pattern))))
                        ;; OR CEs are "special", too.
                        ((or-element-p pattern)
-                        (let ((*in-or-pattern-p* t)
-                              (*or-jump-address* (1+ (length (rest pattern)))))
+                        (let ((*or-jump-address* (1+ (length (rest pattern)))))
                           (parse-lhs (rest pattern))))
                        (t
                         (push (funcall (find-conditional-element-parser (first pattern)) pattern

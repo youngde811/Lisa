@@ -120,7 +120,7 @@
   (pattern-slot-negated pattern-slot))
 
 (defun logical-or-pattern-p (parsed-pattern)
-  (not (zerop (parsed-pattern-jump-address parsed-pattern))))
+  (plusp (parsed-pattern-jump-address parsed-pattern)))
 
 (defun bound-pattern-p (parsed-pattern)
   (not (null (parsed-pattern-pattern-binding parsed-pattern))))
