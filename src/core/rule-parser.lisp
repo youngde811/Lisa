@@ -32,12 +32,12 @@
 (defvar *current-defrule*)
 (defvar *current-defrule-pattern-location*)
 (defvar *in-logical-pattern-p* nil)
+(defvar *in-or-pattern-p* nil)
 (defvar *special-initial-elements* '(not exists logical))
 
 (defvar *conditional-elements-table*
   '((exists . parse-exists-pattern)
     (not . parse-not-pattern)
-    (or . parse-or-pattern)
     (test . parse-test-pattern)))
 
 (defun extract-rule-headers (body)
@@ -74,8 +74,13 @@
         (cdr parser)
       'parse-generic-pattern)))
 
+(declaim (inline logical-element-p or-element-p))
+
 (defun logical-element-p (pattern)
   (eq (first pattern) 'logical))
+
+(defun or-element-p (pattern)
+  (eq (first pattern) 'or))
 
 (defmacro with-slot-components ((slot-name slot-value constraint) form &body body)
   `(progn
@@ -234,6 +239,9 @@
                        ((logical-element-p pattern)
                         (let ((*in-logical-pattern-p* t))
                           (parse-lhs (rest pattern))))
+                       ((or-element-p pattern)
+                        (let ((*in-or-pattern-p* t))
+                          (parse-lhs (rest pattern))))
                        (t
                         (push (funcall (find-conditional-element-parser (first pattern)) pattern
                                        (1- (incf location)))
@@ -270,6 +278,7 @@
                                   :slots slots
                                   :binding-set (make-binding-set)
                                   :logical *in-logical-pattern-p*
+                                  :logical-or *in-or-pattern-p*
                                   :address location
                                   :class head))))))
 

@@ -75,7 +75,7 @@
   (test-bindings nil :type list)
   (binding-set nil :type list)
   (logical nil :type symbol)
-  (sub-patterns nil :type list)
+  (logical-or nil :type symbol)
   (type :generic :type symbol))
 
 (defstruct rule-actions
@@ -119,11 +119,11 @@
 (defun negated-slot-p (pattern-slot)
   (pattern-slot-negated pattern-slot))
 
+(defun logical-or-pattern-p (parsed-pattern)
+  (parsed-pattern-logical-or parsed-pattern))
+
 (defun bound-pattern-p (parsed-pattern)
   (not (null (parsed-pattern-pattern-binding parsed-pattern))))
-
-(defun compound-pattern-p (parsed-pattern)
-  (not (null (parsed-pattern-sub-patterns parsed-pattern))))
 
 (defun logical-pattern-p (parsed-pattern)
   (parsed-pattern-logical parsed-pattern))
