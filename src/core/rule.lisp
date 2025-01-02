@@ -129,7 +129,7 @@
 
 (defun find-any-logical-boundaries (patterns)
   (flet ((ensure-logical-blocks-are-valid (addresses)
-           (cl:assert (= (first (last addresses)) 0) nil "Logical patterns must appear first within a rule.")
+           (cl:assert (= (first (last addresses)) 1) nil "Logical patterns must appear first within a rule.")
            ;; BUG FIX - FEB 17, 2004 - Aneil Mallavarapu
            ;;         - replaced: 
            ;; (reduce #'(lambda (first second) 

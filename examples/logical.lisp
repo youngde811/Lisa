@@ -59,27 +59,18 @@
 (defrule logical-1 ()
   (logical
    (frodo))
-  (pippin)
   =>
-  (assert (bilbo)))
+  (format t "Firing rule logical-1: asserting BILBO~%")
+  (assert (bilbo (name "bilbo"))))
 
-#+ignore
 (defrule logical-2 ()
-  (bilbo)
+  (?frodo (frodo))
   =>
-  (assert (samwise)))
+  (format t "Firing rule logical-2: retracting FRODO should retract BILBO~%")
+  (retract ?frodo))
 
-#+ignore
-(defrule exists ()
-  (frodo (name ?name))
-  (exists (bilbo (name ?name)))
-  =>
-  (format t "exists fired.~%"))
-
-(reset)
-
-(assert (frodo (name "frodo") (has-ring t) (age 55)))
-
-#+ignore
-(assert (bilbo (name "bilbo") (has-ring nil) (age 35)))
+(defun run-logical ()
+  (reset)
+  (assert (frodo (name "frodo") (has-ring t) (age 55)))
+  (run))
 
