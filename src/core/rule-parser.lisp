@@ -32,8 +32,7 @@
 (defvar *current-defrule*)
 (defvar *current-defrule-pattern-location*)
 (defvar *in-logical-pattern-p* nil)
-;;; (defvar *special-initial-elements* '(not exists logical))
-(defvar *special-initial-elements* '(logical))
+(defvar *special-initial-elements* '(not exists logical))
 
 (defvar *conditional-elements-table*
   '((exists . parse-exists-pattern)
