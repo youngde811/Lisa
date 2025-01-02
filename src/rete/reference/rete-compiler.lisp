@@ -63,8 +63,7 @@
 (defmethod remove-node-from-parent ((self rete-network) (parent t) child)
   (remhash (node1-test child) (rete-roots self)))
 
-(defmethod remove-node-from-parent ((self rete-network) 
-                                    (parent shared-node) child)
+(defmethod remove-node-from-parent ((self rete-network) (parent shared-node) child)
   (remove-successor parent child))
 
 (defun make-root-node (class)
@@ -131,23 +130,19 @@
     (cond ((test-pattern-p pattern)
            (set-leaf-node t (parsed-pattern-address pattern)))
           (t
-           (let ((node
-                  (make-root-node (parsed-pattern-class pattern)))
+           (let ((node (make-root-node (parsed-pattern-class pattern)))
                  (address (parsed-pattern-address pattern)))
              (set-leaf-node node address)
              (dolist (slot (parsed-pattern-slots pattern))
                (when (intra-pattern-slot-p slot)
-                 (setf node
-                   (add-successor node (make-intra-pattern-node slot)
-                                  #'pass-token))
+                 (setf node (add-successor node (make-intra-pattern-node slot) #'pass-token))
                  (set-leaf-node node address))))))))
 
 (defun add-join-node-tests (join-node pattern)
   (labels ((add-simple-join-node-test (slot)
              (unless (= (binding-address (pattern-slot-slot-binding slot))
                         (parsed-pattern-address pattern))
-               (join-node-add-test join-node
-                                   (make-inter-pattern-test slot))))
+               (join-node-add-test join-node (make-inter-pattern-test slot))))
            (add-slot-constraint-test (slot)
              (join-node-add-test join-node
                                  (make-predicate-test
@@ -209,6 +204,7 @@
   (add-successor (leaf-node) (make-terminal-node rule) #'pass-token))
 
 ;;; addresses a problem reported by Andrew Philpot on 9/6/2007
+
 (defun copy-node-test-table (src)
   (let ((target (make-hash-table :test #'equal)))
     (maphash (lambda (key value)
@@ -220,7 +216,6 @@
   (let ((*root-nodes* (rete-roots rete-network))
         (*rule-specific-nodes* (list))
         (*leaf-nodes* (make-array (length patterns)))
-        ; (*leaf-nodes* (make-array (if (zerop (length patterns)) 1 (length patterns))))
         (*logical-block-marker* (rule-logical-marker rule))
         (*node-test-table* (node-test-cache rete-network)))
     (add-intra-pattern-nodes patterns)

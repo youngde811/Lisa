@@ -31,7 +31,13 @@ Lisa is known to run on the following ANSI Common Lisp implementations:
 
 Lisa has just completed a re-home from SourceForge to GitHub. Just about every file was touched in some form, and some
 aspects of the directory structure were reorganized. In addition, during my ten-year absence from Lisa it appears
-several odd bugs had been introduced that required repair. I've done that (see [Credits](#credits)).
+several odd bugs had been introduced that required repair. The evidence was:
+
+  - naming conventions that aren't my style.
+  - code indentations I would never use.
+  - broken code that worked long after Lisa's last production-quality release.
+
+All known bugs have been addressed (see [Credits](#credits)).
 
 Lisa successfully loads and runs on SBCL 2.4.11, and the Monkey and Bananas test suite, a classic AI planning problem,
 completes successfully:

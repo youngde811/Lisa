@@ -235,10 +235,11 @@
                           :location *current-defrule-pattern-location*))
                  (cond ((null pattern-list)
                         (reverse patterns))
-                       ;; logical CEs are "special"; they don't have their own parser.
+                       ;; LOGICAL CEs are "special"; they don't have their own parser.
                        ((logical-element-p pattern)
                         (let ((*in-logical-pattern-p* t))
                           (parse-lhs (rest pattern))))
+                       ;; OR CEs are "special", too.
                        ((or-element-p pattern)
                         (let ((*in-or-pattern-p* t))
                           (parse-lhs (rest pattern))))
