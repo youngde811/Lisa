@@ -216,7 +216,9 @@
           (t
            (adjust-belief self fact belief)
            (assert-fact-aux self fact)))
-    (if duplicate duplicate fact)))
+    (if duplicate
+        duplicate
+      fact)))
 
 (defmethod retract-fact ((self rete) (fact fact))
   (with-truth-maintenance (self)

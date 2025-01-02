@@ -32,7 +32,8 @@
 (defvar *current-defrule*)
 (defvar *current-defrule-pattern-location*)
 (defvar *in-logical-pattern-p* nil)
-(defvar *special-initial-elements* '(not exists logical))
+;;; (defvar *special-initial-elements* '(not exists logical))
+(defvar *special-initial-elements* '(logical))
 
 (defvar *conditional-elements-table*
   '((exists . parse-exists-pattern)
@@ -62,7 +63,7 @@
 
 (defun preprocess-left-side (lhs)
   (when (or (null lhs)
-            (not (find (caar lhs) *special-initial-elements*)))
+            (find (caar lhs) *special-initial-elements*))
     (push (list 'initial-fact) lhs))
   (if (active-rule)
       (fixup-runtime-bindings lhs)
@@ -229,13 +230,11 @@
                           :rule-name *current-defrule*
                           :location *current-defrule-pattern-location*))
                  (cond ((null pattern-list)
-                        (if *in-logical-pattern-p*
-                            patterns
-                          (nreverse patterns)))
+                        (reverse patterns))
                        ;; logical CEs are "special"; they don't have their own parser.
                        ((logical-element-p pattern)
                         (let ((*in-logical-pattern-p* t))
-                          (parse-lhs (rest pattern)) patterns))
+                          (parse-lhs (rest pattern))))
                        (t
                         (push (funcall (find-conditional-element-parser (first pattern)) pattern
                                        (1- (incf location)))
