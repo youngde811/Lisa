@@ -132,6 +132,7 @@
           (t
            (let ((node (make-root-node (parsed-pattern-class pattern)))
                  (address (parsed-pattern-address pattern)))
+             (format t "ADD-INTRA-PATTERN-NODES: ~A~%" pattern)
              (set-leaf-node node address)
              (dolist (slot (parsed-pattern-slots pattern))
                (when (intra-pattern-slot-p slot)
