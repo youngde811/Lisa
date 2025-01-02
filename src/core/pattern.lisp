@@ -75,7 +75,7 @@
   (test-bindings nil :type list)
   (binding-set nil :type list)
   (logical nil :type symbol)
-  (logical-or nil :type symbol)
+  (jump-address 0 :type integer)
   (type :generic :type symbol))
 
 (defstruct rule-actions
@@ -120,7 +120,7 @@
   (pattern-slot-negated pattern-slot))
 
 (defun logical-or-pattern-p (parsed-pattern)
-  (parsed-pattern-logical-or parsed-pattern))
+  (not (zerop (parsed-pattern-jump-address parsed-pattern))))
 
 (defun bound-pattern-p (parsed-pattern)
   (not (null (parsed-pattern-pattern-binding parsed-pattern))))

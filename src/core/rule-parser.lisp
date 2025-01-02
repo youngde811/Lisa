@@ -37,6 +37,7 @@
 
 (defvar *conditional-elements-table*
   '((exists . parse-exists-pattern)
+    (or . parse-logical-or-pattern)
     (not . parse-not-pattern)
     (test . parse-test-pattern)))
 
@@ -273,13 +274,14 @@
           (t
            (let ((slots
                   (loop for slot-decl in (rest pattern) collect
-                        (parse-one-slot slot-decl location))))
+                        (parse-one-slot slot-decl location)))
+                 (jump-address (if *in-or-pattern-p* (1+ location) 0)))
              (make-parsed-pattern :type :generic
                                   :pattern-binding pattern-binding
                                   :slots slots
                                   :binding-set (make-binding-set)
                                   :logical *in-logical-pattern-p*
-                                  :logical-or *in-or-pattern-p*
+                                  :jump-address jump-address
                                   :address location
                                   :class head))))))
 
