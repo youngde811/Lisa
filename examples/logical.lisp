@@ -69,13 +69,6 @@
   (format t "Firing rule logical-2: retracting BILBO should retract FRODO~%")
   (retract ?bilbo))
 
-#+ignore
-(defrule exists ()
-  (frodo (name ?name))
-  (exists (bilbo (name ?name)))
-  =>
-  (format t "exists fired.~%"))
-
 (defun run-logical ()
   (reset)
   (assert (frodo (name "frodo") (has-ring t) (age 55)))

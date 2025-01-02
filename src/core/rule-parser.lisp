@@ -32,7 +32,8 @@
 (defvar *current-defrule*)
 (defvar *current-defrule-pattern-location*)
 (defvar *in-logical-pattern-p* nil)
-(defvar *special-initial-elements* '(not exists logical))
+;;; (defvar *special-initial-elements* '(not exists logical))
+(defvar *special-initial-elements* '(logical))
 
 (defvar *conditional-elements-table*
   '((exists . parse-exists-pattern)
@@ -229,16 +230,16 @@
                           :rule-name *current-defrule*
                           :location *current-defrule-pattern-location*))
                  (cond ((null pattern-list)
-                        patterns)
+                        (format t "PARSE-LHS: patterns: ~A~%" (reverse patterns))
+                        (reverse patterns))
                        ;; logical CEs are "special"; they don't have their own parser.
                        ((logical-element-p pattern)
                         (let ((*in-logical-pattern-p* t))
-                          (parse-lhs (rest pattern)) patterns))
+                          (parse-lhs (rest pattern))))
                        (t
                         (push (funcall (find-conditional-element-parser (first pattern)) pattern
                                        (1- (incf location)))
                               patterns)
-                        (format t "PATTERNS: ~A~%: " patterns)
                         (parse-lhs (rest pattern-list))))))
              (parse-rhs (actions)
                (make-rule-actions
@@ -248,7 +249,7 @@
           (utils:find-before RULE-SEPARATOR body :test #'eq)
         (unless remains
           (error 'rule-parsing-error :text "missing rule separator"))
-        (values (reverse (parse-lhs (preprocess-left-side lhs)))
+        (values (parse-lhs (preprocess-left-side lhs))
                 (parse-rhs (utils:find-after RULE-SEPARATOR remains :test #'eq)))))))
 
 ;;; The conditional element parsers...
