@@ -230,7 +230,6 @@
                           :rule-name *current-defrule*
                           :location *current-defrule-pattern-location*))
                  (cond ((null pattern-list)
-                        (format t "PARSE-LHS: patterns: ~A~%" (reverse patterns))
                         (reverse patterns))
                        ;; logical CEs are "special"; they don't have their own parser.
                        ((logical-element-p pattern)
@@ -310,7 +309,6 @@
 (defun define-rule (name body &key (salience 0) (context nil) (auto-focus nil) (belief nil))
   (let ((*current-defrule* name))
     (with-rule-components ((doc-string lhs rhs) body)
-      (format t "DEFINE-RULE: LHS: ~A~%" lhs)
       (make-rule name (inference-engine) lhs rhs
                  :doc-string doc-string
                  :salience salience

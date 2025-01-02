@@ -64,10 +64,10 @@
   (assert (bilbo (name "bilbo"))))
 
 (defrule logical-2 ()
-  (?bilbo (bilbo))
+  (?frodo (frodo))
   =>
-  (format t "Firing rule logical-2: retracting BILBO should retract FRODO~%")
-  (retract ?bilbo))
+  (format t "Firing rule logical-2: retracting FRODO should retract BILBO~%")
+  (retract ?frodo))
 
 (defun run-logical ()
   (reset)
