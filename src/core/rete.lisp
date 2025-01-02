@@ -321,7 +321,7 @@
          (gethash (make-context-name defined-name) (rete-contexts rete))))
     (when (and (null context) errorp)
       (log:error "There's no context named: ~A" defined-name)
-      (error t))
+      (error :unrecoverable))
     context))
 
 (defun register-new-context (rete context)

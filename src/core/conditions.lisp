@@ -41,8 +41,7 @@
              :reader location))
   (:report (lambda (condition strm)
              (declare (ignore strm))
-             (log:error "Parsing error: ~A" (text condition))
-             (error t))))
+             (log:error "Parsing error: ~A" (text condition)))))
 
 (define-condition slot-parsing-error (parsing-error)
   ((slot-name :initarg :slot-name
@@ -51,8 +50,7 @@
   (:report (lambda (condition strm)
              (declare (ignore strm))
              (log:error "Slot parsing error: slot ~A, pattern location ~A, text ~A"
-                        (slot-name condition) (location condition) (text condition))
-             (error t))))
+                        (slot-name condition) (location condition) (text condition)))))
 
 (define-condition class-parsing-error (parsing-error)
   ((class-name :initarg :class-name

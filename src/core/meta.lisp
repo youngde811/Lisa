@@ -47,7 +47,7 @@
   (let ((meta-fact (find-meta-object (inference-engine) symbolic-name)))
     (when (and errorp (null meta-fact))
       (log:error "This fact does not have a registered meta class: ~S" symbolic-name)
-      (error t))
+      (error :unrecoverable))
     meta-fact))
 
 ;;; Corrected version courtesy of Aneil Mallavarapu...
@@ -93,7 +93,7 @@
                (acquire-meta-data class-name)
                (return))
              (log:error "Lisa doesn't know about the template named by (~S)." class-name)
-             (error t))))
+             (error :unrecoverable))))
     (let ((meta-data (find-meta-object (inference-engine) class-name)))
       (when (null meta-data)
         (ensure-class-definition)
