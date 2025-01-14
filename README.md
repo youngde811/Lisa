@@ -138,13 +138,12 @@ LISA-USER>
 ## Upcoming Plans ##
 
 After taking an eleven-year hiatus, as of December 2024 I've decided to resume work on Lisa, adding some modern features
-and capabilities. The fundamental architecture will not change, as I'm quite happy with it. But, Lisa needs at least
-some of the following:
+and capabilities. The fundamental architecture will not change, as I'm quite happy with it. But, Lisa will get attention
+with the following:
 
-- Re-introduction of the OR conditional element. At one time Lisa had a functioning OR CE, but my implementation sucked
-  so I yanked it after awhile. However, I've devised an elegant and efficient way of re-implementing OR, and that is now
-  my priority.
-- Anything else I feel like adding.
+- I thought about adding an OR conditional element, but reconsidered after studying some of the unpleasant behavioral
+  side effects.
+- Clean up documentation; there are some errors in it.
 
 ## Documentation ##
 
