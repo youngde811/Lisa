@@ -56,6 +56,7 @@
   :maintainer "David E. Young"
   :licence "MIT"
   :description "The Lisa Expert System Shell"
+  :depends-on ("log4cl")
   :components
   ((:module src
     :components
@@ -75,6 +76,9 @@
      (:module reflect
       :components
       ((:file "reflect")))
+     (:module logger
+      :components
+      ((:file "logger")))
      (:module core
       :components
       ((:file "preamble")
@@ -138,6 +142,7 @@
     :serial t)))
 
 (pushnew :lisa.asdf *features*)
+(pushnew :log4cl *features*)
 
 (defvar *lisa-root-pathname*
   (make-pathname :directory

@@ -22,13 +22,10 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
+;; Description: This is a convenience file for folks who are using Quicklisp,
+;; but using git to retrieve Lisa. See install.lisp also.
+
 (in-package :cl-user)
 
-(load "lisa-logger.asd")
 (load "lisa.asd")
-
-#+lisa-logger.asdf
-(asdf:operate 'asdf:load-op :lisa-logger :force t)
-
-#+lisa.asdf
 (asdf:operate 'asdf:load-op :lisa :force t)

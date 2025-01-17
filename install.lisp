@@ -22,7 +22,8 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;;; Description: Convenience interface for loading Lisa from scratch.
+;; Description: Convenience interface for loading Lisa from scratch, usually after
+;; cloning from GitHub.
 
 (in-package :cl-user)
 
@@ -44,14 +45,6 @@
 
 (ql:quickload :log4cl)
 (pushnew :log4cl *features*)
-
-#|
-(ql:quickload :alexandria)
-(push :alexandria *features*)
-
-(asdf:operate 'asdf:load-op :log4cl :force t)
-(asdf:operate 'asdf:load-op :alexandria :force t)
-|#
 
 (push *install-root* asdf:*central-registry*)
 (asdf:operate 'asdf:load-op :lisa :force t)
