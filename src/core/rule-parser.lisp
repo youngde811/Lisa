@@ -32,13 +32,13 @@
 (defvar *current-defrule*)
 (defvar *current-defrule-pattern-location*)
 (defvar *in-logical-pattern-p* nil)
-;;; (defvar *special-initial-elements* '(not exists logical))
-(defvar *special-initial-elements* '(logical))
+(defvar *special-initial-elements* '(not exists logical))
+
+;;; (defvar *special-initial-elements* '(logical))
 
 (defvar *conditional-elements-table*
   '((exists . parse-exists-pattern)
     (not . parse-not-pattern)
-    (or . parse-or-pattern)
     (test . parse-test-pattern)))
 
 (defun extract-rule-headers (body)
@@ -46,28 +46,11 @@
       (values (first body) (rest body))
     (values nil body)))
 
-(defun fixup-runtime-bindings (patterns)
-  "Supports the parsing of embedded DEFRULE forms."
-  (labels ((fixup-bindings (part result)
-             (let* ((token (first part))
-                    (new-token token))
-               (cond ((null part)
-                      (return-from fixup-bindings (nreverse result)))
-                     ((and (variablep token)
-                           (boundp token))
-                      (setf new-token (symbol-value token)))
-                     ((consp token)
-                      (setf new-token (fixup-bindings token nil))))
-               (fixup-bindings (rest part) (push new-token result)))))
-    (fixup-bindings patterns nil)))
-
 (defun preprocess-left-side (lhs)
   (when (or (null lhs)
             (find (caar lhs) *special-initial-elements*))
     (push (list 'initial-fact) lhs))
-  (if (active-rule)
-      (fixup-runtime-bindings lhs)
-    lhs))
+  lhs)
 
 (defun find-conditional-element-parser (symbol)
   (let ((parser (assoc symbol *conditional-elements-table*)))

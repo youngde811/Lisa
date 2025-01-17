@@ -37,26 +37,26 @@
 (defrule frodo ()
   (hobbit (name frodo))
   =>
-  (assert (has-ring) :cf 0.9))
+  (assert (has-ring) :belief 0.9))
 
-(defrule bilbo (:cf 0.3)
+(defrule bilbo (:belief 0.3)
   (hobbit (name bilbo))
   =>
   (assert (has-ring)))
 
-(defrule combine (:cf 0.6)
+(defrule combine (:belief 0.6)
   (?a (hobbit (name merry)))
   (?b (hobbit (name pippin)))
   =>
   (assert (two-clowns)))
 
-(defrule combine-2 (:cf 0.9)
+(defrule combine-2 (:belief 0.9)
   (?a (hobbit (name sam)))
   (?b (hobbit (name bilbo)))
   =>
   (assert (two-clowns)))
 
 (defun combine ()
-  (assert (hobbit (name merry)) :cf 0.8)
-  (assert (hobbit (name pippin)) :cf 0.2)
+  (assert (hobbit (name merry)) :belief 0.8)
+  (assert (hobbit (name pippin)) :belief 0.2)
   (run))

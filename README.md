@@ -4,11 +4,10 @@
 
 # Welcome to the Lisa Project #
 
-Lisa is a production-quality, forward-chaining expert-system shell, developed atop an optimized implementation of
-Charles Forgy's Rete algorithm, a very efficient mechanism for solving the difficult many-to-many matching
-problem[^1]. Lisa is written in modern Common Lisp and the Common Lisp Object System (CLOS), with a smattering of the
-Meta Object Protocol (MOP) sprinkled about, and may be easily integrated into just about any Common Lisp application
-with little effort.
+Lisa is a production-quality, forward-chaining expert-system shell. The inference engine is an optimized, literal
+implementation of Charles Forgy's Rete algorithm, a very efficient mechanism for solving the difficult many-to-many
+matching problem[^1]. Lisa is written in modern Common Lisp, the Common Lisp Object System (CLOS), and the Meta Object
+Protocol (MOP); it may be easily integrated into just about any Common Lisp application with little effort.
 
 A unique behavior of Lisa is the ability to reason over CLOS objects without imposing special class hierarchy
 requirements; thus it should be possible to easily augment existing CLOS applications with reasoning capabilities. As
@@ -32,6 +31,10 @@ Lisa is known to run on the following ANSI Common Lisp implementations:
 Lisa has just completed a re-home from SourceForge to GitHub. Just about every file was touched in some form, and some
 aspects of the directory structure were reorganized. In addition, during my ten-year absence from Lisa it appears
 several odd bugs had been introduced that required repair. I've done that (see [Credits](#credits)).
+
+Several new features have been added to "modernize" Lisa (eg. logging support). Best of all, I've spent the past several
+months profiling Lisa's behavior using the Slime/SBCL deterministic profiling interface. Several hot-spots were
+discovered, and optimizations were done to these areas.
 
 Lisa successfully loads and runs on SBCL 2.4.11, and the Monkey and Bananas test suite, a classic AI planning problem,
 completes successfully:
@@ -141,16 +144,21 @@ After taking an eleven-year hiatus, as of December 2024 I've decided to resume w
 and capabilities. The fundamental architecture will not change, as I'm quite happy with it. But, Lisa will get attention
 with the following:
 
-- I thought about adding an OR conditional element, but reconsidered after studying some of the unpleasant behavioral
-  side effects.
+- Fully integrate Lisa with Quicklisp.
 - Clean up documentation; there are some errors in it.
+- Other minor ambitions yet to be determined.
+
+**NB**: I've long considered adding an OR conditional element to Lisa, but after studying some of the unpleasant
+behavioral side effects, and reflecting on how seldom I might have wanted an OR CE when writing expert systems, I've
+decided against this feature. I know CLIPS has OR, FORALL, AND and perhaps others, but I'm staying within Lisa's bounds
+of simplicity, and these CEs are a syntactic convenience only; not worth the trouble.
 
 ## Documentation ##
 
 Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Home) for complete details and documentation. In
 particular, read the _Getting Started_ section first for details on using SBCL with Emacs.
 
-**NB**: Lisa is currently being developed using SBCL only; no testing on other Lisp implementations is on the
+**Note**: Lisa is currently being developed using SBCL only; no testing on other Lisp implementations is on the
 schedule. However, the core code here represents Lisa version 3.2 as found on [Sourceforge](https://sourceforge.net/),
 which should run properly on the Lisp implementations mentioned above. **A word of caution however**: folks NOT using
 Emacs and SBCL are on their own at this time, until I'm able to begin regression testing with other Lisp environments.
@@ -159,6 +167,7 @@ Emacs and SBCL are on their own at this time, until I'm able to begin regression
 
 - The [SBCL](https://www.sbcl.org/) home page.
 - [Emacs](https://emacsformacos.com/) for MacOS.
+- [Paradigms of Artificial Intelligence Programming](https://norvig.github.io/paip-lisp/#/)
 
 ## Credits ##
 
