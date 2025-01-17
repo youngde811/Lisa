@@ -167,7 +167,7 @@ Emacs and SBCL are on their own at this time, until I'm able to begin regression
 
 - The [SBCL](https://www.sbcl.org/) home page.
 - [Emacs](https://emacsformacos.com/) for MacOS.
-- [Paradigms of Artificial Intelligence Programming](https://norvig.github.io/paip-lisp/#/)
+- [Paradigms of Artificial Intelligence Programming](https://norvig.github.io/paip-lisp/#/), Peter Norvig.
 
 ## Credits ##
 
