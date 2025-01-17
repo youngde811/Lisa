@@ -1,3 +1,5 @@
+;; -*- Mode: LISP; Syntax: ANSI-Common-Lisp; Base: 10 -*-
+
 ;; This file is part of Lisa, the Lisp-based Intelligent Software Agents platform.
 
 ;; MIT License
@@ -22,37 +24,29 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;;; Description: Convenience interface for loading Lisa from scratch.
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (unless (find-package :lisa-system)
+    (defpackage "LISA-SYSTEM"
+      (:use "COMMON-LISP" "ASDF"))))
 
-(in-package :cl-user)
+(in-package :lisa-system)
 
-#-sbcl
-(error "For now, this file is suitable only for SBCL 2.4.11 and later.")
+(defsystem lisa-logger
+  :name "Lisa-Logger"
+  :author "David E. Young"
+  :maintainer "David E. Young"
+  :licence "MIT"
+  :description "Default logger for Lisa, which really is useless as Lisa expects LOG4CL."
+  :depends-on ("lisa")
+  :components
+  ((:module src
+    :components
+    ((:module logger
+      :components
+      #+log4cl
+      ((:file "logger"))
+      #-log4cl
+      ((:file "faux-logger")))))))
 
-#-asdf
-(error "ASDF is required to use Lisa; please make it available within your Lisp.")
-
-#-quicklisp
-(error "Lisa requires Quicklisp for dependency resolution. Please set that up first.")
-
-(defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
-
-;;; There's a bug in Lisa that is creating a symbol in the COMMON-LISP package. I need
-;;; to track that down. Until then, we unlock that package in SBCL.
-
-(sb-ext:unlock-package :common-lisp)
-
-(ql:quickload :log4cl)
+(pushnew :lisa-logger.asdf *features*)
 (pushnew :log4cl *features*)
-
-#|
-(ql:quickload :alexandria)
-(push :alexandria *features*)
-
-(asdf:operate 'asdf:load-op :log4cl :force t)
-(asdf:operate 'asdf:load-op :alexandria :force t)
-|#
-
-(push *install-root* asdf:*central-registry*)
-(asdf:operate 'asdf:load-op :lisa :force t)
-(asdf:operate 'asdf:load-op :lisa/lisa-logger :force t)

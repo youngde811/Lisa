@@ -40,6 +40,16 @@
 
 (in-package :lisa-system)
 
+(defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
+
+(push *install-root* asdf:*central-registry*)
+
+;;; There's a bug in Lisa that is creating a symbol in the COMMON-LISP package. I need
+;;; to track that down. Until then, we unlock that package in SBCL.
+
+#+sbcl
+(sb-ext:unlock-package :common-lisp)
+
 (defsystem lisa
   :name "Lisa"
   :author "David E. Young"
@@ -128,22 +138,7 @@
       :serial t))
     :serial t)))
 
-(defsystem lisa/lisa-logger
-  :name "Lisa-Logger"
-  :author "David E. Young"
-  :maintainer "David E. Young"
-  :licence "MIT"
-  :description "Default logger for Lisa, which really is useless as Lisa expects LOG4CL."
-  :depends-on ("lisa")
-  :components
-  ((:module src
-    :components
-    ((:module logger
-      :components
-      #+log4cl
-      ((:file "logger"))
-      #-log4cl
-      ((:file "faux-logger")))))))
+(pushnew :lisa.asdf *features*)
 
 (defvar *lisa-root-pathname*
   (make-pathname :directory
@@ -165,6 +160,10 @@
 
 (defun lisa-debugger ()
   (translate-logical-pathname "lisa:debugger;lisa-debugger.lisp"))
+
+#+sbcl
+(defun exit ()
+  (sb-ext:exit))
 
 ;;; Sets up the environment so folks can use the non-portable form of REQUIRE
 ;;; with some implementations...

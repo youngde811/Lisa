@@ -22,37 +22,13 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;;; Description: Convenience interface for loading Lisa from scratch.
-
 (in-package :cl-user)
 
-#-sbcl
-(error "For now, this file is suitable only for SBCL 2.4.11 and later.")
+(load "lisa-logger.asd")
+(load "lisa.asd")
 
-#-asdf
-(error "ASDF is required to use Lisa; please make it available within your Lisp.")
-
-#-quicklisp
-(error "Lisa requires Quicklisp for dependency resolution. Please set that up first.")
-
-(defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
-
-;;; There's a bug in Lisa that is creating a symbol in the COMMON-LISP package. I need
-;;; to track that down. Until then, we unlock that package in SBCL.
-
-(sb-ext:unlock-package :common-lisp)
-
-(ql:quickload :log4cl)
-(pushnew :log4cl *features*)
-
-#|
-(ql:quickload :alexandria)
-(push :alexandria *features*)
-
-(asdf:operate 'asdf:load-op :log4cl :force t)
-(asdf:operate 'asdf:load-op :alexandria :force t)
-|#
-
-(push *install-root* asdf:*central-registry*)
-(asdf:operate 'asdf:load-op :lisa :force t)
-(asdf:operate 'asdf:load-op :lisa/lisa-logger :force t)
+#+lisa.asdf
+(progn
+  (asdf:operate 'asdf:load-op :lisa-logger :force t)
+  (asdf:operate 'asdf:load-op :lisa :force t)
+  t)
