@@ -56,7 +56,6 @@
   :maintainer "David E. Young"
   :licence "MIT"
   :description "The Lisa Expert System Shell"
-  :depends-on ("log4cl")
   :components
   ((:module src
     :components
@@ -162,8 +161,8 @@
   (translate-logical-pathname "lisa:debugger;lisa-debugger.lisp"))
 
 #+sbcl
-(defun exit ()
-  (sb-ext:exit))
+(defun exit (&optional (exit-code 0))
+  (sb-ext:exit :code exit-code))
 
 ;;; Sets up the environment so folks can use the non-portable form of REQUIRE
 ;;; with some implementations...

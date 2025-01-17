@@ -27,8 +27,8 @@
 (load "lisa-logger.asd")
 (load "lisa.asd")
 
+#+lisa-logger.asdf
+(asdf:operate 'asdf:load-op :lisa-logger :force t)
+
 #+lisa.asdf
-(progn
-  (asdf:operate 'asdf:load-op :lisa-logger :force t)
-  (asdf:operate 'asdf:load-op :lisa :force t)
-  t)
+(asdf:operate 'asdf:load-op :lisa :force t)

@@ -36,17 +36,14 @@
   :author "David E. Young"
   :maintainer "David E. Young"
   :licence "MIT"
-  :description "Default logger for Lisa, which really is useless as Lisa expects LOG4CL."
-  :depends-on ("lisa")
+  :description "The logging package for Lisa, an expert system shell written in Common Lisp"
+  :depends-on ("log4cl" "lisa")
   :components
   ((:module src
     :components
     ((:module logger
       :components
-      #+log4cl
-      ((:file "logger"))
-      #-log4cl
-      ((:file "faux-logger")))))))
+      ((:file "logger")))))))
 
 (pushnew :lisa-logger.asdf *features*)
 (pushnew :log4cl *features*)
