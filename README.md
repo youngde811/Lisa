@@ -72,7 +72,7 @@ _Some sample rules from examples/mab.lisp_:
 ...
 ```
 
-_Loading MaB, and a partial run output_:
+_Loading MAB, and a partial run output_:
 
 ```lisp
 CL-USER> (load "examples/mab.lisp")
@@ -110,7 +110,7 @@ NIL
 Another interesting problem is MYCIN, an early backward chaining expert system that used artificial intelligence to
 identify bacteria causing severe infections, such as bacteremia and meningitis, and to recommend antibiotics, with the
 dosage adjusted for patient's body weight. Lisa uses a forward-chaining version borrowed from Peter Norvig's _"Paradigms
-of Artificial Intelligence: Case Studies in Common Lisp"_. The run output is brief, but the rulebase in
+of Artificial Intelligence Programming: Case Studies in Common Lisp"_. The run output is brief, but the rulebase in
 _examples/mycin.lisp_ is an interesting study, as it illustrates Lisa's implementation of Certainty Factors:
 
 ```lisp
@@ -140,7 +140,7 @@ LISA-USER>
 
 ## Upcoming Plans ##
 
-After taking an eleven-year hiatus, as of December 2024 I've decided to resume work on Lisa, adding some modern features
+After taking an eleven-year hiatus, as of December 2024 I decided to resume work on Lisa, adding some modern features
 and capabilities. The fundamental architecture will not change, as I'm quite happy with it. But, Lisa will get attention
 with the following:
 
@@ -148,7 +148,7 @@ with the following:
 - Clean up documentation; there are some errors in it.
 - Other minor ambitions yet to be determined.
 
-**NB**: I've long considered adding an OR conditional element to Lisa, but after studying some of the unpleasant
+**Note**: I've long considered adding an OR conditional element to Lisa, but after studying some of the unpleasant
 behavioral side effects, and reflecting on how seldom I might have wanted an OR CE when writing expert systems, I've
 decided against this feature. I know CLIPS has OR, FORALL, AND and perhaps others, but I'm staying within Lisa's bounds
 of simplicity, and these CEs are a syntactic convenience only; not worth the trouble.
