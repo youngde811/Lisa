@@ -131,7 +131,8 @@ LISA-USER>
 
 ### Recent Features ###
 
-- Support for Quicklisp. See _install.lisp_ for details, as Lisa does not yet have full Quicklisp integration.
+- Support for Quicklisp. I've submitted Lisa for inclusion in the Quicklisp project registry; just waiting to hear
+  back. In the meantime, see _install.lisp_ for installation details.
 - Logger selected: [log4cl](https://github.com/7max/log4cl).
 - Log messages inserted into strategic points, replacing format/error forms.
 - Significant optimizations using Slime and SBCL's deterministic profiler.
