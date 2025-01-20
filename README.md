@@ -28,9 +28,9 @@ Lisa is known to run on the following ANSI Common Lisp implementations:
 
 ## Current Status ##
 
-Lisa has just completed a re-home from SourceForge to GitHub. Just about every file was touched in some form, and some
-aspects of the directory structure were reorganized. In addition, during my ten-year absence from Lisa it appears
-several odd bugs had been introduced that required repair. I've done that (see [Credits](#credits)).
+In December 2024, Lisa completed a re-home from SourceForge to GitHub. Just about every file was touched in some form,
+and some aspects of the directory structure were reorganized. In addition, during my ten-year absence from Lisa it
+appears a number of odd bugs had been introduced that required repair. I've done that (see [Credits](#credits)).
 
 Several new features have been added to "modernize" Lisa (eg. logging support). Best of all, I've spent the past several
 months profiling Lisa's behavior using the Slime/SBCL deterministic profiling interface. Several hot-spots were
@@ -148,12 +148,13 @@ with the following:
 
 - Fully integrate Lisa with Quicklisp.
 - Clean up documentation; there are some errors in it.
+- Add log configuration support.
 - Other minor ambitions yet to be determined.
 
-**Note**: I've long considered adding an OR conditional element to Lisa, but after studying some of the unpleasant
-behavioral side effects, and reflecting on how seldom I might have wanted an OR CE when writing expert systems, I've
-decided against this feature. I know CLIPS has OR, FORALL, AND and perhaps others, but I'm staying within Lisa's bounds
-of simplicity, and these CEs are a syntactic convenience only; not worth the trouble.
+**Note**: I've long considered adding additional conditional elements to Lisa, to bring it in line with the latest CLIPS
+releases. However, after studying some of the unpleasant behavioral side effects, and reflecting on how seldom I might
+have wanted an OR, FORALL, etc. CE when writing expert systems, I've decided against adopting them. I will stay within
+Lisa's bounds of simplicity; IMHO these CEs are a syntactic convenience only, and not worth the trouble.
 
 ## Documentation ##
 
