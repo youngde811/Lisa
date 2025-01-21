@@ -127,3 +127,5 @@
 
 (defun logical-pattern-p (parsed-pattern)
   (parsed-pattern-logical parsed-pattern))
+
+(defstruct (logical-or-parsed-pattern (:include parsed-pattern)))
