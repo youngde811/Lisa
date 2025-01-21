@@ -30,6 +30,16 @@
    (branch-tokens :initform (make-hash-table :test #'equal)
                   :accessor branch-tokens)))
 
+(defmethod test-tokens ((self or-node) left-tokens right-token)
+  (declare (optimize (speed 3) (safety 0) (debug 0)))
+  (token-push-fact left-tokens (token-top-fact right-token))
+  (prog1
+      (some #'(lambda (test)
+                (declare (type function test))
+                (funcall test left-tokens))
+            (join-node-tests self))
+    (token-pop-fact left-tokens)))
+
 ;; Helper to create a unique key for a token in a specific branch
 
 (defun make-branch-key (token branch-index)
