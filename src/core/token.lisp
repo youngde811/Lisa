@@ -28,7 +28,7 @@
 
 (defclass token ()
   ((facts :initform
-          (make-array FACT-VEC-INIT-LEN :initial-element nil :adjustable t :fill-pointer 0)
+          (make-array FACT-VEC-INIT-LEN :initial-element nil :element-type 'token :adjustable t :fill-pointer 0)
           :type vector
           :accessor token-facts)
    (not-counter :initform 0
@@ -94,7 +94,7 @@
   (with-slots ((fact-vector facts)
                (fact-count fact-count)
                (hash-code hash-code)) token
-    (declare (type fixnum fact-count))
+    (declare (type fixnum fact-count) (type (vector t) fact-vector))
     (vector-push-extend fact fact-vector)
     (push fact hash-code)
     (incf fact-count))
@@ -105,14 +105,14 @@
   (with-slots ((fact-vector facts)
                (hash-code hash-code)
                (fact-count fact-count)) token
-    (declare (type fixnum fact-count))
+    (declare (type fixnum fact-count) (type (vector t) fact-vector))
     (unless (zerop (fill-pointer fact-vector))
       (pop hash-code)
       (decf fact-count)
       (aref fact-vector (decf (fill-pointer fact-vector))))))
 
 (defun fast-array-copy (target-array token count)
-  (declare (type fixnum count))
+  (declare (type fixnum count) (type (vector t) target-array))
   (declare (optimize (speed 3) (debug 0) (safety 0)))
   (dotimes (i count)
     (token-push-fact token (aref target-array i)))
