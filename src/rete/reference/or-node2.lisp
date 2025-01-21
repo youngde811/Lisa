@@ -51,10 +51,8 @@
         when (test-tokens self left-tokens right-token)
         do (let ((branch-key (make-branch-key left-tokens branch-index)))
              (setf (gethash branch-key (or-node-branch-successes self)) t)
-             (setf (gethash branch-key (or-node-branch-tokens self))
-                   (combine-tokens left-tokens right-token))
-             (pass-tokens-to-successor 
-              self (gethash branch-key (or-node-branch-tokens self))))))
+             (setf (gethash branch-key (or-node-branch-tokens self)) (combine-tokens left-tokens right-token))
+             (pass-tokens-to-successor self (gethash branch-key (or-node-branch-tokens self))))))
 
 (defmethod test-against-right-memory ((self or-node) left-tokens)
   (loop for right-token being the hash-values of (join-node-right-memory self)
@@ -62,10 +60,8 @@
         when (test-tokens self left-tokens right-token)
         do (let ((branch-key (make-branch-key left-tokens branch-index)))
              (setf (gethash branch-key (or-node-branch-successes self)) t)
-             (setf (gethash branch-key (or-node-branch-tokens self))
-                   (combine-tokens left-tokens right-token))
-             (pass-tokens-to-successor 
-              self (gethash branch-key (or-node-branch-tokens self))))))
+             (setf (gethash branch-key (or-node-branch-tokens self)) (combine-tokens left-tokens right-token))
+             (pass-tokens-to-successor self (gethash branch-key (or-node-branch-tokens self))))))
 
 (defmethod accept-tokens-from-left ((self or-node) (left-tokens remove-token))
   (loop for branch-index from 0
@@ -87,5 +83,4 @@
                ;; Only propagate removal if no other branches are successful
                (when (zerop (hash-table-count (or-node-branch-successes self)))
                  (when (remove-token-from-right-memory self right-token)
-                   (pass-tokens-to-successor 
-                    self (make-remove-token stored-token))))))))               
+                   (pass-tokens-to-successor self (make-remove-token stored-token))))))))               

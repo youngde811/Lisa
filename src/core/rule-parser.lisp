@@ -201,6 +201,22 @@
                     :location *current-defrule-pattern-location*
                     :text "malformed slot")))))
 
+#+ignore
+(labels ((parse-lhs (pattern-list &optional (nesting-level 0))
+           (cond ((null pattern-list) nil)
+                 ((eq (car pattern-list) 'or)
+                  (let ((or-patterns
+                         (loop for p in (cdr pattern-list)
+                               collect (parse-pattern p nesting-level))))
+                    (make-logical-or-parsed-pattern 
+                     :patterns or-patterns
+                     :nesting-level nesting-level)))
+                 ((listp (car pattern-list))
+                  (cons (parse-pattern (car pattern-list) nesting-level)
+                        (parse-lhs (cdr pattern-list) nesting-level)))
+                 (t (error "Malformed pattern in rule LHS: ~S" 
+                          pattern-list))))))
+
 (defun parse-rule-body (body)
   (let ((location 0)
         (patterns (list)))
