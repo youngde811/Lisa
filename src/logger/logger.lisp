@@ -23,12 +23,9 @@
 ;; SOFTWARE.
 
 ;; Description: This file configures some basic attributes of LOG4CL that make it
-;; suiteable for Lisa.
+;; suitable for Lisa.
 
 (in-package :lisa)
 
-#+nil
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (log:config :daily "lisa_log.txt" :backup nil))
-
-
+(defun logger-add-file-appender (path &key (backup nil))
+  (log:config :daily path :backup backup))
