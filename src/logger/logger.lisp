@@ -23,7 +23,7 @@
 ;; SOFTWARE.
 
 ;; Description: This file configures some basic attributes of LOG4CL that make it
-;; suiteable for Lisa.
+;; suitable for Lisa.
 
 (in-package :lisa)
 

@@ -73,6 +73,8 @@ setup_quicklisp() {
          --eval "(ql:system-apropos :log4cl)" \
          --eval "(ql:add-to-init-file)" \
          --eval "(ql:quickload \"quicklisp-slime-helper\")" \
+         --eval "(ql:quickload :log4cl.log4slime)" \
+         --eval "(log4cl.log4slime:install)" \
          --quit
 }
 
