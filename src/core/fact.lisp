@@ -96,7 +96,7 @@
     slots))
 
 (defmethod get-slot-value ((self fact) (slot-name symbol))
-  (declare (optimize (speed 3) (safety 0) (debug 0)))
+  (declare (optimize (speed 3) (safety 1) (debug 0)))
   "Returns the value associated with a slot name. FACT is a FACT instance;
   SLOT-NAME is a SLOT-NAME instance."
   (with-slots ((slot-table slot-table)) self

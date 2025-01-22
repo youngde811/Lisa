@@ -49,7 +49,7 @@
              #'(lambda ()
                  (function
                   (lambda (token)
-                    (declare (optimize (speed 3) (debug 1) (safety 0)))
+                    (declare (optimize (speed 3) (debug 0) (safety 1)))
                     (let ((fact (token-top-fact token)))
                       (class-matches-p 
                        (find-instance-of-fact fact) fact class)))))))
@@ -61,7 +61,7 @@
        (let ((test
               (function
                (lambda (token)
-                 (declare (optimize (speed 3) (debug 1) (safety 0)))
+                 (declare (optimize (speed 3) (debug 0) (safety 1)))
                  (equal value
                         (get-slot-value
                          (token-top-fact token)
@@ -77,21 +77,12 @@
    (pattern-slot-value slot)
    (pattern-slot-negated slot)))
 
-#+ignore
-(defmacro make-variable-test (slot-name binding)
-  `(function
-    (lambda (tokens)
-      (equal (get-slot-value (token-top-fact tokens) ,slot-name)
-             (get-slot-value 
-              (token-find-fact tokens (binding-address ,binding))
-              (binding-slot-name ,binding))))))
-
 (defun make-inter-pattern-test (slot)
   (let* ((binding (pattern-slot-slot-binding slot))
          (test
           (function
            (lambda (tokens)
-             (declare (optimize (speed 3) (debug 1) (safety 0)))
+             (declare (optimize (speed 3) (debug 0) (safety 1)))
              (equal (get-slot-value (token-top-fact tokens)
                                     (pattern-slot-name slot))
                     (get-slot-value
@@ -116,7 +107,7 @@
              (progv
                  `(,@special-vars)
                  `(,@(mapcar #'(lambda (binding)
-                                 (declare (optimize (speed 3) (debug 1) (safety 0)))
+                                 (declare (optimize (speed 3) (debug 0) (safety 1)))
                                  (if (pattern-binding-p binding)
                                      (token-find-fact 
                                       tokens (binding-address binding))
@@ -140,7 +131,7 @@
          (predicate
           (compile nil `(lambda ()
                           (declare (special ,@special-vars))
-                          (declare (optimize (speed 3) (debug 1) (safety 0)))
+                          (declare (optimize (speed 3) (debug 0) (safety 1)))
                           ,@body)))
          (test
           (function
@@ -148,7 +139,7 @@
              (progv
                  `(,@special-vars)
                  `(,@(mapcar #'(lambda (binding)
-                                 (declare (optimize (speed 3) (debug 1) (safety 0)))
+                                 (declare (optimize (speed 3) (debug 0) (safety 1)))
                                  (if (pattern-binding-p binding)
                                      (token-find-fact 
                                       tokens (binding-address binding))
@@ -169,7 +160,7 @@
   (let ((test
          (function
           (lambda (tokens)
-            (declare (optimize (speed 3) (debug 1) (safety 0)))
+            (declare (optimize (speed 3) (debug 0) (safety 1)))
             (equal (get-slot-value (token-top-fact tokens)
                                    (pattern-slot-name slot))
                    (get-slot-value (token-top-fact tokens)

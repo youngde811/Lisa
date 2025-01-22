@@ -90,7 +90,7 @@
 ;;; Using WITH-SLOTS yields a 2x improvement in CPU usage during profiling.
 
 (defun token-push-fact (token fact)
-  (declare (optimize (speed 3) (safety 0) (debug 0)))
+  (declare (optimize (speed 3) (safety 1) (debug 0)))
   (with-slots ((fact-vector facts)
                (fact-count fact-count)
                (hash-code hash-code)) token
@@ -101,7 +101,7 @@
   token)
 
 (defun token-pop-fact (token)
-  (declare (optimize (speed 3) (safety 0) (debug 0)))
+  (declare (optimize (speed 3) (safety 1) (debug 0)))
   (with-slots ((fact-vector facts)
                (hash-code hash-code)
                (fact-count fact-count)) token
@@ -113,27 +113,13 @@
 
 (defun fast-array-copy (target-array token count)
   (declare (type fixnum count) (type (vector t) target-array))
-  (declare (optimize (speed 3) (debug 0) (safety 0)))
+  (declare (optimize (speed 3) (debug 0) (safety 1)))
   (dotimes (i count)
     (token-push-fact token (aref target-array i)))
   target-array)
 
-#+ignore
 (defun replicate-token (token &key (token-class nil))
-  (declare (optimize (speed 3) (safety 0) (debug 0)))
-  (let ((new-token
-         (make-instance (if token-class
-                            (find-class token-class)
-                          (class-of token)))))
-    (with-slots ((existing-fact-vector facts)) token
-      (let ((length (token-fact-count token)))
-        (declare (type fixnum length))
-        (dotimes (i length)
-          (token-push-fact new-token (aref existing-fact-vector i)))))
-    new-token))
-
-(defun replicate-token (token &key (token-class nil))
-  (declare (optimize (speed 3) (safety 0) (debug 0)))
+  (declare (optimize (speed 3) (safety 1) (debug 0)))
   (let ((new-token
          (make-instance (if token-class
                             (find-class token-class)
