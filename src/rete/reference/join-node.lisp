@@ -69,12 +69,13 @@
 (defun test-tokens (join-node left-tokens right-token)
   (declare (optimize (speed 3) (safety 1) (debug 0)))
   (token-push-fact left-tokens (token-top-fact right-token))
-  (prog1
-      (every #'(lambda (test)
-                 (declare (type function test))
-                 (funcall test left-tokens))
-             (join-node-tests join-node))
-    (token-pop-fact left-tokens)))
+  (with-slots ((node-tests tests)) join-node
+    (prog1
+        (every #'(lambda (test)
+                   (declare (type function test))
+                   (funcall test left-tokens))
+               node-tests)
+      (token-pop-fact left-tokens))))
 
 (defmethod pass-tokens-to-successor ((self join-node) left-tokens)
   (call-successor (join-node-successor self) left-tokens))

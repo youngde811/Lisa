@@ -24,11 +24,11 @@
 
 (in-package :lisa)
 
-(defconstant FACT-VEC-INIT-LEN 64)
+(defconstant +fact-vec-init-len+ 64)
 
 (defclass token ()
   ((facts :initform
-          (make-array FACT-VEC-INIT-LEN :initial-element nil :element-type 'token :adjustable t :fill-pointer 0)
+          (make-array +fact-vec-init-len+ :initial-element nil :adjustable t :fill-pointer 0)
           :type vector
           :accessor token-facts)
    (not-counter :initform 0
