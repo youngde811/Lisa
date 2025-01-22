@@ -429,17 +429,6 @@
    ((make-instance 'goal-is-to :action 'eat
                   :argument-1 'bananas))))
 
-#+ignore
-(defun run-mab (&optional (ntimes 1))
-  (let ((start (get-internal-real-time)))
-    (dotimes (i ntimes)
-      (format t "Starting run.~%")
-      (reset)
-      (run))
-    (format t "Elapsed time: ~F~%"
-            (/ (- (get-internal-real-time) start)
-               internal-time-units-per-second))))
-
 (defun run-mab (&optional (ntimes 1))
   (flet ((repeat-mab ()
            (dotimes (i ntimes)
