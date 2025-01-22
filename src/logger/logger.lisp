@@ -27,8 +27,5 @@
 
 (in-package :lisa)
 
-#+nil
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (log:config :daily "lisa_log.txt" :backup nil))
-
-
+(defun logger-add-file-appender (path &key (backup nil))
+  (log:config :daily path :backup backup))

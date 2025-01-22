@@ -85,6 +85,7 @@
           "INITIAL-FACT"
           "INSTANCE"
           "LOGICAL"
+          "LOGGER-ADD-FILE-APPENDER"
           "MAKE-INFERENCE-ENGINE"
           "MARK-INSTANCE-AS-CHANGED"
           "MODIFY"
