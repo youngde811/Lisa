@@ -39,9 +39,7 @@
               :accessor token-hash-code)
    (fact-count :initform 0
                :type (unsigned-byte 64)
-               :accessor token-fact-count) ; big performance optimization
-   (contents :initform nil
-             :reader token-contents)))
+               :accessor token-fact-count))) ; big performance optimization
 
 (defclass add-token (token) ())
 (defclass remove-token (token) ())
