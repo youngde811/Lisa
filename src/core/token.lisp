@@ -99,6 +99,7 @@
   token)
 
 (defun token-pop-fact (token)
+  (declare (type token token))
   (declare (optimize (speed 3) (safety 1) (debug 0)))
   (with-slots ((fact-vector facts)
                (hash-code hash-code)
@@ -110,7 +111,7 @@
       (aref fact-vector (decf (fill-pointer fact-vector))))))
 
 (defun fast-array-copy (target-array token count)
-  (declare (type fixnum count) (type (vector t) target-array))
+  (declare (type fixnum count) (type (vector t) target-array) (type token token))
   (declare (optimize (speed 3) (debug 0) (safety 1)))
   (dotimes (i count)
     (token-push-fact token (aref target-array i)))
