@@ -109,9 +109,9 @@ NIL
 
 Another interesting problem is MYCIN, an early backward chaining expert system that used artificial intelligence to
 identify bacteria causing severe infections, such as bacteremia and meningitis, and to recommend antibiotics, with the
-dosage adjusted for patient's body weight. Lisa uses a forward-chaining version borrowed from Peter Norvig's _"Paradigms
-of Artificial Intelligence Programming: Case Studies in Common Lisp"_. The run output is brief, but the rulebase in
-_examples/mycin.lisp_ is an interesting study, as it illustrates Lisa's implementation of Certainty Factors:
+dosage adjusted for patient's body weight. Lisa uses a forward-chaining version borrowed from Peter Norvig's excellent
+book on artificial intelligence[^2]. The run output is brief, but the rulebase in _examples/mycin.lisp_ is an interesting
+study, as it illustrates Lisa's implementation of Certainty Factors:
 
 ```lisp
 CL-USER> (load "examples/mycin")
@@ -147,8 +147,6 @@ and capabilities. The fundamental architecture will not change, as I'm quite hap
 with the following:
 
 - Fully integrate Lisa with Quicklisp.
-- Clean up documentation; there are some errors in it.
-- Add log configuration support.
 - Other minor ambitions yet to be determined.
 
 **Note**: I've long considered adding additional conditional elements to Lisa, to bring it in line with the latest CLIPS
@@ -182,3 +180,4 @@ Emacs and SBCL are on their own at this time, until I'm able to begin regression
 [David E. Young](mailto://streetrod750@protonmail.com)
 
 [^1]: "Rete: A Fast Algorithm for the Many Pattern/Many Object Pattern Match Problem" Charles L. Forgy, Artificial Intelligence 19(1982), 17-37.
+[^2]: "Paradigms of Artificial Intelligence Programming: Case Studies in Common Lisp", Peter Norvig, 1991.
