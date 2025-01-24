@@ -25,13 +25,7 @@
 ;; Description: The "Monkey And Bananas" sample implementation, a common AI
 ;; planning problem. The monkey's objective is to find and eat some bananas.
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (when (not (find-package "LISA-MAB"))
-    (defpackage "LISA-MAB"
-      (:use "LISA-LISP")
-      (:export "RUN-MAB"))))
-
-(in-package "LISA-MAB")
+(in-package :lisa-user)
 
 (deftemplate monkey ()
   (slot location)
