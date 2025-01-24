@@ -116,6 +116,9 @@
 (defun rule ()
   (active-rule))
 
+(defun active-network ()
+  (rete-network (engine)))
+
 (defun assert-instance (instance)
   (parse-and-insert-instance instance))
 

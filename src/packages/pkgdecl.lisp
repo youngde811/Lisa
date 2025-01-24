@@ -45,6 +45,7 @@
           "*SHOW-LISA-WARNINGS*"
           "=>"
           "ACTIVATION"
+          "ACTIVE-NETWORK"
           "ACTIVE-RULE"
           "AGENDA"
           "ALLOW-DUPLICATE-FACTS"

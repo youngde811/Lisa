@@ -24,7 +24,7 @@
 
 (in-package :lisa)
 
-(defun show-network (rete-network &optional (strm *terminal-io*))
+(defun show-network (&optional (rete-network (active-network)) (strm *terminal-io*))
   (labels ((get-roots ()
              (loop for node being the hash-values of (rete-roots rete-network)
                  collect node))
