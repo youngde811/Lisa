@@ -304,8 +304,7 @@
 (defun forget-clos-instances (rete)
   (clrhash (rete-instance-table rete)))
 
-(defmethod mark-clos-instance-as-changed ((self rete) instance
-                                          &optional (slot-id nil))
+(defmethod mark-clos-instance-as-changed ((self rete) instance &optional (slot-id nil))
   (let ((fact (find-fact-using-instance self instance))
         (network (rete-network self)))
     (cond ((null fact)

@@ -106,13 +106,13 @@
      (:module implementations
       :components
       ((:file "workarounds")
-       #+:sbcl
+       #+(and :sbcl :lisa-with-autonotify)
        (:file "sbcl-auto-notify")
-       #+:lispworks
+       #+(and :lispworks :lisa-with-autonotify)
        (:file "lispworks-auto-notify")
-       #+:cmucl
+       #+(and :cmucl :lisa-with-autonotify)
        (:file "cmucl-auto-notify")
-       #+:allegro
+       #+(and :allegro :lisa-with-autonotify)
        (:file "allegro-auto-notify"))
       :serial t)
      (:module rete
