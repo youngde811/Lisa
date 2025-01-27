@@ -308,7 +308,7 @@
   (let ((fact (find-fact-using-instance self instance))
         (network (rete-network self)))
     (cond ((null fact)
-           (warn "This instance is not known to Lisa: ~S." instance))
+           instance)
           (t
            (remove-fact-from-network network fact)
            (synchronize-with-instance fact slot-id)

@@ -3,7 +3,8 @@
 
 (defclass counter ()
   ((count :initform 0
-          :reader counter-count)))
+          :reader counter-count))
+  (:metaclass standard-kb-class))
 
 (defparameter *my-counter* (make-instance 'counter))
 
