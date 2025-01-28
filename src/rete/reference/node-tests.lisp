@@ -88,7 +88,9 @@
                     (get-slot-value
                      (token-find-fact tokens (binding-address binding))
                      (binding-slot-name binding)))))))
-    (if (negated-slot-p slot) (complement test) test)))
+    (if (negated-slot-p slot)
+        (complement test)
+      test)))
 
 (defun make-predicate-test (forms bindings &optional (negated-p nil))
   (let* ((special-vars
@@ -148,7 +150,9 @@
                                     (binding-slot-name binding))))
                              bindings))
                (funcall predicate))))))
-    (if negated-p (complement test) test)))
+    (if negated-p
+        (complement test)
+      test)))
          
 (defun make-intra-pattern-constraint-test (slot)
   (make-intra-pattern-predicate
@@ -166,7 +170,9 @@
                    (get-slot-value (token-top-fact tokens)
                                    (binding-slot-name 
                                     (pattern-slot-slot-binding slot))))))))
-    (if (negated-slot-p slot) (complement test) test)))
+    (if (negated-slot-p slot)
+        (complement test)
+      test)))
 
 (defun make-behavior (function bindings)
   (make-predicate-test function bindings))
