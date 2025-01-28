@@ -307,12 +307,10 @@
 (defmethod mark-clos-instance-as-changed ((self rete) instance &optional (slot-id nil))
   (let ((fact (find-fact-using-instance self instance))
         (network (rete-network self)))
-    (cond ((null fact)
-           instance)
-          (t
-           (remove-fact-from-network network fact)
-           (synchronize-with-instance fact slot-id)
-           (add-fact-to-network network fact)))
+    (unless (null fact)
+      (remove-fact-from-network network fact)
+      (synchronize-with-instance fact slot-id)
+      (add-fact-to-network network fact))
     instance))
 
 (defun find-context (rete defined-name &optional (errorp t))
