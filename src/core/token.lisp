@@ -83,7 +83,7 @@
 (defun token-top-fact (token)
   (with-slots ((fact-vector facts)
                (fact-count fact-count)) token
-    (declare (type fixnum fact-count))
+    (declare (type fixnum fact-count) (type (vector t) fact-vector))
     (aref fact-vector (1- fact-count))))
 
 ;;; Using WITH-SLOTS yields a 2x improvement in CPU usage during profiling.
