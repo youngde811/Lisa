@@ -114,7 +114,8 @@
   `(or (and (symbolp ,sym)
             (not (variablep ,sym))
             (not (null ,sym)))
-       (numberp ,sym) (stringp ,sym)))
+       (numberp ,sym)
+       (stringp ,sym)))
 
 (defmacro multifieldp (val)
   `(and (listp ,val)
