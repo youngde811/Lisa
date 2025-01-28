@@ -1,4 +1,7 @@
 
+;;; Contibuted by cdmojoli on GitHub, for diagnosing a "bug" of sorts in Lisa's auto-notification
+;;; mechanism for SBCL.
+
 (in-package :LISA-USER)
 
 (defclass counter ()
