@@ -172,8 +172,8 @@ Emacs and SBCL are on their own at this time, until I'm able to begin regression
 
 ## Credits ##
 
-- _Gaston Pepe_: Gaston has exercised and uncovered several Lisa bugs that must have crept in while I was absent for the
-  past ten years. Thank you!
+- _[gassechen](https://github.com/gassechen)_: Gaston has exercised and uncovered several Lisa bugs that must have crept
+  in while I was absent for the past ten years. Thank you!
 - _[cdmojoli](https://github.com/cdmojoli)_: Identified an issues with auto-notification and SBCL. Thank you!
 
 ## Author ##
