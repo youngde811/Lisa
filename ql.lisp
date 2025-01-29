@@ -22,8 +22,7 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; Description: This is a convenience file for folks who are using Quicklisp,
-;; but using git to retrieve Lisa. See install.lisp also.
+;; Description: This is a convenience file for folks who are using Quicklisp.
 
 (in-package :cl-user)
 
