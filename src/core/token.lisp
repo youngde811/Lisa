@@ -124,7 +124,6 @@
          (make-instance (if token-class
                             (find-class token-class)
                           (class-of token)))))
-    (declare (dynamic-extent new-token))
     (with-slots ((existing-fact-vector facts)) token
       (let ((length (token-fact-count token)))
         (declare (type fixnum length))
