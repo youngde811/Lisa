@@ -103,18 +103,6 @@
        (:file "token")
        (:file "retrieve"))
       :serial t)
-     (:module implementations
-      :components
-      ((:file "workarounds")
-       #+(and :sbcl :use-auto-notify)
-       (:file "sbcl-auto-notify")
-       #+(and :lispworks :use-auto-notify)
-       (:file "lispworks-auto-notify")
-       #+(and :cmucl :use-auto-notify-p)
-       (:file "cmucl-auto-notify")
-       #+(and :allegro :use-auto-notify-p)
-       (:file "allegro-auto-notify"))
-      :serial t)
      (:module rete
       :pathname "rete/reference/"
       :components
@@ -133,6 +121,20 @@
        (:file "tms")
        (:file "network-ops")
        (:file "network-crawler"))
+      :serial t)
+     #+:use-auto-notify
+     (:module auto-notify
+      :pathname "implementations"
+      :components
+      (
+       #+:sbcl
+       (:file "sbcl-auto-notify")
+       #+:lispworks
+       (:file "lispworks-auto-notify")
+       #+:cmucl
+       (:file "cmucl-auto-notify")
+       #+:allegro
+       (:file "allegro-auto-notify"))
       :serial t)
      (:module config
       :components
