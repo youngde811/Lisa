@@ -33,6 +33,9 @@
 
 (in-package :cl-user)
 
+#-asdf
+(error "The ASDF package is required. Please load it first")
+
 (defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
 
 (push *install-root* asdf:*central-registry*)
