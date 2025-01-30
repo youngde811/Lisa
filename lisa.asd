@@ -33,13 +33,6 @@
 
 (in-package :cl-user)
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (unless (find-package :lisa-system)
-    (defpackage "LISA-SYSTEM"
-      (:use "COMMON-LISP" "ASDF"))))
-
-(in-package :lisa-system)
-
 (defvar *install-root* (make-pathname :directory (pathname-directory *load-truename*)))
 
 (push *install-root* asdf:*central-registry*)
@@ -50,7 +43,7 @@
 #+sbcl
 (sb-ext:unlock-package :common-lisp)
 
-(defsystem lisa
+(asdf:defsystem lisa
   :name "Lisa"
   :author "David E. Young"
   :maintainer "David E. Young"
