@@ -44,7 +44,9 @@
 ;;; to track that down. Until then, we unlock that package in SBCL.
 
 #+sbcl
-(sb-ext:unlock-package :common-lisp)
+(progn
+  (sb-ext:unlock-package :common-lisp)
+  (sb-ext:unlock-package :cl-user))
 
 (asdf:defsystem lisa
   :name "Lisa"
@@ -162,10 +164,6 @@
 
 (defun lisa-debugger ()
   (translate-logical-pathname "lisa:debugger;lisa-debugger.lisp"))
-
-#+sbcl
-(defun exit (&optional (exit-code 0))
-  (sb-ext:exit :code exit-code))
 
 ;;; Sets up the environment so folks can use the non-portable form of REQUIRE
 ;;; with some implementations...
