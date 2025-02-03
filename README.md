@@ -36,6 +36,8 @@ Several new features have been added to "modernize" Lisa (eg. logging support). 
 months profiling Lisa's behavior using the Slime/SBCL deterministic profiling interface. Several hot-spots were
 discovered, and optimizations were done to these areas.
 
+### Examples ###
+
 Lisa successfully loads and runs on SBCL 2.4.11; see [here](./docs/ExampleRulebases.md) for a few examples of classic AI
 problems runnable using Lisa.
 
