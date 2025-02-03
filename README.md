@@ -39,28 +39,6 @@ discovered, and optimizations were done to these areas.
 Lisa successfully loads and runs on SBCL 2.4.11; see [here](./docs/ExampleRulebases.md) for a few examples of classic AI
 problems runnable using Lisa.
 
-Another interesting problem is MYCIN, an early backward chaining expert system that used artificial intelligence to
-identify bacteria causing severe infections, such as bacteremia and meningitis, and to recommend antibiotics, with the
-dosage adjusted for patient's body weight. Lisa uses a forward-chaining version borrowed from Peter Norvig's excellent
-book on artificial intelligence[^2]. The run output is brief, but the rulebase in _examples/mycin.lisp_ is an interesting
-study, as it illustrates Lisa's implementation of Certainty Factors:
-
-```lisp
-CL-USER> (load "examples/mycin")
-T
-CL-USER> (in-package :lisa-user)
-#<PACKAGE "LISA-USER">
-LISA-USER> (culture-1)
-Identity: PSEUDOMONAS (0.760)
-Identity: ENTEROBACTERIACEAE (0.800)
-5
-LISA-USER> (culture-2)
-Identity: PSEUDOMONAS (0.646)
-Identity: BACTEROIDES (0.720)
-5
-LISA-USER> 
-```
-
 ### Recent Features ###
 
 - Support for Quicklisp. I've submitted Lisa for

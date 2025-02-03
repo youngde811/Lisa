@@ -5,7 +5,7 @@ various expert system shells and logic programming languages. Lisa's implementat
 source implementation written for CLIPS[^2]; it may be found in [_examples/mab.lisp_](./examples/mab.lisp) and
 [_examples/mab-clos.lisp_](./examples/mab-clos.lisp).
 
-Here are some sample rules from Lisa's MAB implementation:
+### Sample MAB Code ###
 
 ```lisp
 (defrule hold-chest-to-put-on-floor ()
@@ -74,7 +74,7 @@ Here are some sample rules from Lisa's MAB implementation:
   (retract ?thing))
 ```
 
-And here is a snippet of a run using _examples/mab.lisp_:
+### Sample MAB Run ###
 
 ```lisp
 CL-USER> (load "examples/mab.lisp")
@@ -111,5 +111,62 @@ Evaluation took:
 NIL
 ```
 
+## MYCIN ##
+
+Another interesting problem is MYCIN, an early backward chaining expert system that used artificial intelligence to
+identify bacteria causing severe infections, such as bacteremia and meningitis, and to recommend antibiotics, with the
+dosage adjusted for patient's body weight. Lisa uses a forward-chaining version borrowed from Peter Norvig's excellent
+book on artificial intelligence[^3]. The run output is brief, but the rulebase in
+[_examples/mycin.lisp_](./examples/mycin.lisp] is an interesting study, as it illustrates Lisa's implementation of
+Certainty Factors.
+
+### Sample MYCIN Code ###
+
+```lisp
+(defrule rule-52 (:belief 0.4)
+  (culture-site (value blood))
+  (gram (value neg) (entity ?organism))
+  (morphology (value rod))
+  (burn (value serious))
+  =>
+  (assert (organism-identity (value pseudomonas) (entity ?organism))))
+
+(defrule rule-71 (:belief 0.7)
+  (gram (value pos) (entity ?organism))
+  (morphology (value coccus))
+  (growth-conformation (value clumps))
+  =>
+  (assert (organism-identity (value staphylococcus) (entity ?organism))))
+
+(defrule rule-73 (:belief 0.9)
+  (culture-site (value blood))
+  (gram (value neg) (entity ?organism))
+  (morphology (value rod))
+  (aerobicity (value anaerobic))
+  =>
+  (assert (organism-identity (value bacteroides) (entity ?organism))))
+  
+...
+```
+
+### Sample MYCIN Run ###
+
+```lisp
+CL-USER> (load "examples/mycin")
+T
+CL-USER> (in-package :lisa-user)
+#<PACKAGE "LISA-USER">
+LISA-USER> (culture-1)
+Identity: PSEUDOMONAS (0.760)
+Identity: ENTEROBACTERIACEAE (0.800)
+5
+LISA-USER> (culture-2)
+Identity: PSEUDOMONAS (0.646)
+Identity: BACTEROIDES (0.720)
+5
+LISA-USER> 
+```
+
 [^1]: The [Monkey and Banana](https://en.wikipedia.org/wiki/Monkey_and_banana_problem) AI problem.
 [^2]: [CLIPS](https://www.clipsrules.net/): A tool for building expert systems.
+[^3]: "Paradigms of Artificial Intelligence Programming: Case Studies in Common Lisp", Peter Norvig, 1991.
