@@ -2,8 +2,8 @@
 
 The Monkey and Banana[^1] problem is a classic artificial intelligence planning/logic problem that has been solved using
 various expert system shells and logic programming languages. Lisa's implementation is a direct translation of the
-source implementation written for CLIPS[^2]; it may be found in [_examples/mab.lisp_](./examples/mab.lisp) and
-[_examples/mab-clos.lisp_](./examples/mab-clos.lisp).
+source implementation written for CLIPS[^2]; it may be found in [_examples/mab.lisp_](../examples/mab.lisp) and
+[_examples/mab-clos.lisp_](../examples/mab-clos.lisp).
 
 ### Sample MAB Code ###
 
@@ -117,7 +117,7 @@ Another interesting problem is MYCIN, an early backward chaining expert system t
 identify bacteria causing severe infections, such as bacteremia and meningitis, and to recommend antibiotics, with the
 dosage adjusted for patient's body weight. Lisa uses a forward-chaining version borrowed from Peter Norvig's excellent
 book on artificial intelligence[^3]. The run output is brief, but the rulebase in
-[_examples/mycin.lisp_](./examples/mycin.lisp] is an interesting study, as it illustrates Lisa's implementation of
+[_examples/mycin.lisp_](../examples/mycin.lisp) is an interesting study, as it illustrates Lisa's implementation of
 Certainty Factors.
 
 ### Sample MYCIN Code ###
