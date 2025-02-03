@@ -36,76 +36,8 @@ Several new features have been added to "modernize" Lisa (eg. logging support). 
 months profiling Lisa's behavior using the Slime/SBCL deterministic profiling interface. Several hot-spots were
 discovered, and optimizations were done to these areas.
 
-Lisa successfully loads and runs on SBCL 2.4.11, and the Monkey and Bananas test suite, a classic AI planning problem,
-completes successfully:
-
-_Some sample rules from examples/mab.lisp_:
-
-```lisp
-(defrule hold-chest-to-put-on-floor ()
-  (goal-is-to (action unlock) (argument-1 ?chest))
-  (thing (name ?chest) (on-top-of (not floor)) (weight light))
-  (monkey (holding (not ?chest)))
-  (not (goal-is-to (action hold) (argument-1 ?chest)))
-  =>
-  (assert (goal-is-to (action hold) (argument-1 ?chest)
-                      (argument-2 empty))))
-
-(defrule put-chest-on-floor ()
-  (goal-is-to (action unlock) (argument-1 ?chest))
-  (?monkey (monkey (location ?place) (on-top-of ?on) (holding ?chest)))
-  (?thing (thing (name ?chest)))
-  =>
-  (format t "Monkey throws the ~A off the ~A onto the floor.~%" ?chest ?on)
-  (modify ?monkey (holding blank))
-  (modify ?thing (location ?place) (on-top-of floor)))
-
-(defrule get-key-to-unlock ()
-  (goal-is-to (action unlock) (argument-1 ?obj))
-  (thing (name ?obj) (on-top-of floor))
-  (chest (name ?obj) (unlocked-by ?key))
-  (monkey (holding (not ?key)))
-  (not (goal-is-to (action hold) (argument-1 ?key)))
-  =>
-  (assert (goal-is-to (action hold) (argument-1 ?key)
-                      (argument-2 empty))))
-...
-```
-
-_Loading MAB, and a partial run output_:
-
-```lisp
-CL-USER> (load "examples/mab.lisp")
-T
-CL-USER> (in-package :lisa-mab)
-LISA-MAB> #<PACKAGE "LISA-MAB">
-LISA-MAB> (run-mab)
-<INFO> [15:00:26] lisa-mab mab.lisp (run-mab repeat-mab) - Starting run...
-Monkey jumps off the GREEN-COUCH onto the floor.
-Monkey walks to T2-2.
-Monkey climbs onto the RED-COUCH.
-Monkey climbs onto the BIG-PILLOW.
-Monkey grabs the RED-CHEST.
-Monkey throws the RED-CHEST off the BIG-PILLOW onto the floor.
-Monkey jumps off the BIG-PILLOW onto the floor.
-Monkey walks to T1-3.
-Monkey grabs the RED-KEY.
-...
-Monkey walks to T7-7 holding the BLUE-KEY.
-Monkey opens the BLUE-CHEST with the BLUE-KEY revealing the BANANAS.
-Monkey drops the BLUE-KEY.
-Monkey climbs onto the BLUE-CHEST.
-Monkey grabs the BANANAS.
-Monkey eats the BANANAS.
-Evaluation took:
-  0.028 seconds of real time
-  0.028730 seconds of total run time (0.027518 user, 0.001212 system)
-  103.57% CPU
-  241 lambdas converted
-  13,727,952 bytes consed
-  
-NIL
-```
+Lisa successfully loads and runs on SBCL 2.4.11; see [here](./docs/ExampleRulebases.md) for a few examples of classic AI
+problems runnable using Lisa.
 
 Another interesting problem is MYCIN, an early backward chaining expert system that used artificial intelligence to
 identify bacteria causing severe infections, such as bacteremia and meningitis, and to recommend antibiotics, with the
