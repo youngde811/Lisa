@@ -66,24 +66,6 @@
 (defun right-memory-count (join-node)
   (hash-table-count (join-node-right-memory join-node)))
 
-#+ignore
-(defun test-tokens (join-node left-tokens right-token)
-  (declare (optimize (speed 3) (safety 1) (debug 0)))
-  (token-push-fact left-tokens (token-top-fact right-token))
-  (with-slots ((node-tests tests)) join-node
-    (prog1
-        (let ((rval t))
-          (dolist (func node-tests)
-            (declare (type function func))
-            (unless (funcall func left-tokens)
-              (setf rval nil)
-              (return rval)))
-          rval)
-      (token-pop-fact left-tokens))))
-
-;;; Not enough speed difference between this and the above implementation to
-;;; justify sacrificing clarity.
-
 (defun test-tokens (join-node left-tokens right-token)
   (declare (optimize (speed 3) (safety 1) (debug 0)))
   (token-push-fact left-tokens (token-top-fact right-token))
