@@ -49,7 +49,7 @@
 (defun token-top-fact-default (token)
   (with-slots ((fact-vector facts)
                (fact-count fact-count)) token
-    (declare (type fixnum lisa::fact-count) (type (vector t) lisa::facts))
+    (declare (type fixnum fact-count))
     (aref fact-vector (1- fact-count))))
 
 (defun token-push-fact-default (token fact)
@@ -57,7 +57,7 @@
   (with-slots ((fact-vector facts)
                (fact-count fact-count)
                (hash-code hash-code)) token
-    (declare (type fixnum fact-count) (type (vector t) fact-vector))
+    (declare (type fixnum fact-count))
     (vector-push-extend fact fact-vector)
     (push fact hash-code)
     (incf fact-count))
@@ -67,43 +67,37 @@
   (declare (type token token))
   (declare (optimize (speed 3) (safety 1) (debug 0)))
   (with-slots ((fact-vector facts)
-               (hash-code hash-code)
-               (fact-count fact-count)) token
-    (declare (type fixnum fact-count) (type (vector t) fact-vector))
+               (fact-count fact-count)
+               (hash-code hash-code)) token
+    (declare (type fixnum fact-count))
     (unless (zerop (fill-pointer fact-vector))
       (pop hash-code)
-      (decf fact-count)
       (aref fact-vector (decf (fill-pointer fact-vector))))))
 
 (defun token-push-fact-gp (token fact)
   (declare (optimize (speed 3) (safety 1) (debug 0)))
   (with-slots ((fact-stack facts)
-               (hash-code hash-code)
-               (fact-count fact-count)) token
+               (hash-code hash-code)) token
     (grouping-stack:stack-push fact-stack fact)
-    (push fact hash-code)
-    (incf fact-count))
+    (push fact hash-code))
   token)
 
 (defun token-pop-fact-gp (token)
   (declare (type token token))
-  (declare (optimize (speed 3) (safety 1) (debug 0)))
   (with-slots ((fact-stack facts)
-               (hash-code hash-code)
-               (fact-count fact-count)) token
+               (hash-code hash-code)) token
     (unless (zerop (grouping-stack:stack-size fact-stack))
       (pop hash-code)
-      (decf fact-count)
       (grouping-stack:stack-pop fact-stack))))
 
 (defun test-default-impl (&key (ntimes 100))
   (let ((token (make-instance 'token :initarg (make-array 64 :initial-element nil :adjustable t :fill-pointer 0))))
     (dotimes (i ntimes)
-      (token-push-fact-default (token (make-instance 'fact :name (format nil "frodo-~D" i)))))))
+      (token-push-fact-default token (make-instance 'fact :name (format nil "frodo-~D" i))))))
 
 (defun test-gp-impl (&key (ntimes 100))
   (let ((token (make-instance 'token
                               :initarg (grouping-stack:make-grouping-stack
                                         (make-instance 'grouping-stack:sink-balancer)))))
     (dotimes (i ntimes)
-      (token-push-fact-gp (token (make-instance 'fact :name (format nil "frodo-~D" i)))))))
+      (token-push-fact-gp token (make-instance 'fact :name (format nil "frodo-~D" i))))))
