@@ -27,7 +27,9 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (unless (find-package "STACK-PERF")
     (defpackage "STACK-PERF"
-      (:use "COMMON-LISP"))))
+      (:use "COMMON-LISP")
+      (:export "TEST-DEFAULT-IMPL"
+               "TEST-GP-IMPL"))))
 
 (in-package #:stack-perf)
 
