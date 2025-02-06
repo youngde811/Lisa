@@ -25,15 +25,24 @@
 (in-package :cl-user)
 
 (defun make-stack ()
-  (sycamore:tree-set #'compare))
+  (sycamore:tree-set #'equal))
+
+(defun tree-set-first (set)
+  (sycamore:fold-tree-set
+   #'(lambda (accumulated-value key value)
+       (declare (ignore key))
+       (if (null accumulated-value)
+           value
+         accumulated-value))
+   nil set))
 
 (defun push-stack (item stack)
   (sycamore:tree-set-insert stack item))
 
 (defun pop-stack (stack)
-  (let ((top (sycamore:tree-set-first stack)))
+  (let ((top (tree-set-first stack)))
     (sycamore:tree-set-remove stack top)
     top))
 
 (defun peek-stack (stack)
-  (sycamore:tree-set-first stack))
+  (tree-set-first stack))

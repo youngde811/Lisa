@@ -77,6 +77,13 @@
      (:module logger
       :components
       ((:file "logger")))
+     (:module grouping-stack
+      :components
+      ((:file "package")
+       (:file "item")
+       (:file "stack")
+       (:file "balancer"))
+      :serial t)
      (:module core
       :components
       ((:file "preamble")
