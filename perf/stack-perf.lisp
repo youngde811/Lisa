@@ -80,7 +80,7 @@
   (declare (optimize (speed 3) (safety 1) (debug 0)))
   (with-slots ((fact-stack facts)
                (hash-code hash-code)) token
-    (grouping-stack:stack-push fact-stack fact)
+    (grouping-stack:stack-push fact fact-stack)
     (push fact hash-code))
   token)
 
@@ -93,13 +93,13 @@
       (grouping-stack:stack-pop fact-stack))))
 
 (defun test-default-impl (&key (ntimes 100))
-  (let ((token (make-instance 'token :initarg (make-array 64 :initial-element nil :adjustable t :fill-pointer 0))))
+  (let ((token (make-instance 'token :stack (make-array 64 :initial-element nil :adjustable t :fill-pointer 0))))
     (dotimes (i ntimes)
       (token-push-fact-default token (make-instance 'fact :name (format nil "frodo-~D" i))))))
 
 (defun test-gp-impl (&key (ntimes 100))
   (let ((token (make-instance 'token
-                              :initarg (grouping-stack:make-grouping-stack
-                                        (make-instance 'grouping-stack:sink-balancer)))))
+                              :stack (grouping-stack:make-grouping-stack
+                                      (make-instance 'grouping-stack:sink-balancer)))))
     (dotimes (i ntimes)
       (token-push-fact-gp token (make-instance 'fact :name (format nil "frodo-~D" i))))))
