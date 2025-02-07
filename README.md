@@ -89,8 +89,8 @@ Over the years, serveral individuals have contributed to aspects of Lisa that ei
 functionality. I've lost touch with most of them, but they deserve mention here.
 
 - Aneil Mallavarapu: Aneil contributed several enhancements and bug fixes.
-- Paolo Amoroso: Paolo was a big fan of Lisa, and shared his thoughts within the Open Source community. I thank him for
-  his [review](http://www.paoloamoroso.it/log/050827.html).
+- Paolo Amoroso: Paolo was a big fan of Lisa, and shared his thoughts within the Open Source community. He also gets
+  credit for suggesting I add support for Certainty Factors. I thank him for his [review](http://www.paoloamoroso.it/log/050827.html).
 - Paul Werkowski: Paul contributed code that helped get Lisa running on SBCL.
 
 ## Credits ##
