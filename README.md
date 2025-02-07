@@ -83,7 +83,7 @@ particular, read the _Getting Started_ section first for details on using SBCL w
 - [Emacs](https://emacsformacos.com/) for MacOS.
 - [Peter Norvig](https://norvig.github.io/paip-lisp/#/).
 
-## Accolates ##
+## Accolades ##
 
 Over the years, serveral individuals have contributed to aspects of Lisa that either addressed bugs or added useful
 functionality. I've lost touch with most of them, but they deserve mention here.
