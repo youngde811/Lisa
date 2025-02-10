@@ -146,8 +146,7 @@
   (labels ((add-simple-join-node-test (slot)
              (unless (= (binding-address (pattern-slot-slot-binding slot))
                         (parsed-pattern-address pattern))
-               (join-node-add-test join-node
-                                   (make-inter-pattern-test slot))))
+               (join-node-add-test join-node (make-inter-pattern-test slot))))
            (add-slot-constraint-test (slot)
              (join-node-add-test join-node
                                  (make-predicate-test

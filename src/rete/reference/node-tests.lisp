@@ -51,8 +51,7 @@
                   (lambda (token)
                     (declare (optimize (speed 3) (debug 0) (safety 1)))
                     (let ((fact (token-top-fact token)))
-                      (class-matches-p 
-                       (find-instance-of-fact fact) fact class)))))))
+                      (class-matches-p (find-instance-of-fact fact) fact class)))))))
 
 (defun make-simple-slot-test-aux (slot-name value negated-p)
   (find-test 
@@ -62,10 +61,7 @@
               (function
                (lambda (token)
                  (declare (optimize (speed 3) (debug 0) (safety 1)))
-                 (equal value
-                        (get-slot-value
-                         (token-top-fact token)
-                         slot-name))))))
+                 (equal value (get-slot-value (token-top-fact token) slot-name))))))
          (if negated-p
              (complement test)
            test)))))
@@ -83,11 +79,8 @@
           (function
            (lambda (tokens)
              (declare (optimize (speed 3) (debug 0) (safety 1)))
-             (equal (get-slot-value (token-top-fact tokens)
-                                    (pattern-slot-name slot))
-                    (get-slot-value
-                     (token-find-fact tokens (binding-address binding))
-                     (binding-slot-name binding)))))))
+             (equal (get-slot-value (token-top-fact tokens) (pattern-slot-name slot))
+                    (get-slot-value (token-find-fact tokens (binding-address binding)) (binding-slot-name binding)))))))
     (if (negated-slot-p slot)
         (complement test)
       test)))
@@ -110,13 +103,10 @@
                  `(,@special-vars)
                  `(,@(mapcar #'(lambda (binding)
                                  (declare (optimize (speed 3) (debug 0) (safety 1)))
-                                 (if (pattern-binding-p binding)
-                                     (token-find-fact 
-                                      tokens (binding-address binding))
-                                   (get-slot-value
-                                    (token-find-fact 
-                                     tokens (binding-address binding))
-                                    (binding-slot-name binding))))
+                                 (let ((fact (token-find-fact tokens (binding-address binding))))
+                                   (if (pattern-binding-p binding)
+                                       fact
+                                     (get-slot-value fact (binding-slot-name binding)))))
                              bindings))
                (funcall predicate))))))
     (if negated-p
@@ -143,11 +133,8 @@
                  `(,@(mapcar #'(lambda (binding)
                                  (declare (optimize (speed 3) (debug 0) (safety 1)))
                                  (if (pattern-binding-p binding)
-                                     (token-find-fact 
-                                      tokens (binding-address binding))
-                                   (get-slot-value
-                                    (token-top-fact tokens)
-                                    (binding-slot-name binding))))
+                                     (token-find-fact tokens (binding-address binding))
+                                   (get-slot-value (token-top-fact tokens) (binding-slot-name binding))))
                              bindings))
                (funcall predicate))))))
     (if negated-p
@@ -164,12 +151,10 @@
   (let ((test
          (function
           (lambda (tokens)
-            (declare (optimize (speed 3) (debug 0) (safety 1)))
-            (equal (get-slot-value (token-top-fact tokens)
-                                   (pattern-slot-name slot))
-                   (get-slot-value (token-top-fact tokens)
-                                   (binding-slot-name 
-                                    (pattern-slot-slot-binding slot))))))))
+           (declare (optimize (speed 3) (debug 0) (safety 1)))
+           (let ((fact (token-top-fact tokens)))
+             (equal (get-slot-value fact (pattern-slot-name slot))
+                    (get-slot-value fact (binding-slot-name (pattern-slot-slot-binding slot)))))))))
     (if (negated-slot-p slot)
         (complement test)
       test)))
