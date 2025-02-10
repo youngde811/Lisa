@@ -59,7 +59,6 @@ and capabilities. The fundamental architecture will not change, as I'm quite hap
 with the following:
 
 - Fully integrate Lisa with Quicklisp.
-- Further performance optimizations, particularly around the token stack.
 - Other minor ambitions yet to be determined.
 
 While Lisa is currently being actively developed using SBCL, some testing has been performed using
