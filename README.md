@@ -59,7 +59,13 @@ and capabilities. The fundamental architecture will not change, as I'm quite hap
 with the following:
 
 - Fully integrate Lisa with Quicklisp.
+- Further performance optimizations, particularly around the token stack.
 - Other minor ambitions yet to be determined.
+
+While Lisa is currently being actively developed using SBCL, some testing has been performed using
+[AllegroExpress](https://franz.com/) - the free version of Allegro Common Lisp - with perfect results. The core code here 
+represents Lisa version 3.2 as found on [Sourceforge](https://sourceforge.net/), which should run properly on the Lisp
+implementations mentioned above.
 
 **Note**: I've long considered adding additional conditional elements to Lisa, to bring it in line with the latest CLIPS
 releases. However, after studying some of the unpleasant behavioral side effects, and reflecting on how seldom I might
@@ -71,16 +77,21 @@ Lisa's bounds of simplicity; IMHO these CEs are a syntactic convenience only, an
 Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Home) for complete details and documentation. In
 particular, read the _Getting Started_ section first for details on using SBCL with Emacs.
 
-**Note**: Lisa is currently being actively developed using SBCL only. However, minor testing has been performed using
-[Allegro Express](https://franz.com/), the free version of Allegro Common Lisp, with perfect results. The core code here
-represents Lisa version 3.2 as found on [Sourceforge](https://sourceforge.net/), which should run properly on the Lisp
-implementations mentioned above.
-
 ## References ##
 
 - The [SBCL](https://www.sbcl.org/) home page.
 - [Emacs](https://emacsformacos.com/) for MacOS.
 - [Peter Norvig](https://norvig.github.io/paip-lisp/#/).
+
+## Accolades ##
+
+Over the years, serveral individuals have contributed to aspects of Lisa that either addressed bugs or added useful
+functionality. I've lost touch with most of them, but they deserve mention here.
+
+- Aneil Mallavarapu: Aneil contributed several enhancements and bug fixes.
+- Paolo Amoroso: Paolo was a big fan of Lisa, and shared his thoughts within the Open Source community. He also gets
+  credit for suggesting I add support for Certainty Factors. I thank him for his [review](http://www.paoloamoroso.it/log/050827.html).
+- Paul Werkowski: Paul contributed code that helped get Lisa running on SBCL.
 
 ## Credits ##
 
