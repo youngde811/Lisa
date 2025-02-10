@@ -76,7 +76,7 @@
       (pop hash-code)
       (aref fact-vector (decf (fill-pointer fact-vector))))))
 
-(defun token-push-fact-gp (token fact)
+(defun token-push-fact-gs (token fact)
   (declare (optimize (speed 3) (safety 1) (debug 0)))
   (with-slots ((fact-stack facts)
                (hash-code hash-code)) token
@@ -84,7 +84,7 @@
     (push fact hash-code))
   token)
 
-(defun token-pop-fact-gp (token)
+(defun token-pop-fact-gs (token)
   (declare (type token token))
   (with-slots ((fact-stack facts)
                (hash-code hash-code)) token
@@ -99,11 +99,11 @@
     (dotimes (i ntimes)
       (token-pop-fact-default token))))
 
-(defun test-gp-impl (&key (ntimes 100))
+(defun test-gs-impl (&key (ntimes 100))
   (let ((token (make-instance 'token
                               :stack (grouping-stack:make-grouping-stack
-                                      (make-instance 'grouping-stack:sink-balancer)))))
+                                      (make-instance 'grouping-stack:inactive-balancer)))))
     (dotimes (i ntimes)
-      (token-push-fact-gp token (make-instance 'fact :name (format nil "frodo-~D" i))))
+      (token-push-fact-gs token (make-instance 'fact :name (format nil "frodo-~D" i))))
     (dotimes (i ntimes)
-      (token-pop-fact-gp token))))
+      (token-pop-fact-gs token))))
