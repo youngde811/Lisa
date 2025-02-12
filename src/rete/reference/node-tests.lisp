@@ -51,6 +51,7 @@
                   (lambda (token)
                     (declare (optimize (speed 3) (debug 0) (safety 1)))
                     (let ((fact (token-top-fact token)))
+                      (declare (dynamic-extent fact))
                       (class-matches-p (find-instance-of-fact fact) fact class)))))))
 
 (defun make-simple-slot-test-aux (slot-name value negated-p)
