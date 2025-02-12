@@ -53,6 +53,7 @@
      #\# #\? #'(lambda (strm subchar arg)
                  (declare (ignore subchar arg))
                  (list 'identity (read strm t nil t)))))
-  (pushnew :lisa *features*))
+  (pushnew :lisa *features*)
+  (pushnew :lisa-3.9.0 *features*))
 
 
