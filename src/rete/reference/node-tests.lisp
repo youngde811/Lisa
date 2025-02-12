@@ -96,6 +96,7 @@
          (predicate
           (compile nil `(lambda ()
                           (declare (special ,@special-vars))
+                          (declare (optimize (speed 3) (debug 0) (safety 1)))
                           ,@body)))
          (test
           (function
