@@ -54,6 +54,6 @@
                  (declare (ignore subchar arg))
                  (list 'identity (read strm t nil t)))))
   (pushnew :lisa *features*)
-  (pushnew :lisa3.9.0 *features*))
+  (pushnew :lisa3.9.1 *features*))
 
 
