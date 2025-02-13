@@ -7,12 +7,9 @@
 Lisa is a production-quality, forward-chaining expert-system shell. The inference engine is an optimized, literal
 implementation of Charles Forgy's Rete algorithm, a very efficient mechanism for solving the difficult many-to-many
 matching problem[^1]. Lisa is written in modern Common Lisp, the Common Lisp Object System (CLOS), and the Meta Object
-Protocol (MOP); it may be easily integrated into just about any Common Lisp application with little effort.
-
-A unique behavior of Lisa is the ability to reason over CLOS objects without imposing special class hierarchy
-requirements; thus it should be possible to easily augment existing CLOS applications with reasoning capabilities. As
-Lisa is an extension to Common Lisp, the full power of the Lisp environment is always available. Lisa-enabled
-applications should run on any ANSI-compliant Common Lisp platform.
+Protocol (MOP). Designed for seamless integration with existing Common Lisp implementations, Lisa maximizes the
+potential of CLOS and the MOP without enforcing strict class hierarchy limitations. This flexibility allows developers
+to enhance their applications with sophisticated reasoning abilities with little effort.
 
 ## Supported Lisps ##
 
@@ -81,6 +78,7 @@ particular, read the _Getting Started_ section first for details on using SBCL w
 - The [SBCL](https://www.sbcl.org/) home page.
 - [Emacs](https://emacsformacos.com/) for MacOS.
 - [Peter Norvig](https://norvig.github.io/paip-lisp/#/).
+- [Expert Systems: Principles and Programming](https://www.powells.com/book/expert-systems-principles-programming-fourth-edition-principles-programming-9780534384470).
 
 ## Accolades ##
 
@@ -104,4 +102,3 @@ functionality. I've lost touch with most of them, but they deserve mention here.
 [David E. Young](mailto://streetrod750@protonmail.com)
 
 [^1]: "Rete: A Fast Algorithm for the Many Pattern/Many Object Pattern Match Problem" Charles L. Forgy, Artificial Intelligence 19(1982), 17-37.
-[^2]: "Paradigms of Artificial Intelligence Programming: Case Studies in Common Lisp", Peter Norvig, 1991.
