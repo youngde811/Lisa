@@ -50,5 +50,7 @@
 (defmethod sb-mop:validate-superclass ((class standard-kb-class) (superclass standard-class))
   t)
 
-(eval-when (:load-toplevel)
-  (pushnew :lisa-autonotify *features*))
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (pushnew :lisa-auto-notify *features*))
+
+(provide 'lisa-auto-notify)

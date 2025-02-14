@@ -132,8 +132,6 @@
       :pathname "implementations"
       :components
       (
-       #+:sbcl
-       (:file "sbcl-auto-notify")
        #+:lispworks
        (:file "lispworks-auto-notify")
        #+:cmucl
@@ -168,6 +166,7 @@
         ("config;*.*" ,(make-lisa-path "config/"))
         ("debugger;*.*" ,(make-lisa-path "src/debugger/"))
         ("examples;*.*", (make-lisa-path "examples/**"))
+        ("auto-notify;*.*", (make-lisa-path "src/implementations/"))
         ("contrib;**;" ,(make-lisa-path "contrib/**/"))))
 
 (defun lisa-debugger ()
@@ -199,3 +198,11 @@
       (if (null lisa-module)
           (lw:call-next-advice module-name pathname)
         (lw:call-next-advice module-name (cdr lisa-module))))))
+
+#+sbcl
+(defun module-provide-lisa-auto-notify (module-name)
+  (unless (find :lisa-auto-notify *features* :test #'eq)
+    (load (translate-logical-pathname "lisa:auto-notify;sbcl-auto-notify.lisp"))))
+
+#+sbcl
+(pushnew 'module-provide-lisa-auto-notify *module-provider-functions*)
