@@ -150,6 +150,7 @@
 
 (pushnew :lisa.asdf *features*)
 (pushnew :log4cl *features*)
+(load (merge-pathnames "version.lisp" *install-root*))
 
 (defvar *lisa-root-pathname*
   (make-pathname :directory
