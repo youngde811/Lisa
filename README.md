@@ -56,6 +56,7 @@ and capabilities. The fundamental architecture will not change, as I'm quite hap
 with the following:
 
 - Fully integrate Lisa with Quicklisp.
+- Support the use of REQUIRE for selectively loading auto notification.
 - Other minor ambitions yet to be determined.
 
 While Lisa is currently being actively developed using SBCL, some testing has been performed using
