@@ -200,9 +200,10 @@
         (lw:call-next-advice module-name (cdr lisa-module))))))
 
 #+sbcl
-(defun module-provide-lisa-auto-notify (module-name)
-  (unless (find :lisa-auto-notify *features* :test #'eq)
-    (load (translate-logical-pathname "lisa:auto-notify;sbcl-auto-notify.lisp"))))
-
-#+sbcl
-(pushnew 'module-provide-lisa-auto-notify *module-provider-functions*)
+(eval-when (:load-toplevel :execute)
+  (defun module-provide-lisa-auto-notify (module-name)
+    (unless (find :lisa-auto-notify *features* :test #'eq)
+      (if (eq module-name 'lisa-auto-notify)
+          (load (translate-logical-pathname "lisa:auto-notify;sbcl-auto-notify.lisp"))
+        nil)))
+  (pushnew 'module-provide-lisa-auto-notify *module-provider-functions*))
