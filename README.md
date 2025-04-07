@@ -90,6 +90,7 @@ functionality. I've lost touch with most of them, but they deserve mention here.
   credit for suggesting I add support for Certainty Factors. I thank him for his [review](http://www.paoloamoroso.it/log/050827.html).
 - Paul Werkowski: Paul contributed code that helped get Lisa running on SBCL, and a very nice package macro.
 - Fred Gilham: Fred contributed code to get auto-notification working on CMUCL.
+- _[gassechen]_: Gaston has written a very cool apllication that provides a front end to Lisa. Check it out: https://github.com/gassechen/cl-lisa-web/tree/main.
 
 ## Credits ##
 
