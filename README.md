@@ -55,8 +55,7 @@ After taking an eleven-year hiatus, as of December 2024 I decided to resume work
 and capabilities. The fundamental architecture will not change, as I'm quite happy with it. But, Lisa will get attention
 with the following:
 
-- Fully integrate Lisa with Quicklisp.
-- Support the use of REQUIRE for selectively loading auto notification.
+- Fully integrate Lisa with Quicklisp. I'm still awaiting confirmation on the PR I submitted for this work.
 - Other minor ambitions yet to be determined.
 
 While Lisa is currently being actively developed using SBCL, some testing has been performed using
