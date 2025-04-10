@@ -127,18 +127,6 @@
        (:file "network-ops")
        (:file "network-crawler"))
       :serial t)
-     #+:use-auto-notify
-     (:module auto-notify
-      :pathname "implementations"
-      :components
-      (
-       #+:lispworks
-       (:file "lispworks-auto-notify")
-       #+:cmucl
-       (:file "cmucl-auto-notify")
-       #+:allegro
-       (:file "allegro-auto-notify"))
-      :serial t)
      (:module config
       :components
       ((:file "config")
