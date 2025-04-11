@@ -57,7 +57,7 @@ with the following:
 
 - Fully integrate Lisa with Quicklisp. I'm still awaiting confirmation on the PR I submitted for this work.
 - Performance testing on Linux. Now that VirtualBox runs on ARM64 hardware, I'll be using a Linux VM to analyze how Lisa
-  performs on SBCL/Linux. Debian will be the distribution.
+  performs on SBCL/Linux. Rocky Linux will be the distribution.
 - Other minor ambitions yet to be determined.
 
 While Lisa is currently being actively developed using SBCL, some testing has been performed using
