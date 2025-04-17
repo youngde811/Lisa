@@ -56,9 +56,8 @@ and capabilities. The fundamental architecture will not change, as I'm quite hap
 with the following:
 
 - Fully integrate Lisa with Quicklisp. I'm still awaiting confirmation on the PR I submitted for this work.
-- Performance testing on Linux. Now that VirtualBox runs on ARM64 hardware, I'll be using a Linux VM to analyze how Lisa
-  performs on SBCL/Linux. Rocky Linux will be the distribution used for these tests, although unfortunately only SBCL
-  version 1.4.x is available on that distro.
+- Performance testing on Linux. Now that Parallels runs on ARM64 hardware, I'll be using a Linux VM to analyze how Lisa
+  performs on SBCL/Linux. Ubunbu 24.x will be the distribution used for these tests.
 - Other minor ambitions yet to be determined.
 
 While Lisa is currently being actively developed using SBCL, some testing has been performed using
