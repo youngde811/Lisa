@@ -45,7 +45,9 @@ problems runnable using Lisa.
   waiting to hear back. In the meantime, see _ql.lisp_ for installation details.
 - Logger selected: [log4cl](https://github.com/7max/log4cl).
 - Log messages inserted into strategic points, replacing format/error forms.
-- Significant optimizations using Slime and SBCL's deterministic profiler.
+- Significant optimizations using Slime and SBCL's deterministic profiler. I've identified the two worst hotspots within
+  Lisa's Rete algorithm - TOKEN-PUSH-FACT and TOKEN-POP-FACT. Underneath both of these functions is VECTOR-PUSH-EXTEND,
+  which I believe is the culprit. I'll be looking for a more efficient method to implement Lisa's token stack.
 - Fixed the long-broken TEST and LOGICAL conditional elements.
 - Ported auto-notification to SBCL.
 
