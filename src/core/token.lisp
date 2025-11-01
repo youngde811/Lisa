@@ -24,6 +24,8 @@
 
 (in-package :lisa)
 
+(declaim (inline token-top-fact))
+
 (defconstant +fact-vec-init-len+ 64)
 
 (defclass token ()
