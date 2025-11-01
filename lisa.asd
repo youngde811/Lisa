@@ -105,6 +105,9 @@
        (:file "rete")
        (:file "belief-interface")
        (:file "meta")
+       #+:fast-tokens
+       (:file "stack-token")
+       #-:fast-tokens
        (:file "token")
        (:file "retrieve"))
       :serial t)
@@ -153,7 +156,7 @@
         ("lib;**;*.*" ,(make-lisa-path "lib/**/"))
         ("config;*.*" ,(make-lisa-path "config/"))
         ("debugger;*.*" ,(make-lisa-path "src/debugger/"))
-        ("examples;*.*", (make-lisa-path "examples/**"))
+        ("examples;*.*", (make-lisa-path "examples/*.*"))
         ("auto-notify;*.*", (make-lisa-path "src/implementations/"))
         ("contrib;**;" ,(make-lisa-path "contrib/**/"))))
 
