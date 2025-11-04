@@ -105,9 +105,6 @@
        (:file "rete")
        (:file "belief-interface")
        (:file "meta")
-       #+:fast-tokens
-       (:file "stack-token")
-       #-:fast-tokens
        (:file "token")
        (:file "retrieve"))
       :serial t)
