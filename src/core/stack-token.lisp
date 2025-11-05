@@ -24,17 +24,9 @@
 
 (in-package :lisa)
 
-#+sbcl
-(eval-when (:compile-toplevel)
-  (setf sb-ext:*block-compile-default* t))
-
-(defconstant +fact-vec-init-len+ 64)
-
 (defclass token ()
-  ((facts :initform
-          (make-array +fact-vec-init-len+ :initial-element nil :adjustable t :fill-pointer 0)
-          :type vector
-          :accessor token-facts)
+  ((facts :initform (list)
+          :accessor token-stack)
    (not-counter :initform 0
                 :accessor token-not-counter)
    (exists-counter :initform 0
@@ -69,69 +61,54 @@
   (plusp (token-not-counter token)))
 
 (defun token-make-fact-list (token &key (detailp t) (debugp nil))
-  (let* ((facts (list))
-         (vector (token-facts token))
-         (length (token-fact-count token)))
-    (dotimes (i length)
-      (let ((fact (aref vector i)))
-        (if debugp
-            (push fact facts)
-          (when (typep fact 'fact)
-            (push (if detailp fact (fact-symbolic-id fact)) 
-                  facts)))))
+  (let ((facts (list)))
+    (dolist (item (token-stack token))
+      (if debugp
+          (push item facts)
+        (when (typep item 'fact)
+          (push (if detailp item (fact-symbolic-id item)) 
+                facts))))
     (nreverse facts)))
 
 (defun token-find-fact (token address)
-  (aref (slot-value token 'facts) address))
+  (nth address (token-stack token)))
 
 (defun token-top-fact (token)
-  (with-slots ((fact-vector facts)
+  (with-slots ((fact-stack facts)
                (fact-count fact-count)) token
-    (declare (type fixnum fact-count) (type (vector t) fact-vector))
-    (aref fact-vector (1- fact-count))))
+    (declare (type fixnum fact-count))
+    (first fact-stack)))
 
 ;;; Using WITH-SLOTS yields a 2x improvement in CPU usage during profiling.
 
 (defun token-push-fact (token fact)
-  (declare (optimize (speed 3) (safety 1) (debug 0)))
-  (with-slots ((fact-vector facts)
+  (with-slots ((fact-stack facts)
                (fact-count fact-count)
                (hash-code hash-code)) token
-    (declare (type fixnum fact-count) (type (vector t) fact-vector))
-    (vector-push-extend fact fact-vector)
+    (push fact fact-stack)
     (push fact hash-code)
     (incf fact-count))
   token)
 
 (defun token-pop-fact (token)
   (declare (type token token))
-  (declare (optimize (speed 3) (safety 1) (debug 0)))
-  (with-slots ((fact-vector facts)
+  (with-slots ((fact-stack facts)
                (hash-code hash-code)
                (fact-count fact-count)) token
-    (declare (type fixnum fact-count) (type (vector t) fact-vector))
-    (unless (zerop (fill-pointer fact-vector))
+    (declare (type fixnum fact-count))
+    (unless (zerop fact-count)
       (pop hash-code)
       (decf fact-count)
-      (aref fact-vector (decf (fill-pointer fact-vector))))))
-
-(defun fast-array-copy (target-array token count)
-  (declare (type fixnum count) (type (vector t) target-array) (type token token))
-  (declare (optimize (speed 3) (debug 0) (safety 1)))
-  (dotimes (i count)
-    (token-push-fact token (aref target-array i)))
-  target-array)
+      (pop fact-stack))))
 
 (defun replicate-token (token &key (token-class nil))
-  (declare (optimize (speed 3) (safety 1) (debug 0)))
   (let ((new-token
          (make-instance (if token-class
                             (find-class token-class)
                           (class-of token)))))
-    (with-slots ((existing-fact-vector facts)) token
-      (let ((length (token-fact-count token)))
-        (declare (type fixnum length))
-        (fast-array-copy existing-fact-vector new-token length)))
+    (with-slots ((active-fact-stack facts)) token
+      (dolist (item (reverse (token-stack token)))
+        (token-push-fact new-token item)))
     new-token))
 
 (defmethod hash-key ((self token))
@@ -148,7 +125,3 @@
 
 (defmethod make-reset-token ((fact t))
   (token-push-fact (make-instance 'reset-token) t))
-
-#+sbcl
-(eval-when (:compile-toplevel)
-  (setf sb-ext:*block-compile-default* nil))
