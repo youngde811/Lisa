@@ -90,6 +90,7 @@
        (:file "conditions")
        (:file "deffacts")
        (:file "fact")
+       (:file "token")
        (:file "watches")
        (:file "activation")
        (:file "heap")
@@ -105,7 +106,6 @@
        (:file "rete")
        (:file "belief-interface")
        (:file "meta")
-       (:file "token")
        (:file "retrieve"))
       :serial t)
      (:module rete
@@ -158,7 +158,7 @@
         ("contrib;**;" ,(make-lisa-path "contrib/**/"))))
 
 (defun lisa-debugger ()
-  (translate-logical-pathname "lisa:debugger;lisa-debugger.lisp"))
+  #p"lisa:debugger;lisa-debugger.lisp")
 
 ;;; Sets up the environment so folks can use the non-portable form of REQUIRE
 ;;; with some implementations...
@@ -192,6 +192,6 @@
   (defun module-provide-lisa-auto-notify (module-name)
     (unless (find :lisa-auto-notify *features* :test #'eq)
       (if (eq module-name 'lisa-auto-notify)
-          (load (translate-logical-pathname "lisa:auto-notify;sbcl-auto-notify.lisp"))
+          (load (#p"lisa:auto-notify;sbcl-auto-notify.lisp"))
         nil)))
   (pushnew 'module-provide-lisa-auto-notify *module-provider-functions*))
