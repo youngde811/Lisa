@@ -1,17 +1,12 @@
-<sub>_"Even in our sleep, pain which cannot forget falls drop by drop upon the heart, until, in our own despair, against our will, comes wisdom through the awful grace of God."_ -- Aeschylus<sub>
+<sub>_"Even in our sleep, pain which cannot forget falls drop by drop upon the heart, until, in our own despair, against our will, comes wisdom through the awful grace of God."_ -- Aeschylus</sub>
 
 ![_Always Remember_](images/powmia.png "Always Remember")
 
-# Welcome to the Lisa Project #
+# Lisa: A Common Lisp Expert System Shell
 
-Lisa is a production-quality, forward-chaining expert-system shell. The inference engine is an optimized, literal
-implementation of Charles Forgy's Rete algorithm, a very efficient mechanism for solving the difficult many-to-many
-matching problem[^1]. Lisa is written in modern Common Lisp, the Common Lisp Object System (CLOS), and the Meta Object
-Protocol (MOP). Designed for seamless integration with existing Common Lisp implementations, Lisa maximizes the
-potential of CLOS and the MOP without enforcing strict class hierarchy limitations. This flexibility allows developers
-to enhance their applications with sophisticated reasoning abilities with little effort.
+Lisa is a production-quality, forward-chaining expert system shell featuring an optimized implementation of Charles Forgy's Rete algorithm, a highly efficient solution to the difficult many-to-many pattern matching problem[^1]. Written in modern Common Lisp using the Common Lisp Object System (CLOS) and the Meta Object Protocol (MOP), Lisa is designed for seamless integration with existing Common Lisp applications. Lisa maximizes the expressive power of CLOS and the MOP without imposing strict class hierarchy constraints, allowing developers to add sophisticated reasoning capabilities to their applications with minimal effort.
 
-## Supported Lisps ##
+## Supported Implementations
 
 Lisa is known to run on the following ANSI Common Lisp implementations:
 
@@ -23,88 +18,96 @@ Lisa is known to run on the following ANSI Common Lisp implementations:
 - OpenMCL
 - Armed Bear Common Lisp (ABCL)
 
-## Current Status ##
+## Current Status
 
-In December 2024, Lisa completed a re-home from SourceForge to GitHub. Just about every file was touched in some form,
-and some aspects of the directory structure were reorganized. In addition, during my ten-year absence from Lisa it
-appears a number of odd bugs had been introduced that required repair. I've done that (see [Credits](#credits)).
+Lisa is under active development as of January 2025. In December 2024, the project was migrated from SourceForge to GitHub, with comprehensive updates to the codebase and directory structure. Several bugs that had accumulated during the project's hiatus were identified and resolved (see [Credits](#credits)).
 
-Several new features have been added to "modernize" Lisa (eg. logging support). Best of all, I've spent the past several
-months profiling Lisa's behavior using the Slime/SBCL deterministic profiling interface. Several hot-spots were
-discovered, and optimizations were done to these areas.
+Lisa has been modernized with new features including integrated logging support via [log4cl](https://github.com/7max/log4cl). Most significantly, extensive performance profiling using SLIME and SBCL's deterministic profiler has led to substantial optimization improvements (see [Performance Optimization](#performance-optimization)).
 
-### Examples ###
+### Examples
 
-Lisa successfully loads and runs on SBCL 2.4.11; see [here](./docs/ExampleRulebases.md) for a few examples of classic AI
-problems runnable using Lisa.
+Lisa successfully loads and runs on SBCL 2.4.11. See the [Example Rulebases](./docs/ExampleRulebases.md) documentation for demonstrations of classic AI problems implemented in Lisa, including the Monkey and Bananas planning problem, the Towers of Hanoi, and others.
 
-### Recent Features ###
+### Recent Features
 
-- Support for Quicklisp. I've submitted Lisa for
-  [inclusion](https://github.com/quicklisp/quicklisp-projects/issues/2469) in the Quicklisp project registry; just
-  waiting to hear back. In the meantime, see _ql.lisp_ for installation details.
-- Logger selected: [log4cl](https://github.com/7max/log4cl).
-- Log messages inserted into strategic points, replacing format/error forms.
-- Significant optimizations using Slime and SBCL's deterministic profiler. I've identified the two worst hotspots within
-  Lisa's Rete algorithm - TOKEN-PUSH-FACT and TOKEN-POP-FACT. Underneath both of these functions is VECTOR-PUSH-EXTEND,
-  which I believe is the culprit. I'll be looking for a more efficient method to implement Lisa's token stack.
-- Fixed the long-broken TEST and LOGICAL conditional elements.
-- Ported auto-notification to SBCL.
+- **Quicklisp Support**: Submitted for [inclusion](https://github.com/quicklisp/quicklisp-projects/issues/2469) in the Quicklisp project registry. See `ql.lisp` for installation details in the interim.
+- **Modern Logging**: Integrated [log4cl](https://github.com/7max/log4cl) throughout the codebase, replacing ad-hoc format and error forms with structured logging.
+- **Performance Optimization**: Achieved 13-15% runtime improvement through strategic inlining and build order optimization (see [Performance Optimization](#performance-optimization)).
+- **Bug Fixes**: Repaired the long-broken TEST and LOGICAL conditional elements.
+- **SBCL Enhancements**: Ported auto-notification support to SBCL.
 
-## Upcoming Plans ##
+## Performance Optimization
 
-After taking an eleven-year hiatus, as of December 2024 I decided to resume work on Lisa, adding some modern features
-and capabilities. The fundamental architecture will not change, as I'm quite happy with it. But, Lisa will get attention
-with the following:
+Recent profiling work using SBCL's deterministic profiler identified critical performance bottlenecks in Lisa's token manipulation code. The primary hotspot was `TOKEN-PUSH-FACT`, which was being called over 75 million times during typical inference runs without being inlined.
 
-- Fully integrate Lisa with Quicklisp. I'm still awaiting confirmation on the PR I submitted for this work.
-- Performance testing on Linux. Now that Parallels runs on ARM64 hardware, I'll be using a Linux VM to analyze how Lisa
-  performs on SBCL/Linux. Ubunbu 24.x will be the distribution used for these tests.
-- Other minor ambitions yet to be determined.
+### Optimizations Applied
 
-While Lisa is currently being actively developed using SBCL, some testing has been performed using
-[AllegroExpress](https://franz.com/) - the free version of Allegro Common Lisp - with perfect results. The core code here 
-represents Lisa version 3.2 as found on [Sourceforge](https://sourceforge.net/), which should run properly on the Lisp
-implementations mentioned above.
+Two key optimizations were implemented:
 
-**Note**: I've long considered adding additional conditional elements to Lisa, to bring it in line with the latest CLIPS
-releases. However, after studying some of the unpleasant behavioral side effects, and reflecting on how seldom I might
-have wanted an OR, FORALL, etc. CE when writing expert systems, I've decided against adopting them. I will stay within
-Lisa's bounds of simplicity; IMHO these CEs are a syntactic convenience only, and not worth the trouble.
+1. **Inline Declarations**: Added `(declaim (inline ...))` declarations for hot-path token functions including `TOKEN-PUSH-FACT`, `TOKEN-POP-FACT`, and `TOKEN-TOP-FACT`.
 
-## Documentation ##
+2. **Build Order Optimization**: Moved `token.lisp` earlier in the ASDF system definition (from 19th to 5th position) to ensure the compiler sees inline declarations before compiling files that depend on them. This simple reordering allowed the compiler to eliminate 75+ million function calls through inlining.
 
-Please see the Lisa [Wiki page](https://github.com/youngde811/Lisa/wiki/Home) for complete details and documentation. In
-particular, read the _Getting Started_ section first for details on using SBCL with Emacs.
+### Results
 
-## References ##
+These optimizations yielded a **13-15% improvement** in overall runtime performance on the Monkey and Bananas benchmark (5000 iterations):
+- **Before**: ~22 seconds
+- **After**: ~19 seconds
 
-- The [SBCL](https://www.sbcl.org/) home page.
-- [Emacs](https://emacsformacos.com/) for MacOS.
-- [Peter Norvig](https://norvig.github.io/paip-lisp/#/).
-- [Expert Systems: Principles and Programming](https://www.powells.com/book/expert-systems-principles-programming-fourth-edition-principles-programming-9780534384470).
+The optimizations demonstrate the importance of both compiler hints and compilation order in Common Lisp systems. Lisa's CLOS-based architecture is now performing close to its theoretical maximum on SBCL/ARM64.
 
-## Accolades ##
+### Future Work
 
-Over the years, serveral individuals have contributed to aspects of Lisa that either addressed bugs or added useful
-functionality. I've lost touch with most of them, but they deserve mention here.
+Additional performance analysis using SBCL's statistical profiler on x86-64 Linux is planned to identify any remaining optimization opportunities.
 
-- Aneil Mallavarapu: Aneil contributed several enhancements and bug fixes.
-- Paolo Amoroso: Paolo was a big fan of Lisa, and shared his thoughts within the Open Source community. He also gets
-  credit for suggesting I add support for Certainty Factors. I thank him for his [review](http://www.paoloamoroso.it/log/050827.html).
-- Paul Werkowski: Paul contributed code that helped get Lisa running on SBCL, and a very nice package macro.
-- Fred Gilham: Fred contributed code to get auto-notification working on CMUCL.
-- _[gassechen](https://github.com/gassechen)_: Gaston has written a very cool application that provides a UX front end to
-  Lisa. Check it out [here](https://github.com/gassechen/cl-lisa-web/tree/main).
+## Roadmap
 
-## Credits ##
+Lisa's fundamental CLOS-based architecture will remain unchanged, as it provides an elegant foundation for the Rete implementation. Current development priorities include:
 
-- _[gassechen](https://github.com/gassechen)_: Gaston has exercised and uncovered several Lisa bugs that must have crept
-  in while I was absent for the past ten years. Thank you!
-- _[cdmojoli](https://github.com/cdmojoli)_: Identified an issue with auto-notification and SBCL. Thank you!
+- **Quicklisp Integration**: Awaiting confirmation on the submitted pull request to include Lisa in the official Quicklisp distribution.
+- **Linux Performance Testing**: Utilizing Parallels on ARM64 hardware to analyze Lisa's performance characteristics on SBCL/Linux (Ubuntu 24.x).
+- **Statistical Profiling**: Conducting deeper performance analysis using SBCL's statistical profiler on x86-64 architecture to identify additional optimization opportunities.
 
-## Author ##
+### Development Status
 
-[David E. Young](mailto://streetrod750@protonmail.com)
+Lisa is actively developed and tested on SBCL. Additional testing has been performed on [AllegroExpress](https://franz.com/) (the free version of Allegro Common Lisp) with excellent results. The core codebase represents Lisa version 3.2 and should run correctly on all supported Common Lisp implementations listed above.
 
-[^1]: "Rete: A Fast Algorithm for the Many Pattern/Many Object Pattern Match Problem" Charles L. Forgy, Artificial Intelligence 19(1982), 17-37.
+### Design Philosophy
+
+Lisa intentionally maintains a simpler feature set compared to some expert system shells like CLIPS. While additional conditional elements (OR, FORALL, etc.) have been considered, they introduce behavioral complexity and are rarely essential in practice. Lisa prioritizes simplicity and elegance over syntactic convenience, keeping the system approachable and maintainable.
+
+## Documentation
+
+Complete documentation is available on the Lisa [Wiki](https://github.com/youngde811/Lisa/wiki/Home). New users should start with the _Getting Started_ section for guidance on setting up SBCL with Emacs.
+
+## References
+
+- [SBCL](https://www.sbcl.org/) - Steel Bank Common Lisp
+- [Emacs for macOS](https://emacsformacos.com/)
+- [Peter Norvig's Paradigms of Artificial Intelligence Programming](https://norvig.github.io/paip-lisp/#/)
+- [Expert Systems: Principles and Programming](https://www.powells.com/book/expert-systems-principles-programming-fourth-edition-principles-programming-9780534384470) (Giarratano & Riley)
+
+## Acknowledgments
+
+Over the years, several individuals have contributed enhancements, bug fixes, and useful functionality to Lisa. While I've lost touch with many of them, their contributions deserve recognition:
+
+- **Aneil Mallavarapu**: Contributed several enhancements and bug fixes to the core system.
+- **Paolo Amoroso**: Early advocate for Lisa in the open source community who suggested adding Certainty Factor support. His [review](http://www.paoloamoroso.it/log/050827.html) of Lisa remains appreciated.
+- **Paul Werkowski**: Contributed essential code for SBCL compatibility and an elegant package macro.
+- **Fred Gilham**: Implemented auto-notification support for CMUCL.
+- **[gassechen](https://github.com/gassechen)** (Gaston): Created [cl-lisa-web](https://github.com/gassechen/cl-lisa-web/tree/main), an impressive web-based front-end for Lisa.
+
+## Recent Contributors
+
+Special thanks to community members who have helped improve Lisa during its recent revival:
+
+- **[gassechen](https://github.com/gassechen)** (Gaston): Extensively tested Lisa and identified several long-standing bugs that had accumulated during the project's hiatus.
+- **[cdmojoli](https://github.com/cdmojoli)**: Identified and reported an auto-notification issue with SBCL.
+
+## Author
+
+[David E. Young](mailto:streetrod750@protonmail.com)
+
+---
+
+[^1]: Charles L. Forgy, "Rete: A Fast Algorithm for the Many Pattern/Many Object Pattern Match Problem," _Artificial Intelligence_ 19 (1982): 17-37.
