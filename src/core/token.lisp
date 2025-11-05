@@ -27,7 +27,10 @@
 (defconstant +fact-vec-init-len+ 64)
 
 (declaim (inline token-push-fact)
-         (inline token-pop-fact))
+         (inline token-pop-fact)
+         (inline replicate-token)
+         (inline fast-array-copy)
+         (inline token-top-fact))
 
 (defclass token ()
   ((facts :initform
