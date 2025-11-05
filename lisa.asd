@@ -192,6 +192,6 @@
   (defun module-provide-lisa-auto-notify (module-name)
     (unless (find :lisa-auto-notify *features* :test #'eq)
       (if (eq module-name 'lisa-auto-notify)
-          (load (#p"lisa:auto-notify;sbcl-auto-notify.lisp"))
+          (load #p"lisa:auto-notify;sbcl-auto-notify.lisp")
         nil)))
   (pushnew 'module-provide-lisa-auto-notify *module-provider-functions*))
