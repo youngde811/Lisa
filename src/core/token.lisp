@@ -24,7 +24,9 @@
 
 (in-package :lisa)
 
-(declaim (inline token-top-fact))
+#+sbcl
+(eval-when (:compile-toplevel)
+  (setf sb-ext:*block-compile-default* t))
 
 (defconstant +fact-vec-init-len+ 64)
 
@@ -146,3 +148,7 @@
 
 (defmethod make-reset-token ((fact t))
   (token-push-fact (make-instance 'reset-token) t))
+
+#+sbcl
+(eval-when (:compile-toplevel)
+  (setf sb-ext:*block-compile-default* nil))
