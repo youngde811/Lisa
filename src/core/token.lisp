@@ -27,7 +27,8 @@
 (defconstant +fact-vec-init-len+ 64)
 
 ;; These inlines are responsible for a roughly 20% improvement in CPU performance,
-;; and an elimination of over 17 million calls to TOKEN-TOP-FACT alone.
+;; and an elimination of over 45 million calls to TOKEN-TOP-FACT alone (a MAB secenario
+;; with 3000 iterations).
 
 (declaim (inline token-push-fact)
          (inline token-pop-fact)

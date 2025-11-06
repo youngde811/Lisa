@@ -22,9 +22,12 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; Description: This is a convenience file for folks who are not using Quicklisp.
+;; Description: This is a convenience file for folks who need the MAB for exploration,
+;; profiling, testing, whatever.
 
 (in-package :cl-user)
 
 (load "lisa.asd")
 (asdf:operate 'asdf:load-op :lisa :force t)
+
+(load #p"lisa:examples;mab")

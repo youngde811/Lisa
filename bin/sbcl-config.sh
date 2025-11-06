@@ -38,10 +38,9 @@ usage() {
     cat <<EOF
 Usage: $progname [OPTIONS]
 
-This script can be used to install and configure Quicklisp for
-your SBCL environment. All Quicklisp installation defaults are taken,
-so if you want a different installation experience, please do all of
-this manually.
+This script can be used to install and configure Quicklisp for your SBCL environment.
+All Quicklisp installation defaults are taken, so if you want a different installation
+experience, please do all of this manually.
 
 Options:
     -h    Show this message and exit.
@@ -91,6 +90,8 @@ while getopts "h" opt ; do
         *) usage ;;
     esac
 done
+
+shift $(OPTIND - 1)
 
 workdir="$(mktemp -d /tmp/ql.XXXXX)"
 
