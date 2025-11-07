@@ -25,4 +25,4 @@
 ;; Update the version symbol in this file whenever you do a new release.
 
 (eval-when (:load-toplevel :execute)
-  (pushnew :lisa3.10.4 *features*))
+  (pushnew :lisa3.10.5 *features*))
