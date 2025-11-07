@@ -94,13 +94,13 @@ The key win is visible in the profile differences. In the unoptimized version, t
 - TOKEN-HASH-CODE: 0.019s
 - TOKEN-FACT-COUNT: 0.023s
 
-In optimized version, these functions show up in the "not called" list, confirming they've been successfully
+In the optimized version, these functions show up in the "not called" list, confirming they've been successfully
 inlined. Their overhead disappeared into their callers.
 
 #### Summary
 
-  TEST-TOKENS dropped from 1.95GB consed to just 161MB consed - that's a 91% reduction in allocations for the hottest
-  function. The inlining eliminated function call overhead and allowed better compiler optimization.
+TEST-TOKENS dropped from 1.95GB consed to just 161MB consed - that's a 91% reduction in allocations for the hottest
+function. The inlining eliminated function call overhead and allowed better compiler optimization.
   
 These optimizations yielded a significant improvement in overall runtime performance on the Monkey and Bananas benchmark
 (500 iterations). They demonstrate the importance of both compiler hints and compilation order in Common Lisp
