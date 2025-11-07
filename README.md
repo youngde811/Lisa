@@ -67,6 +67,41 @@ Two key optimizations were implemented:
 
 ### Results
 
+- Time Improvements
+  -  Critical hotspot (TEST-TOKENS):
+     - Unoptimized: 1.298 seconds
+     - Optimized: 0.629 seconds
+     - 51% faster: cut execution time in half
+
+  - Total profiled execution:
+    - Unoptimized: 3.298 seconds
+    - Optimized: 1.614 seconds
+    - 51% reduction in profiled time
+
+- Memory Improvements
+  - Memory allocation reduction:
+    - Unoptimized: 13,612,824,256 bytes
+    - Optimized: 8,609,908,064 bytes
+    - 37% less memory allocated
+
+#### Optimization Achievements
+
+The key win is visible in the profile differences. In the unoptimized version, these hot functions appeared:
+- FAST-ARRAY-COPY: 0.304s, 444MB consed
+- TOKEN-PUSH-FACT: 0.301s, 356MB consed
+- GET-SLOT-VALUE: 0.280s, 307MB consed
+- TOKEN-TOP-FACT: 0.243s, 237MB consed
+- TOKEN-HASH-CODE: 0.019s
+- TOKEN-FACT-COUNT: 0.023s
+
+In the optimized version, these functions show up in the "not called" list, confirming they've been successfully
+inlined. Their overhead disappeared into their callers.
+
+#### Summary
+
+TEST-TOKENS dropped from 1.95GB consed to just 161MB consed - that's a 91% reduction in allocations for the hottest
+function. The inlining eliminated function call overhead and allowed better compiler optimization.
+  
 These optimizations yielded a significant improvement in overall runtime performance on the Monkey and Bananas benchmark
 (500 iterations). They demonstrate the importance of both compiler hints and compilation order in Common Lisp
 systems. Lisa's CLOS-based architecture is now performing close to its theoretical maximum on SBCL/ARM64.

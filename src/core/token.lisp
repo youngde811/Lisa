@@ -35,6 +35,8 @@
          (inline replicate-token)
          (inline fast-array-copy)
          (inline token-find-fact)
+         (inline token-hash-code)
+         (inline token-fact-count)
          (inline token-top-fact))
 
 (defclass token ()
@@ -47,14 +49,20 @@
    (exists-counter :initform 0
                    :accessor token-exists-counter)
    (hash-code :initform (list)
-              :accessor token-hash-code)
+              :accessor %token-hash-code)
    (fact-count :initform 0
                :type (unsigned-byte 64)
-               :accessor token-fact-count))) ; big performance optimization
+               :accessor %token-fact-count)))
 
 (defclass add-token (token) ())
 (defclass remove-token (token) ())
 (defclass reset-token (token) ())
+
+(defun token-hash-code (token)
+  (slot-value token 'hash-code))
+
+(defun token-fact-count (token)
+  (slot-value token 'fact-count))
 
 (defun token-increment-exists-counter (token)
   (incf (token-exists-counter token)))
