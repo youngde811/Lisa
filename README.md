@@ -78,24 +78,24 @@ Two key optimizations were implemented:
     - Optimized: 1.614 seconds
     - 51% reduction in profiled time
 
-  - Memory Improvements
-   - Memory allocation reduction:
-     - Unoptimized: 13,612,824,256 bytes
-     - Optimized: 8,609,908,064 bytes
-     - 37% less memory allocated
+- Memory Improvements
+  - Memory allocation reduction:
+    - Unoptimized: 13,612,824,256 bytes
+    - Optimized: 8,609,908,064 bytes
+    - 37% less memory allocated
 
-  - Optimization Achievements
+#### Optimization Achievements
 
-    The key win is visible in the profile differences. In the unoptimized version, these hot functions appeared:
-      - FAST-ARRAY-COPY: 0.304s, 444MB consed
-      - TOKEN-PUSH-FACT: 0.301s, 356MB consed
-      - GET-SLOT-VALUE: 0.280s, 307MB consed
-      - TOKEN-TOP-FACT: 0.243s, 237MB consed
-      - TOKEN-HASH-CODE: 0.019s
-      - TOKEN-FACT-COUNT: 0.023s
+The key win is visible in the profile differences. In the unoptimized version, these hot functions appeared:
+- FAST-ARRAY-COPY: 0.304s, 444MB consed
+- TOKEN-PUSH-FACT: 0.301s, 356MB consed
+- GET-SLOT-VALUE: 0.280s, 307MB consed
+- TOKEN-TOP-FACT: 0.243s, 237MB consed
+- TOKEN-HASH-CODE: 0.019s
+- TOKEN-FACT-COUNT: 0.023s
 
-    In the optimized version, these functions show up in the "not called" list, confirming they've been successfully
-    inlined. Their overhead disappeared into their callers.
+In optimized version, these functions show up in the "not called" list, confirming they've been successfully
+inlined. Their overhead disappeared into their callers.
 
 #### Summary
 
