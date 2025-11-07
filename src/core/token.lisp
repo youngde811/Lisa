@@ -34,6 +34,7 @@
          (inline token-pop-fact)
          (inline replicate-token)
          (inline fast-array-copy)
+         (inline token-find-fact)
          (inline token-top-fact))
 
 (defclass token ()
