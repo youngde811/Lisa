@@ -95,15 +95,22 @@
              (fact-slot-table fact))
     slots))
 
-(defmethod get-slot-value ((self fact) (slot-name symbol))
-  (declare (optimize (speed 3) (safety 1) (debug 0)))
-  "Returns the value associated with a slot name. FACT is a FACT instance;
-  SLOT-NAME is a SLOT-NAME instance."
-  (with-slots ((slot-table slot-table)) self
-    (gethash slot-name slot-table)))
+;; Big performance win here; roughly 100% for a hot-spot calling function. GET-SLOT-VALUE
+;; was a method specialized on SLOT-NAME; re-writing it to be a regular function branching
+;; on the value of SLOT-NAME allowed inlining.
 
-(defmethod get-slot-value ((self fact) (slot-name (eql :object)))
-  (fact-clos-instance self))
+(declaim (inline get-slot-value))
+
+(defun get-slot-value (fact slot-name)
+  (declare (optimize (speed 3) (safety 1) (debug 0)))
+  (flet ((slot-value-for-symbol ()
+           (with-slots ((slot-table slot-table)) fact
+             (gethash slot-name slot-table)))
+         (slot-value-for-object ()
+           (fact-clos-instance fact)))
+    (if (eql slot-name :object)
+        (slot-value-for-object)
+      (slot-value-for-symbol))))
 
 (defun find-instance-of-fact (fact)
   "Retrieves the CLOS instance associated with a fact. FACT is a FACT

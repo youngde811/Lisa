@@ -2,175 +2,175 @@
 ;; (time (lisa-user::run-mab 500))
 
 Evaluation took:
-  3.086 seconds of real time
-  1.756481 seconds of total run time (1.722465 user, 0.034016 system)
-  [ Real times consist of 0.093 seconds GC time, and 2.993 seconds non-GC time. ]
-  [ Run times consist of 0.093 seconds GC time, and 1.664 seconds non-GC time. ]
-  56.90% CPU
-  314 lambdas converted
-  2,348,421,120 bytes consed
+  3.508 seconds of real time
+  1.675433 seconds of total run time (1.628196 user, 0.047237 system)
+  [ Real times consist of 0.098 seconds GC time, and 3.410 seconds non-GC time. ]
+  [ Run times consist of 0.098 seconds GC time, and 1.578 seconds non-GC time. ]
+  47.75% CPU
+  298 lambdas converted
+  2,348,036,944 bytes consed
 
 ;; SBCL's deterministic profiler results (500 iterations) on MacOS with Apple
 ;; silicon (ARM64 M2 Pro):
 
 measuring PROFILE overhead..done
-  seconds  |     gc     |     consed     |    calls   |  sec/call  |  name  
------------------------------------------------------------------
-     0.903 |      0.010 |    714,550,096 |  2,611,500 |   0.000000 | LISA::TEST-TOKENS
-     0.213 |      0.031 |    515,800,976 |    555,500 |   0.000000 | LISA::COMBINE-TOKENS
-     0.203 |      0.053 |    275,089,104 |  8,542,500 |   0.000000 | LISA::GET-SLOT-VALUE
-     0.135 |      0.006 |    325,938,496 |  2,402,500 |   0.000000 | LISA::HASH-KEY
-     0.084 |      0.012 |    290,281,040 |    344,000 |   0.000000 | LISA::MAKE-REMOVE-TOKEN
-     0.041 |      0.004 |     76,341,408 |    392,000 |   0.000000 | LISA::ACTIVATION-PRIORITY
-     0.038 |      0.010 |    172,594,816 |    232,000 |   0.000000 | LISA::MAKE-ADD-TOKEN
-     0.030 |      0.005 |     60,222,400 |    558,000 |   0.000000 | LISA::FIND-INSTANCE-OF-FACT
-     0.026 |      0.006 |     47,572,368 |    430,000 |   0.000000 | LISA::CLASS-MATCHES-P
-     0.019 |      0.000 |     18,675,424 |    122,000 |   0.000000 | LISA:INFERENCE-ENGINE
-     0.016 |      0.000 |     53,145,104 |    313,500 |   0.000000 | LISA::LOGICAL-BLOCK-P
-     0.012 |      0.014 |     82,629,472 |  2,237,000 |   0.000000 | LISA::TOKEN-HASH-CODE
-     0.011 |      0.000 |     17,757,648 |     71,500 |   0.000000 | LISA::TOKEN-INCREMENT-NOT-COUNTER
-     0.010 |      0.000 |     13,367,120 |     50,500 |   0.000000 | LISA::TOKEN-MAKE-FACT-LIST
-     0.009 |      0.000 |     19,070,624 |    128,000 |   0.000000 | LISA::INITIALIZE-SLOT-VALUE
-     0.009 |      0.000 |     24,508,960 |     58,000 |   0.000000 | LISA::NEXT-FACT-ID
-     0.008 |      0.000 |      4,457,072 |     37,000 |   0.000000 | LISA::CLEAR-MEMORIES
-     0.006 |      0.000 |      7,404,400 |     83,500 |   0.000000 | LISA::TOKEN-NEGATED-P
-     0.006 |      0.000 |      2,424,304 |    128,000 |   0.000000 | (SETF LISA:SLOT-VALUE-OF-INSTANCE)
-     0.005 |      0.000 |     13,237,888 |     94,500 |   0.000000 | LISA::ELIGIBLE-P
-     0.005 |      0.004 |      4,717,488 |    221,000 |   0.000000 | LISA::TERMINAL-NODE-RULE
-     0.005 |      0.000 |      3,276,032 |    122,000 |   0.000000 | LISA:CURRENT-ENGINE
-     0.005 |      0.002 |      5,426,288 |     67,500 |   0.000000 | LISA::MAKE-ACTIVATION
-     0.004 |      0.000 |     11,073,936 |     79,500 |   0.000000 | LISA:IN-RULE-FIRING-P
-     0.004 |      0.002 |      9,633,264 |    135,000 |   0.000000 | LISA::RULE-ENGINE
-     0.004 |      0.000 |     11,532,688 |     67,500 |   0.000000 | LISA:AUTO-FOCUS-P
-     0.004 |      0.004 |      9,632,688 |    631,000 |   0.000000 | LISA:FACT-NAME
-     0.003 |      0.000 |      6,487,536 |     50,000 |   0.000000 | LISA::FIND-META-OBJECT
-     0.003 |      0.006 |     23,262,896 |    558,000 |   0.000000 | LISA::FACT-CLOS-INSTANCE
-     0.003 |      0.000 |      5,099,168 |      2,000 |   0.000001 | LISA::MAKE-RESET-TOKEN
-     0.002 |      0.000 |      4,587,504 |     21,000 |   0.000000 | LISA::LOGICAL-RULE-P
-     0.002 |      0.000 |        131,072 |     15,500 |   0.000000 | LISA::CLEAR-ACTIVATION-BINDINGS
-     0.001 |      0.008 |     74,372,192 |  2,418,500 |   0.000000 | LISA::TOKEN-FACT-COUNT
-     0.001 |      0.002 |        589,744 |    136,000 |   0.000000 | LISA::HEAP
-     0.001 |      0.000 |              0 |      1,000 |   0.000001 | LISA:FIND-CONTEXT
-     0.001 |      0.002 |        524,240 |    166,500 |   0.000000 | LISA::RETE-FACT-TABLE
-     0.001 |      0.000 |              0 |        500 |   0.000001 | LISA::NEXT-CONTEXT
-     0.001 |      0.000 |      6,553,600 |    101,000 |   0.000000 | LISA::BELIEF-FACTOR
-     0.000 |      0.002 |      4,259,824 |    151,000 |   0.000000 | LISA:ACTIVE-RULE
-     0.000 |      0.000 |              0 |      1,000 |   0.000000 | LISA::FORGET-ALL-FACTS
-     0.000 |      0.000 |              0 |        500 |   0.000001 | LISA::HALT-ENGINE
-     0.000 |      0.000 |        655,360 |     50,500 |   0.000000 | (SETF LISA::BELIEF-FACTOR)
-     0.000 |      0.000 |         65,520 |    108,000 |   0.000000 | LISA::RETE-ROOTS
-     0.000 |      0.000 |      2,620,864 |     28,500 |   0.000000 | LISA::GET-CLASS-NAME
-     0.000 |      0.000 |      1,966,080 |        500 |   0.000001 | LISA::RESET-ACTIVATIONS
-     0.000 |      0.000 |         65,536 |     50,000 |   0.000000 | LISA::RETE-META-DATA
-     0.000 |      0.002 |      2,031,120 |    155,000 |   0.000000 | LISA::TOKEN-NOT-COUNTER
-     0.000 |      0.000 |      4,848,480 |     67,500 |   0.000000 | LISA:RULE-CONTEXT
-     0.000 |      0.000 |              0 |      1,000 |   0.000000 | LISA::MAKE-CONTEXT-NAME
-     0.000 |      0.000 |        131,072 |     35,500 |   0.000000 | LISA::GET-SLOT-LIST
-     0.000 |      0.000 |              0 |        500 |   0.000000 | LISA::STARTING-CONTEXT
-     0.000 |      0.000 |              0 |      1,500 |   0.000000 | (SETF LISA::RETE-FOCUS-STACK)
-     0.000 |      0.000 |              0 |        500 |   0.000000 | LISA::REMOVE-ACTIVATIONS
-     0.000 |      0.000 |              0 |        500 |   0.000000 | LISA::DEFFACTS-FACT-LIST
-     0.000 |      0.000 |              0 |      1,000 |   0.000000 | (SETF LISA::RETE-HALTED)
-     0.000 |      0.000 |              0 |      1,500 |   0.000000 | LISA::RETE-CONTEXTS
-     0.000 |      0.000 |              0 |      1,500 |   0.000000 | LISA::RETE-FOCUS-STACK
-     0.000 |      0.000 |              0 |        500 |   0.000000 | LISA:RESET
-     0.000 |      0.000 |              0 |     20,000 |   0.000000 | LISA:RETRACT
-     0.000 |      0.000 |      4,849,040 |    108,000 |   0.000000 | LISA:RETE-NETWORK
-     0.000 |      0.000 |      2,031,616 |        500 |   0.000000 | LISA:RUN
-     0.000 |      0.004 |      7,666,384 |    392,000 |   0.000000 | LISA:RULE-SALIENCE
-     0.000 |      0.000 |      2,293,200 |    107,500 |   0.000000 | LISA:FACT-ID
-     0.000 |      0.000 |      2,162,592 |     58,000 |   0.000000 | (SETF LISA:FACT-ID)
-     0.000 |      0.000 |        393,136 |     94,500 |   0.000000 | LISA::ACTIVATION-ELIGIBLE
-     0.000 |      0.000 |              0 |     27,000 |   0.000000 | (SETF LISA::ACTIVATION-ELIGIBLE)
-     0.000 |      0.000 |              0 |        500 |   0.000000 | LISA::RETE-AUTOFACTS
-     0.000 |      0.000 |      7,082,256 |    108,500 |   0.000000 | LISA::FACT-ID-TABLE
-     0.000 |      0.004 |     63,954,720 |    291,500 |   0.000000 | LISA::ADD-TOKENS-TO-LEFT-MEMORY
-     0.000 |      0.000 |     15,136,240 |     28,500 |   0.000000 | LISA::FIND-META-FACT
-     0.000 |      0.000 |     14,219,648 |     58,000 |   0.000000 | LISA::REMEMBER-FACT
-     0.000 |      0.002 |    279,154,208 |    497,000 |   0.000000 | LISA::TEST-AGAINST-RIGHT-MEMORY
-     0.000 |      0.002 |      7,535,504 |    196,000 |   0.000000 | LISA::ACTIVATION-TIMESTAMP
-     0.000 |      0.000 |      5,045,728 |     21,500 |   0.000000 | LISA::ENSURE-META-DATA-EXISTS
-     0.000 |      0.008 |     62,709,488 |  2,341,500 |   0.000000 | LISA::NODE1-TEST
-     0.000 |      0.000 |        196,592 |     58,000 |   0.000000 | LISA::RETE-NEXT-FACT-ID
-     0.000 |      0.000 |        131,056 |     58,500 |   0.000000 | (SETF LISA::RETE-NEXT-FACT-ID)
-     0.000 |      0.002 |     48,820,112 |    128,000 |   0.000000 | LISA::SET-SLOT-VALUE
-     0.000 |      0.000 |    106,218,704 |    926,000 |   0.000000 | LISA::FORGET-TOKEN
-     0.000 |      0.013 |     55,829,216 |  2,001,000 |   0.000000 | LISA::JOIN-NODE-LEFT-MEMORY
-     0.000 |      0.000 |              0 |     40,500 |   0.000000 | LISA::RULE-BEHAVIOR
-     0.000 |      0.000 |      2,817,872 |    288,500 |   0.000000 | LISA::RULE-ACTIVATIONS
-     0.000 |      0.006 |     53,275,072 |  1,916,500 |   0.000000 | LISA::JOIN-NODE-RIGHT-MEMORY
-     0.000 |      0.000 |     22,607,712 |     49,500 |   0.000000 | LISA::RETRACT-FACT
-     0.000 |      0.000 |      6,552,832 |     40,500 |   0.000000 | LISA::FIRE-ACTIVATION
-     0.000 |      0.004 |    143,048,752 |    618,500 |   0.000000 | LISA::ACCEPT-TOKENS-FROM-LEFT
-     0.000 |      0.000 |      2,096,640 |      1,000 |   0.000000 | LISA::RESET-FOCUS-STACK
-     0.000 |      0.000 |              0 |        500 |   0.000000 | LISA::CLEAR-ACTIVATIONS
-     0.000 |      0.000 |     11,860,240 |     29,500 |   0.000000 | LISA::MODIFY-FACT
-     0.000 |      0.000 |     18,676,160 |     49,500 |   0.000000 | LISA::FORGET-FACT
-     0.000 |      0.000 |     72,509,088 |     40,500 |   0.000000 | LISA::FIRE-RULE
-     0.000 |      0.000 |     29,946,560 |     68,000 |   0.000000 | LISA::GET-NEXT-ACTIVATION
-     0.000 |      0.019 |    919,146,048 |  2,615,500 |   0.000000 | LISA::ACCEPT-TOKEN
-     0.000 |      0.000 |    138,921,248 |  1,038,000 |   0.000000 | LISA::REMEMBER-TOKEN
-     0.000 |      0.000 |              0 |     67,500 |   0.000000 | LISA::RULE-AUTO-FOCUS
-     0.000 |      0.002 |     47,769,488 |    203,000 |   0.000000 | LISA::CONFLICT-SET
-     0.000 |      0.000 |      1,375,840 |      7,000 |   0.000000 | LISA::MAKE-FACT-FROM-TEMPLATE
-     0.000 |      0.000 |        262,112 |     68,500 |   0.000000 | LISA::ACTIVE-CONTEXT
-     0.000 |      0.000 |      4,848,544 |     71,500 |   0.000000 | (SETF LISA::TOKEN-NOT-COUNTER)
-     0.000 |      0.000 |     13,892,384 |     58,000 |   0.000000 | LISA::ASSERT-FACT
-     0.000 |      0.002 |      9,043,520 |     67,500 |   0.000000 | LISA::UNBIND-RULE-ACTIVATION
-     0.000 |      0.004 |    163,432,896 |  1,419,500 |   0.000000 | LISA::PASS-TOKEN-ON-RIGHT
-     0.000 |      0.000 |              0 |      1,000 |   0.000000 | LISA::INITIAL-CONTEXT
-     0.000 |      0.000 |      5,045,056 |    136,000 |   0.000000 | LISA::CONTEXT-STRATEGY
-     0.000 |      0.022 |    110,413,360 |  4,221,500 |   0.000000 | LISA::SUCCESSOR-CONNECTOR
-     0.000 |      0.000 |     23,196,368 |    500,000 |   0.000000 | LISA::ACTIVATION-RULE
-     0.000 |      0.024 |    143,701,088 |  4,221,500 |   0.000000 | LISA::SUCCESSOR-NODE
-     0.000 |      0.000 |     68,544,624 |     67,500 |   0.000000 | LISA::INSERT-ACTIVATION
-     0.000 |      0.002 |     20,247,568 |    592,500 |   0.000000 | LISA::JOIN-NODE-SUCCESSOR
-     0.000 |      0.006 |    168,812,848 |    746,500 |   0.000000 | LISA::ADD-TOKEN-TO-RIGHT-MEMORY
-     0.000 |      0.000 |     22,081,536 |    138,000 |   0.000000 | LISA::FIND-ACTIVATION-BINDING
-     0.000 |      0.000 |     14,743,248 |     58,000 |   0.000000 | LISA::ADD-FACT-TO-NETWORK
-     0.000 |      0.000 |     51,180,432 |    290,000 |   0.000000 | LISA::REMOVE-TOKENS-FROM-LEFT-MEMORY
-     0.000 |      0.000 |      2,489,760 |        500 |   0.000000 | LISA::ASSERT-AUTOFACTS
-     0.000 |      0.000 |      2,228,272 |     27,000 |   0.000000 | LISA::DISABLE-ACTIVATION
-     0.000 |      0.000 |     14,352,048 |     68,000 |   0.000000 | LISA::NEXT-ACTIVATION
-     0.000 |      0.000 |      2,293,760 |     40,500 |   0.000000 | LISA::ACTIVATION-TOKENS
-     0.000 |      0.002 |    339,699,088 |  1,382,500 |   0.000000 | LISA::TEST-AGAINST-LEFT-MEMORY
-     0.000 |      0.000 |        262,096 |     68,500 |   0.000000 | LISA::RETE-HALTED
-     0.000 |      0.000 |    106,090,896 |    108,000 |   0.000000 | LISA::ADD-TOKEN-TO-NETWORK
-     0.000 |      0.000 |              0 |      7,000 |   0.000000 | LISA::FACT-META-DATA
-     0.000 |      0.000 |      6,815,728 |    293,500 |   0.000000 | LISA::FACT-SLOT-TABLE
-     0.000 |      0.000 |     28,570,832 |     58,000 |   0.000000 | LISA::ADJUST-BELIEF
-     0.000 |      0.000 |         65,536 |        500 |   0.000000 | LISA::RESET-ENGINE
-     0.000 |      0.000 |      6,880,624 |     58,000 |   0.000000 | LISA::DUPLICATE-FACT-P
-     0.000 |      0.000 |     49,146,800 |     58,000 |   0.000000 | LISA::ASSERT-FACT-AUX
-     0.000 |      0.000 |     39,645,200 |        500 |   0.000000 | LISA::RUN-ENGINE
-     0.000 |      0.000 |              0 |     21,000 |   0.000000 | LISA::RULE-LOGICAL-MARKER
-     0.000 |      0.000 |     35,969,056 |     28,500 |   0.000000 | LISA::MAKE-FACT
-     0.000 |      0.004 |     51,438,288 |  1,535,500 |   0.000000 | LISA::SHARED-NODE-SUCCESSORS
-     0.000 |      0.000 |      2,228,224 |        500 |   0.000000 | LISA::RESET-NETWORK
-     0.000 |      0.000 |              0 |        500 |   0.000000 | LISA::SET-INITIAL-STATE
-     0.000 |      0.000 |              0 |        500 |   0.000000 | LISA::CLEAR-CONTEXTS
-     0.000 |      0.008 |    333,547,168 |  1,419,500 |   0.000000 | LISA::ACCEPT-TOKEN-FROM-RIGHT
-     0.000 |      0.000 |      2,359,264 |    107,500 |   0.000000 | LISA::FACT-SHADOWSP
-     0.000 |      0.000 |      2,097,152 |     40,500 |   0.000000 | LISA::RETE-FIRING-COUNT
-     0.000 |      0.000 |        196,560 |     41,000 |   0.000000 | (SETF LISA::RETE-FIRING-COUNT)
-     0.000 |      0.000 |      9,698,240 |    313,500 |   0.000000 | LISA::JOIN-NODE-LOGICAL-BLOCK
-     0.000 |      0.002 |     36,434,448 |    247,000 |   0.000000 | LISA::PASS-TOKENS-ON-LEFT
-     0.000 |      0.006 |    113,693,120 |    636,000 |   0.000000 | LISA::REMOVE-TOKEN-FROM-RIGHT-MEMORY
-     0.000 |      0.000 |     19,118,768 |     28,500 |   0.000000 | LISA::INITIALIZE-FACT-FROM-TEMPLATE
-     0.000 |      0.004 |    187,150,688 |    592,500 |   0.000000 | LISA::CALL-SUCCESSOR
-     0.000 |      0.000 |     36,761,952 |    135,000 |   0.000000 | LISA::ADD-ACTIVATION
-     0.000 |      0.000 |      5,045,872 |     49,500 |   0.000000 | LISA::REMOVE-FACT-FROM-NETWORK
-     0.000 |      0.000 |    164,212,000 |    592,500 |   0.000000 | LISA::PASS-TOKENS-TO-SUCCESSOR
-     0.000 |      0.000 |      2,818,016 |    401,500 |   0.000000 | LISA::PATTERN-BINDING-P
-     0.000 |      0.079 |  2,771,224,128 |  1,535,500 |   0.000000 | LISA::PASS-TOKEN-TO-SUCCESSORS
-     0.000 |      0.000 |      2,424,816 |     50,500 |   0.000000 | LISA::TOKEN-FACTS
-     0.000 |      0.000 |      3,146,544 |     67,500 |   0.000000 | LISA::BIND-RULE-ACTIVATION
------------------------------------------------------------------
-     1.835 |      0.419 | 10,282,196,432 | 62,110,000 |            | Total
+  seconds  |     gc     |     consed    |    calls   |  sec/call  |  name  
+----------------------------------------------------------------
+     0.607 |      0.015 |   147,239,296 |  2,611,500 |   0.000000 | LISA::TEST-TOKENS
+     0.227 |      0.053 |   546,119,104 |    555,500 |   0.000000 | LISA::COMBINE-TOKENS
+     0.166 |      0.017 |   246,181,264 |  2,402,500 |   0.000000 | LISA::HASH-KEY
+     0.069 |      0.000 |   261,456,032 |    344,000 |   0.000000 | LISA::MAKE-REMOVE-TOKEN
+     0.055 |      0.058 |   101,042,448 |  1,916,500 |   0.000000 | LISA::JOIN-NODE-RIGHT-MEMORY
+     0.049 |      0.032 |    98,694,512 |  2,237,000 |   0.000000 | LISA::TOKEN-HASH-CODE
+     0.043 |      0.008 |    52,034,064 |    558,000 |   0.000000 | LISA::FIND-INSTANCE-OF-FACT
+     0.041 |      0.000 |    64,481,408 |    392,000 |   0.000000 | LISA::ACTIVATION-PRIORITY
+     0.037 |      0.008 |   144,126,016 |    232,000 |   0.000000 | LISA::MAKE-ADD-TOKEN
+     0.036 |      0.018 |    57,275,280 |    874,000 |   0.000000 | LISA::GET-SLOT-VALUE
+     0.032 |      0.035 |    84,461,472 |  2,341,500 |   0.000000 | LISA::NODE1-TEST
+     0.026 |      0.024 |       720,896 |    101,000 |   0.000000 | LISA::BELIEF-FACTOR
+     0.023 |      0.000 |    68,801,712 |    430,000 |   0.000000 | LISA::CLASS-MATCHES-P
+     0.022 |      0.019 |     4,455,552 |    221,000 |   0.000000 | LISA::TERMINAL-NODE-RULE
+     0.021 |      0.000 |     4,652,592 |    122,000 |   0.000000 | LISA:INFERENCE-ENGINE
+     0.018 |      0.017 |   116,182,624 |  4,221,500 |   0.000000 | LISA::SUCCESSOR-CONNECTOR
+     0.017 |      0.000 |    19,722,784 |    313,500 |   0.000000 | LISA::LOGICAL-BLOCK-P
+     0.016 |      0.009 |     1,965,552 |     83,500 |   0.000000 | LISA::TOKEN-NEGATED-P
+     0.014 |      0.008 |     6,618,000 |    631,000 |   0.000000 | LISA:FACT-NAME
+     0.011 |      0.000 |     5,962,752 |     50,500 |   0.000000 | LISA::TOKEN-MAKE-FACT-LIST
+     0.011 |      0.000 |    35,842,624 |     71,500 |   0.000000 | LISA::TOKEN-INCREMENT-NOT-COUNTER
+     0.011 |      0.000 |    29,687,360 |    128,000 |   0.000000 | LISA::INITIALIZE-SLOT-VALUE
+     0.010 |      0.009 |     1,245,056 |     71,500 |   0.000000 | (SETF LISA::TOKEN-NOT-COUNTER)
+     0.009 |      0.000 |     4,193,952 |     58,000 |   0.000000 | LISA::NEXT-FACT-ID
+     0.009 |      0.006 |    49,731,344 |  2,418,500 |   0.000000 | LISA::TOKEN-FACT-COUNT
+     0.007 |      0.007 |    17,629,072 |    166,500 |   0.000000 | LISA::RETE-FACT-TABLE
+     0.007 |      0.000 |    18,940,016 |     37,000 |   0.000000 | LISA::CLEAR-MEMORIES
+     0.007 |      0.000 |     1,441,792 |    128,000 |   0.000000 | (SETF LISA:SLOT-VALUE-OF-INSTANCE)
+     0.007 |      0.006 |             0 |      7,000 |   0.000001 | LISA::FACT-META-DATA
+     0.007 |      0.000 |     1,441,440 |    122,000 |   0.000000 | LISA:CURRENT-ENGINE
+     0.006 |      0.000 |     2,752,176 |     94,500 |   0.000000 | LISA::ELIGIBLE-P
+     0.005 |      0.000 |     4,127,984 |     67,500 |   0.000000 | LISA:AUTO-FOCUS-P
+     0.005 |      0.000 |     2,293,760 |     79,500 |   0.000000 | LISA:IN-RULE-FIRING-P
+     0.005 |      0.000 |     1,965,568 |     50,000 |   0.000000 | LISA::FIND-META-OBJECT
+     0.004 |      0.000 |     5,772,704 |     67,500 |   0.000000 | LISA::MAKE-ACTIVATION
+     0.004 |      0.000 |     1,378,416 |      2,000 |   0.000002 | LISA::MAKE-RESET-TOKEN
+     0.003 |      0.003 |     2,293,600 |    288,500 |   0.000000 | LISA::RULE-ACTIVATIONS
+     0.003 |      0.000 |     1,114,080 |     15,500 |   0.000000 | LISA::CLEAR-ACTIVATION-BINDINGS
+     0.002 |      0.006 |    12,910,320 |    592,500 |   0.000000 | LISA::JOIN-NODE-SUCCESSOR
+     0.002 |      0.000 |       458,640 |     21,000 |   0.000000 | LISA::LOGICAL-RULE-P
+     0.002 |      0.000 |             0 |    108,000 |   0.000000 | LISA::RETE-ROOTS
+     0.001 |      0.000 |       196,576 |    135,000 |   0.000000 | LISA::RULE-ENGINE
+     0.001 |      0.000 |    12,451,376 |    401,500 |   0.000000 | LISA::PATTERN-BINDING-P
+     0.001 |      0.000 |    24,377,312 |    293,500 |   0.000000 | LISA::FACT-SLOT-TABLE
+     0.001 |      0.000 |             0 |     28,500 |   0.000000 | LISA::GET-CLASS-NAME
+     0.001 |      0.000 |             0 |      1,000 |   0.000001 | LISA:FIND-CONTEXT
+     0.001 |      0.000 |             0 |     50,500 |   0.000000 | (SETF LISA::BELIEF-FACTOR)
+     0.001 |      0.000 |       524,288 |    107,500 |   0.000000 | LISA:FACT-ID
+     0.001 |      0.000 |             0 |        500 |   0.000001 | LISA::NEXT-CONTEXT
+     0.000 |      0.000 |             0 |     67,500 |   0.000000 | LISA:RULE-CONTEXT
+     0.000 |      0.000 |     1,179,520 |    155,000 |   0.000000 | LISA::TOKEN-NOT-COUNTER
+     0.000 |      0.000 |     9,500,400 |    313,500 |   0.000000 | LISA::JOIN-NODE-LOGICAL-BLOCK
+     0.000 |      0.000 |       458,640 |      1,000 |   0.000000 | LISA::FORGET-ALL-FACTS
+     0.000 |      0.000 |             0 |     35,500 |   0.000000 | LISA::GET-SLOT-LIST
+     0.000 |      0.000 |       982,976 |    108,000 |   0.000000 | LISA:RETE-NETWORK
+     0.000 |      0.000 |    11,927,120 |    151,000 |   0.000000 | LISA:ACTIVE-RULE
+     0.000 |      0.000 |       720,768 |     58,500 |   0.000000 | (SETF LISA::RETE-NEXT-FACT-ID)
+     0.000 |      0.000 |             0 |     58,000 |   0.000000 | (SETF LISA:FACT-ID)
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA::RESET-ACTIVATIONS
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA::STARTING-CONTEXT
+     0.000 |      0.000 |    18,743,168 |    558,000 |   0.000000 | LISA::FACT-CLOS-INSTANCE
+     0.000 |      0.000 |             0 |     50,000 |   0.000000 | LISA::RETE-META-DATA
+     0.000 |      0.000 |             0 |     50,500 |   0.000000 | LISA::TOKEN-FACTS
+     0.000 |      0.000 |     1,638,224 |    108,500 |   0.000000 | LISA::FACT-ID-TABLE
+     0.000 |      0.000 |     8,519,680 |     27,000 |   0.000000 | (SETF LISA::ACTIVATION-ELIGIBLE)
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA::HALT-ENGINE
+     0.000 |      0.000 |     4,194,080 |    500,000 |   0.000000 | LISA::ACTIVATION-RULE
+     0.000 |      0.000 |    16,842,640 |     40,500 |   0.000000 | LISA::RULE-BEHAVIOR
+     0.000 |      0.000 |             0 |      1,000 |   0.000000 | LISA::MAKE-CONTEXT-NAME
+     0.000 |      0.000 |     1,965,600 |     68,500 |   0.000000 | LISA::RETE-HALTED
+     0.000 |      0.000 |             0 |     41,000 |   0.000000 | (SETF LISA::RETE-FIRING-COUNT)
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA::DEFFACTS-FACT-LIST
+     0.000 |      0.000 |             0 |      1,500 |   0.000000 | (SETF LISA::RETE-FOCUS-STACK)
+     0.000 |      0.000 |             0 |      1,500 |   0.000000 | LISA::RETE-CONTEXTS
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA::RETE-AUTOFACTS
+     0.000 |      0.000 |             0 |      1,500 |   0.000000 | LISA::RETE-FOCUS-STACK
+     0.000 |      0.000 |             0 |      1,000 |   0.000000 | (SETF LISA::RETE-HALTED)
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA::REMOVE-ACTIVATIONS
+     0.000 |      0.000 |             0 |     21,000 |   0.000000 | LISA::RULE-LOGICAL-MARKER
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA:RESET
+     0.000 |      0.000 |     2,162,560 |     20,000 |   0.000000 | LISA:RETRACT
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA:RUN
+     0.000 |      0.000 |     2,227,856 |    392,000 |   0.000000 | LISA:RULE-SALIENCE
+     0.000 |      0.000 |     8,321,040 |     94,500 |   0.000000 | LISA::ACTIVATION-ELIGIBLE
+     0.000 |      0.008 |    54,712,528 |    291,500 |   0.000000 | LISA::ADD-TOKENS-TO-LEFT-MEMORY
+     0.000 |      0.000 |     1,376,128 |     28,500 |   0.000000 | LISA::FIND-META-FACT
+     0.000 |      0.000 |    29,222,640 |     58,000 |   0.000000 | LISA::REMEMBER-FACT
+     0.000 |      0.000 |   267,155,952 |    497,000 |   0.000000 | LISA::TEST-AGAINST-RIGHT-MEMORY
+     0.000 |      0.000 |     1,441,616 |    196,000 |   0.000000 | LISA::ACTIVATION-TIMESTAMP
+     0.000 |      0.000 |       917,392 |     21,500 |   0.000000 | LISA::ENSURE-META-DATA-EXISTS
+     0.000 |      0.000 |       262,144 |     58,000 |   0.000000 | LISA::RETE-NEXT-FACT-ID
+     0.000 |      0.000 |    51,307,376 |    128,000 |   0.000000 | LISA::SET-SLOT-VALUE
+     0.000 |      0.000 |   127,327,456 |    926,000 |   0.000000 | LISA::FORGET-TOKEN
+     0.000 |      0.000 |    38,271,568 |  2,001,000 |   0.000000 | LISA::JOIN-NODE-LEFT-MEMORY
+     0.000 |      0.000 |    38,203,264 |     49,500 |   0.000000 | LISA::RETRACT-FACT
+     0.000 |      0.000 |    19,267,936 |     40,500 |   0.000000 | LISA::FIRE-ACTIVATION
+     0.000 |      0.009 |   172,341,584 |    618,500 |   0.000000 | LISA::ACCEPT-TOKENS-FROM-LEFT
+     0.000 |      0.000 |             0 |      1,000 |   0.000000 | LISA::RESET-FOCUS-STACK
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA::CLEAR-ACTIVATIONS
+     0.000 |      0.000 |    18,083,648 |     29,500 |   0.000000 | LISA::MODIFY-FACT
+     0.000 |      0.000 |    25,751,280 |     49,500 |   0.000000 | LISA::FORGET-FACT
+     0.000 |      0.000 |    55,022,640 |     40,500 |   0.000000 | LISA::FIRE-RULE
+     0.000 |      0.000 |    36,565,248 |     68,000 |   0.000000 | LISA::GET-NEXT-ACTIVATION
+     0.000 |      0.000 |   605,215,632 |  2,615,500 |   0.000000 | LISA::ACCEPT-TOKEN
+     0.000 |      0.000 |       458,752 |    136,000 |   0.000000 | LISA::HEAP
+     0.000 |      0.003 |   170,243,376 |  1,038,000 |   0.000000 | LISA::REMEMBER-TOKEN
+     0.000 |      0.000 |     1,965,776 |     67,500 |   0.000000 | LISA::RULE-AUTO-FOCUS
+     0.000 |      0.000 |    30,799,376 |    203,000 |   0.000000 | LISA::CONFLICT-SET
+     0.000 |      0.000 |     2,096,480 |      7,000 |   0.000000 | LISA::MAKE-FACT-FROM-TEMPLATE
+     0.000 |      0.000 |       655,360 |     68,500 |   0.000000 | LISA::ACTIVE-CONTEXT
+     0.000 |      0.000 |     2,882,896 |     58,000 |   0.000000 | LISA::ASSERT-FACT
+     0.000 |      0.000 |     7,142,912 |     67,500 |   0.000000 | LISA::UNBIND-RULE-ACTIVATION
+     0.000 |      0.000 |   243,043,216 |  1,419,500 |   0.000000 | LISA::PASS-TOKEN-ON-RIGHT
+     0.000 |      0.000 |             0 |      1,000 |   0.000000 | LISA::INITIAL-CONTEXT
+     0.000 |      0.000 |       851,792 |    136,000 |   0.000000 | LISA::CONTEXT-STRATEGY
+     0.000 |      0.000 |   189,840,464 |  4,221,500 |   0.000000 | LISA::SUCCESSOR-NODE
+     0.000 |      0.000 |    25,620,816 |     67,500 |   0.000000 | LISA::INSERT-ACTIVATION
+     0.000 |      0.000 |   173,458,736 |    746,500 |   0.000000 | LISA::ADD-TOKEN-TO-RIGHT-MEMORY
+     0.000 |      0.000 |    31,257,984 |    138,000 |   0.000000 | LISA::FIND-ACTIVATION-BINDING
+     0.000 |      0.000 |     2,031,760 |     58,000 |   0.000000 | LISA::ADD-FACT-TO-NETWORK
+     0.000 |      0.000 |    57,145,488 |    290,000 |   0.000000 | LISA::REMOVE-TOKENS-FROM-LEFT-MEMORY
+     0.000 |      0.000 |     1,048,320 |        500 |   0.000000 | LISA::ASSERT-AUTOFACTS
+     0.000 |      0.000 |       458,640 |     27,000 |   0.000000 | LISA::DISABLE-ACTIVATION
+     0.000 |      0.000 |     3,670,640 |     68,000 |   0.000000 | LISA::NEXT-ACTIVATION
+     0.000 |      0.000 |             0 |     40,500 |   0.000000 | LISA::ACTIVATION-TOKENS
+     0.000 |      0.008 |   242,837,040 |  1,382,500 |   0.000000 | LISA::TEST-AGAINST-LEFT-MEMORY
+     0.000 |      0.000 |    92,655,712 |    108,000 |   0.000000 | LISA::ADD-TOKEN-TO-NETWORK
+     0.000 |      0.000 |    26,148,336 |     58,000 |   0.000000 | LISA::ADJUST-BELIEF
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA::RESET-ENGINE
+     0.000 |      0.000 |    15,986,928 |     58,000 |   0.000000 | LISA::DUPLICATE-FACT-P
+     0.000 |      0.000 |    60,477,200 |     58,000 |   0.000000 | LISA::ASSERT-FACT-AUX
+     0.000 |      0.000 |    54,779,152 |        500 |   0.000000 | LISA::RUN-ENGINE
+     0.000 |      0.000 |    22,151,104 |     28,500 |   0.000000 | LISA::MAKE-FACT
+     0.000 |      0.000 |    39,972,080 |  1,535,500 |   0.000000 | LISA::SHARED-NODE-SUCCESSORS
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA::RESET-NETWORK
+     0.000 |      0.000 |       262,144 |        500 |   0.000000 | LISA::SET-INITIAL-STATE
+     0.000 |      0.000 |             0 |        500 |   0.000000 | LISA::CLEAR-CONTEXTS
+     0.000 |      0.013 |   321,742,992 |  1,419,500 |   0.000000 | LISA::ACCEPT-TOKEN-FROM-RIGHT
+     0.000 |      0.000 |             0 |    107,500 |   0.000000 | LISA::FACT-SHADOWSP
+     0.000 |      0.000 |       524,160 |     40,500 |   0.000000 | LISA::RETE-FIRING-COUNT
+     0.000 |      0.000 |    25,296,624 |    247,000 |   0.000000 | LISA::PASS-TOKENS-ON-LEFT
+     0.000 |      0.007 |   164,872,880 |    636,000 |   0.000000 | LISA::REMOVE-TOKEN-FROM-RIGHT-MEMORY
+     0.000 |      0.000 |    23,656,816 |     28,500 |   0.000000 | LISA::INITIALIZE-FACT-FROM-TEMPLATE
+     0.000 |      0.009 |   179,943,664 |    592,500 |   0.000000 | LISA::CALL-SUCCESSOR
+     0.000 |      0.000 |    36,700,080 |    135,000 |   0.000000 | LISA::ADD-ACTIVATION
+     0.000 |      0.010 |    30,997,856 |     49,500 |   0.000000 | LISA::REMOVE-FACT-FROM-NETWORK
+     0.000 |      0.000 |   139,113,904 |    592,500 |   0.000000 | LISA::PASS-TOKENS-TO-SUCCESSOR
+     0.000 |      0.115 | 2,980,095,024 |  1,535,500 |   0.000000 | LISA::PASS-TOKEN-TO-SUCCESSORS
+     0.000 |      0.000 |    19,460,240 |     67,500 |   0.000000 | LISA::BIND-RULE-ACTIVATION
+----------------------------------------------------------------
+     1.669 |      0.541 | 9,319,139,840 | 54,441,500 |            | Total
 
-estimated total profiling overhead: 56.97 seconds
+estimated total profiling overhead: 49.58 seconds
 overhead estimation parameters:
-  1.2526e-8s/call, 9.1732e-7s total profiling, 4.28108e-7s internal profiling
+  1.1406e-8s/call, 9.10778e-7s total profiling, 4.22226e-7s internal profiling
 
 These functions were not called:
  LISA::%MAKE-BINDING LISA::ACQUIRE-META-DATA LISA::ACTIVATION-FACT-LIST
