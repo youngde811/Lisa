@@ -67,9 +67,11 @@ Two key optimizations were implemented:
 
 ### Results
 
-These optimizations yielded a **13-15% improvement** in overall runtime performance on the Monkey and Bananas benchmark
-(3000 iterations). They demonstrate the importance of both compiler hints and compilation order in Common Lisp
-systems. Lisa's CLOS-based architecture is now performing close to its theoretical maximum on SBCL/ARM64. 
+These optimizations yielded a significant improvement in overall runtime performance on the Monkey and Bananas benchmark
+(500 iterations). They demonstrate the importance of both compiler hints and compilation order in Common Lisp
+systems. Lisa's CLOS-based architecture is now performing close to its theoretical maximum on SBCL/ARM64.
+
+You can see the current Apple M2 Pro profiling benchmark results in the _sbcl_ directory.
 
 ### Future Work
 
@@ -106,9 +108,9 @@ start with the _Getting Started_ section for guidance on setting up SBCL with Em
 ## References
 
 - [SBCL](https://www.sbcl.org/) - Steel Bank Common Lisp
-- [Emacs for macOS](https://emacsformacos.com/)
+- [Emacs for MacOS](https://emacsformacos.com/)
 - Peter Norvig's [Paradigms of Artificial Intelligence Programming](https://norvig.github.io/paip-lisp/#/)
-- [Expert Systems: Principles and Programming](https://www.powells.com/book/expert-systems-principles-programming-fourth-edition-principles-programming-9780534384470) (Giarratano & Riley)
+- Expert Systems: Principles and Programming, Giarratano & Riley
 
 ## Acknowledgments
 
