@@ -68,15 +68,15 @@ Two key optimizations were implemented:
 ### Results
 
 1. Time Improvements
--  Critical hotspot (TEST-TOKENS):
-   - Unoptimized: 1.298 seconds
-   - Optimized: 0.629 seconds
-   - 51% faster: cut execution time in half
+   -  Critical hotspot (TEST-TOKENS):
+      - Unoptimized: 1.298 seconds
+      - Optimized: 0.629 seconds
+      - 51% faster: cut execution time in half
 
-- Total profiled execution:
-  - Unoptimized: 3.298 seconds
-  - Optimized: 1.614 seconds
-  - 51% reduction in profiled time
+   - Total profiled execution:
+     - Unoptimized: 3.298 seconds
+     - Optimized: 1.614 seconds
+     - 51% reduction in profiled time
 
 2. Memory Improvements
    - Memory allocation reduction:
