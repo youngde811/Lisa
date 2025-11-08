@@ -80,9 +80,9 @@ Two key optimizations were implemented:
 
 2. Memory Improvements
    - Memory allocation reduction:
-   - Unoptimized: 13,612,824,256 bytes
-   - Optimized: 8,609,908,064 bytes
-   - 37% less memory allocated
+     - Unoptimized: 13,612,824,256 bytes
+     - Optimized: 8,609,908,064 bytes
+     - 37% less memory allocated
 
 #### Optimization Achievements
 
