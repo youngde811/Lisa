@@ -52,16 +52,20 @@ Towers of Hanoi, and others.
 ## Performance Optimization
 
 Recent profiling work using SBCL's deterministic profiler identified critical performance bottlenecks in Lisa's token
-manipulation code. The primary hotspot was `TOKEN-PUSH-FACT`, which was being called over 45 million times during
-typical inference runs without being inlined.
+manipulation code. The primary hotspot was `TOKEN-PUSH-FACT`, which was being called millions of times during typical
+inference runs without being inlined.
 
 ### Optimizations Applied
 
-Two key optimizations were implemented:
+Several key optimizations were implemented:
 
-1. **Inline Declarations**: Added `(declaim (inline ...))` declarations for hot-path token functions including `TOKEN-PUSH-FACT`, `TOKEN-POP-FACT`, and `TOKEN-TOP-FACT`.
+1. **Inline Declarations**: Added `(declaim (inline ...))` declarations for hot-path token functions including
+   `TOKEN-PUSH-FACT`, `TOKEN-POP-FACT`, and `TOKEN-TOP-FACT`.
+   
+2. **Accessor Replacement**: In a few cases, some hot class accessors were replaced with regular Lisp functions that now
+   use `SLOT-VALUE`. Such rewrites allowed these functions to be inlined.
 
-2. **Build Order Optimization**: Moved `token.lisp` earlier in the ASDF system definition (from 19th to 5th position) to
+3. **Build Order Optimization**: Moved `token.lisp` earlier in the ASDF system definition (from 19th to 5th position) to
    ensure the compiler sees inline declarations before compiling files that depend on them. This simple reordering
    allowed the compiler to eliminate 45+ million function calls through inlining.
 
@@ -69,19 +73,19 @@ Two key optimizations were implemented:
 
 **Time Improvements**
 
-1. Critical hotspot (TEST-TOKENS):
+1. Critical hotspot (TEST-TOKENS)
    - Unoptimized: 1.298 seconds
    - Optimized: 0.629 seconds
    - 51% faster: cut execution time in half
 
-2. Total profiled execution:
+2. Total profiled execution
    - Unoptimized: 3.298 seconds
    - Optimized: 1.614 seconds
    - 51% reduction in profiled time
 
 **Memory Improvements**
 
-1. Memory allocation reduction:
+1. Memory allocation reduction
    - Unoptimized: 13,612,824,256 bytes
    - Optimized: 8,609,908,064 bytes
    - 37% less memory allocated
