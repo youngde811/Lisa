@@ -65,18 +65,18 @@ Two key optimizations were implemented:
    ensure the compiler sees inline declarations before compiling files that depend on them. This simple reordering
    allowed the compiler to eliminate 45+ million function calls through inlining.
 
-### Results
+#### Results
 
 1. Time Improvements
-   -  Critical hotspot (TEST-TOKENS):
-      - Unoptimized: 1.298 seconds
-      - Optimized: 0.629 seconds
-      - 51% faster: cut execution time in half
+-  Critical hotspot (TEST-TOKENS):
+   - Unoptimized: 1.298 seconds
+   - Optimized: 0.629 seconds
+   - 51% faster: cut execution time in half
 
-   - Total profiled execution:
-     - Unoptimized: 3.298 seconds
-     - Optimized: 1.614 seconds
-     - 51% reduction in profiled time
+- Total profiled execution:
+  - Unoptimized: 3.298 seconds
+  - Optimized: 1.614 seconds
+  - 51% reduction in profiled time
 
 2. Memory Improvements
    - Memory allocation reduction:
@@ -104,7 +104,7 @@ function. The inlining eliminated function call overhead and allowed better comp
   
 These optimizations yielded a significant improvement in overall runtime performance on the Monkey and Bananas benchmark
 (500 iterations). They demonstrate the importance of both compiler hints and compilation order in Common Lisp
-systems. Lisa's CLOS-based architecture is now performing close to its theoretical maximum on SBCL/ARM64.
+systems. Lisa's CLOS-based architecture is **now performing close to its theoretical maximum on SBCL/ARM64**.
 
 You can see the current Apple M2 Pro profiling benchmark results in the _sbcl_ directory.
 
@@ -118,9 +118,9 @@ optimization opportunities.
 Lisa's fundamental CLOS-based architecture will remain unchanged, as it provides an elegant foundation for the Rete
 implementation. Current development priorities include:
 
-- **Linux Performance Testing**: Profiling will continue on X86-64 hardware to analyze Lisa's performance characteristics on SBCL/Linux.
-- **Statistical Profiling**: Conduct deeper performance analysis using SBCL's statistical profiler on the X86-64
-  architecture to identify additional optimization opportunities.
+- **Linux Performance Testing**: Profiling will continue on x86-64 hardware to analyze Lisa's performance
+  characteristics on SBCL/Linux. On that hardware, SBCL's statistical profiler should be available to better analyze
+  Lisa's behavior under significant load.
 
 ### Development Status
 
