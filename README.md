@@ -114,12 +114,7 @@ systems. Lisa's CLOS-based architecture is **now performing close to its theoret
 
 You can see the current Apple M2 Pro profiling benchmark results in the _sbcl_ directory.
 
-### Future Work
-
-Additional performance analysis using SBCL's statistical profiler on x86-64 Linux is planned to identify any remaining
-optimization opportunities.
-
-## Roadmap
+### Roadmap
 
 Lisa's fundamental CLOS-based architecture will remain unchanged, as it provides an elegant foundation for the Rete
 implementation. Current development priorities include:
