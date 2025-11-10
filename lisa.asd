@@ -24,12 +24,11 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; Description: Lisa's ASDF system definition file. To use it, you must have asdf loaded; Lisa
-;; provides a copy in "lisa:misc;asdf.lisp".
+;; Description: Lisa's ASDF system definition file. To use it, you must have asdf loaded.
 
 ;; Assuming a loaded asdf, this is the easiest way to install Lisa:
 ;;   (push <lisa root directory> asdf:*central-registry*)
-;;   (asdf:operate 'asdf:load-op :lisa)
+;;   (asdf:load-system :lisa)
 
 (in-package :cl-user)
 
