@@ -28,6 +28,6 @@
 (in-package :cl-user)
 
 (load "lisa.asd")
-(asdf:operate 'asdf:load-op :lisa :force t)
+(asdf:load-system :lisa :force t)
 
 (load #p"lisa:examples;mab")
