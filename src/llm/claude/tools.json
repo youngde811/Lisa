@@ -1,0 +1,81 @@
+[
+  {
+    "name": "assert_fact",
+    "description": "Assert a clinical fact into Lisa's working memory. Each fact has a type (e.g. gram, morphology) and a value. Facts about organisms or patients require an entity identifier. Use this to build up the clinical picture before running inference.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "fact_type": {
+          "type": "string",
+          "description": "The type of clinical fact to assert.",
+          "enum": [
+            "gram",
+            "morphology",
+            "aerobicity",
+            "growth-conformation",
+            "culture-site",
+            "culture-age",
+            "burn",
+            "compromised-host"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "description": "The value for this fact. Valid values depend on fact_type: gram=(pos|neg), morphology=(rod|coccus), aerobicity=(aerobic|anaerobic), growth-conformation=(clumps|chains), culture-site=(blood), burn=(serious), compromised-host=(t), culture-age=(integer as string)."
+        },
+        "entity": {
+          "type": "string",
+          "description": "Identifier for the entity this fact describes (e.g. 'organism-1', 'patient-1'). Required for organism facts (gram, morphology, aerobicity, growth-conformation) and patient facts (burn, compromised-host). Not needed for culture-site or culture-age."
+        },
+        "entity_class": {
+          "type": "string",
+          "description": "The class of the entity: 'organism' or 'patient'. Defaults to 'organism' if omitted.",
+          "enum": ["organism", "patient"]
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Confidence in this fact, from 0.0 to 1.0. Omit for full confidence (1.0). Use when the clinical evidence is uncertain (e.g. 'probably gram-positive' → 0.8).",
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      },
+      "required": ["fact_type", "value"]
+    }
+  },
+  {
+    "name": "run_inference",
+    "description": "Trigger Lisa's forward-chaining inference engine. This fires all applicable rules against the current working memory and produces diagnostic conclusions with certainty factors. Call this after asserting all available clinical facts.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "get_conclusions",
+    "description": "Retrieve diagnostic conclusions from the last inference run. Returns organism identities with their belief factors (certainty). Each conclusion represents a possible pathogen identification.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "get_rule_trace",
+    "description": "Retrieve the rule trace from the last inference run. Shows which rules fired and in what order, providing an audit trail for the diagnostic reasoning. Use this to explain the reasoning behind conclusions.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
+    "name": "reset_session",
+    "description": "Clear all facts from working memory and reset the session. Use this when starting a new patient case or when the clinician wants to start over.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  }
+]
