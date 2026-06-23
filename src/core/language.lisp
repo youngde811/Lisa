@@ -119,8 +119,8 @@
 (defun active-network ()
   (rete-network (engine)))
 
-(defun assert-instance (instance)
-  (parse-and-insert-instance instance))
+(defun assert-instance (instance &key (belief nil))
+  (parse-and-insert-instance instance :belief belief))
 
 (defun retract-instance (instance)
   (parse-and-retract-instance instance (inference-engine)))

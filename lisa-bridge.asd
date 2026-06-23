@@ -35,7 +35,7 @@
   :maintainer "David E. Young"
   :licence "MIT"
   :description "HTTP bridge for LLM tool-use integration with the Lisa expert system"
-  :depends-on ("lisa" "hunchentoot" "com.inuoe.jzon")
+  :depends-on ("lisa" "hunchentoot" "com.inuoe.jzon" "bordeaux-threads")
   :components
   ((:module src
     :components
@@ -44,6 +44,7 @@
       ((:module bridge
         :components
         ((:file "package")
+         (:file "session")
          (:file "server")
          (:file "handlers"))
         :serial t)))))))

@@ -78,6 +78,8 @@
           "FIND-FACT-BY-ID"
           "FIND-FACT-BY-NAME"
           "FIND-RULE"
+          "GET-FACT-LIST"
+          "GET-SLOT-VALUE"
           "FOCUS"
           "FOCUS-STACK"
           "HALT"
