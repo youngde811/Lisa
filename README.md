@@ -156,12 +156,12 @@ bridge translates between JSON (the LLM's native interchange format) and Lisa's 
 
 ```
   User (natural language)
-       │
-       ▼
-  LLM (Claude) ──── tool calls (JSON) ────► Lisa Bridge (Hunchentoot)
-       ▲                                         │
-       │                                         ▼
-       └──── tool results (JSON) ◄──────── Lisa Engine (Rete)
+       |
+       v
+  LLM (Claude) ---- tool calls (JSON) ----> Lisa Bridge (Hunchentoot)
+       ^                                         |
+       |                                         v
+       +---- tool results (JSON) <---------- Lisa Engine (Rete)
 ```
 
 ### Tools Exposed
@@ -172,6 +172,7 @@ bridge translates between JSON (the LLM's native interchange format) and Lisa's 
 | `POST /run-inference` | Trigger forward-chaining inference |
 | `GET /conclusions` | Retrieve inference results with belief factors |
 | `GET /rule-trace` | Retrieve which rules fired and their matching facts |
+| `GET /partial-matches` | Query which rules are close to firing and what facts are still needed |
 | `POST /reset` | Clear working memory for a new session |
 
 ### Getting Started
@@ -185,10 +186,57 @@ bridge translates between JSON (the LLM's native interchange format) and Lisa's 
 The initial domain is medical diagnosis using Lisa's existing Mycin rulebase (`examples/mycin.lisp`), demonstrating
 certainty-factor-based reasoning with full rule-trace explainability.
 
+### Example: Diagnostic Conversation
+
+The following is an actual interaction between a clinician and Claude using Lisa's Mycin rulebase. Claude
+parses natural language into structured facts, uses `/partial-matches` to determine what to ask next, then
+runs inference and explains the results with full rule traceability.
+
+```
+Clinician: Blood culture shows gram-positive cocci.
+Assistant: I'll record the facts from your blood culture observation.
+
+[Asserts: culture-site=blood, gram=pos (organism-1), morphology=coccus (organism-1)]
+
+Now let me check what additional information would help narrow the diagnosis.
+
+[Calls get_partial_matches]
+
+We're close to firing two rules, and both need the same piece of information:
+
+- Rule 71: If growth conformation is clumps -> suggests Staphylococcus (belief 0.7)
+- Rule 165: If growth conformation is chains -> suggests Streptococcus (belief 0.7)
+
+Key question: What is the growth conformation on culture -- are the cocci
+arranged in clumps (clusters) or chains?
+
+Clinician: Clumps.
+
+Assistant: Growth conformation recorded as clumps. That completes Rule 71.
+
+[Asserts: growth-conformation=clumps (organism-1)]
+[Calls run_inference]
+[Calls get_conclusions]
+
+Diagnosis:
+
+  Organism         Certainty
+  Staphylococcus   0.70 (70%)
+
+Reasoning (Rule 71):
+  1. Gram stain: positive
+  2. Morphology: coccus
+  3. Growth conformation: clumps
+
+This is a classic presentation -- gram-positive cocci growing in clusters is
+the hallmark of Staphylococcus species. The 0.7 belief factor reflects the
+rule's built-in confidence level.
+```
+
 ### Goals
 
 - Provide deterministic, auditable inference that an LLM cannot replicate on its own
-- Keep Lisa's core unchanged — the bridge is purely additive
+- Keep Lisa's core unchanged -- the bridge is purely additive
 - Enable natural-language access to expert system reasoning without sacrificing explainability
 - Demonstrate that symbolic AI and neural approaches are complementary, not competing
 
