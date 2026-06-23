@@ -119,6 +119,11 @@ You can see the current Apple M2 Pro profiling benchmark results in the _sbcl_ d
 Lisa's fundamental CLOS-based architecture will remain unchanged, as it provides an elegant foundation for the Rete
 implementation. Current development priorities include:
 
+- **LLM Integration (In Progress)**: Building an HTTP bridge that exposes Lisa's inference engine to Large Language
+  Models via tool-use APIs. The goal is a hybrid architecture where the LLM handles natural-language interaction and
+  Lisa handles deterministic, explainable inference. The initial domain is medical diagnosis using the existing Mycin
+  rulebase. See [LLM Integration](#llm-integration) below.
+
 - **Linux Performance Testing**: Profiling will continue on x86-64 hardware to analyze Lisa's performance
   characteristics on SBCL/Linux. On that hardware, SBCL's statistical profiler should be available to better analyze
   Lisa's behavior under significant load.
@@ -135,6 +140,57 @@ Lisa intentionally maintains a simpler feature set compared to some expert syste
 conditional elements (OR, FORALL, etc.) have been considered, they introduce behavioral complexity and are rarely
 essential in practice. Lisa prioritizes simplicity and elegance over syntactic convenience, keeping the system
 approachable and maintainable.
+
+## LLM Integration
+
+Lisa is being extended with an optional HTTP bridge that enables Large Language Models (such as Claude) to use Lisa as a
+reasoning backend via structured tool-use APIs. This is a separate ASDF system (`lisa-bridge`) that depends on Lisa,
+[Hunchentoot](https://edicl.github.io/hunchentoot/), and
+[jzon](https://github.com/Zulu-Inuoe/jzon) — loading it is entirely opt-in and does not affect the core system.
+
+### Architecture
+
+The LLM handles natural-language interaction with the user (parsing free-text into structured facts, narrating
+conclusions in plain language), while Lisa handles deterministic forward-chaining inference with full explainability. The
+bridge translates between JSON (the LLM's native interchange format) and Lisa's CLOS-based fact representation.
+
+```
+  User (natural language)
+       │
+       ▼
+  LLM (Claude) ──── tool calls (JSON) ────► Lisa Bridge (Hunchentoot)
+       ▲                                         │
+       │                                         ▼
+       └──── tool results (JSON) ◄──────── Lisa Engine (Rete)
+```
+
+### Tools Exposed
+
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /assert-fact` | Assert a structured fact into working memory |
+| `POST /run-inference` | Trigger forward-chaining inference |
+| `GET /conclusions` | Retrieve inference results with belief factors |
+| `GET /rule-trace` | Retrieve which rules fired and their matching facts |
+| `POST /reset` | Clear working memory for a new session |
+
+### Getting Started
+
+```lisp
+(ql:quickload :lisa-bridge)
+(lisa-bridge:start)           ; default port 8090
+(lisa-bridge:start :port 9000) ; or specify a port
+```
+
+The initial domain is medical diagnosis using Lisa's existing Mycin rulebase (`examples/mycin.lisp`), demonstrating
+certainty-factor-based reasoning with full rule-trace explainability.
+
+### Goals
+
+- Provide deterministic, auditable inference that an LLM cannot replicate on its own
+- Keep Lisa's core unchanged — the bridge is purely additive
+- Enable natural-language access to expert system reasoning without sacrificing explainability
+- Demonstrate that symbolic AI and neural approaches are complementary, not competing
 
 ## Documentation
 
