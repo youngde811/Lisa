@@ -56,7 +56,7 @@ setup_quicklisp() {
     local ql_url='https://beta.quicklisp.org/quicklisp.lisp'
     local ql_key_url='https://beta.quicklisp.org/release-key.txt'
     local ql_asc_url='https://beta.quicklisp.org/quicklisp.lisp.asc'
-    
+
     curl -o $ql $ql_url
 
     if which -s gpg ; then
@@ -91,7 +91,7 @@ while getopts "h" opt ; do
     esac
 done
 
-shift $(OPTIND - 1)
+shift $((OPTIND - 1))
 
 workdir="$(mktemp -d /tmp/ql.XXXXX)"
 
