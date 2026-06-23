@@ -56,6 +56,7 @@ TOOL_TO_ENDPOINT = {
     "run_inference": ("POST", "/run-inference"),
     "get_conclusions": ("GET", "/conclusions"),
     "get_rule_trace": ("GET", "/rule-trace"),
+    "get_partial_matches": ("GET", "/partial-matches"),
     "reset_session": ("POST", "/reset"),
 }
 

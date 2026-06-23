@@ -70,6 +70,15 @@
     }
   },
   {
+    "name": "get_partial_matches",
+    "description": "Check which rules have some but not all conditions satisfied by current working memory. Returns rules that are 'close to firing' — showing which conditions are already met and which facts are still needed. Use this to determine what questions to ask the clinician next.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  },
+  {
     "name": "reset_session",
     "description": "Clear all facts from working memory and reset the session. Use this when starting a new patient case or when the clinician wants to start over.",
     "input_schema": {

@@ -116,3 +116,62 @@
           (json-response result)))
     (error (e)
       (error-response (format nil "Reset failed: ~A" e) :status 500))))
+
+(defun fact-classes-in-working-memory ()
+  "Return a list of class name symbols for all facts currently in working memory."
+  (let ((classes '()))
+    (dolist (fact (lisa:get-fact-list (lisa:inference-engine)))
+      (pushnew (lisa:fact-name fact) classes))
+    classes))
+
+(defun pattern-description (pattern)
+  "Return a human-readable string describing what a pattern requires."
+  (let* ((class-name (lisa::parsed-pattern-class pattern))
+         (slots (lisa::parsed-pattern-slots pattern))
+         (slot-strs
+           (loop for slot in slots
+                 when (lisa::simple-slot-p slot)
+                   collect (format nil "~A=~A"
+                                   (string-downcase (symbol-name (lisa::pattern-slot-name slot)))
+                                   (string-downcase (princ-to-string (lisa::pattern-slot-value slot)))))))
+    (if slot-strs
+        (format nil "~A (~{~A~^, ~})"
+                (string-downcase (symbol-name class-name))
+                slot-strs)
+        (string-downcase (symbol-name class-name)))))
+
+(hunchentoot:define-easy-handler (partial-matches-handler :uri "/partial-matches"
+                                                          :default-request-type :get) ()
+  (handler-case
+      (let* ((rules (lisa::get-rule-list (lisa:inference-engine)))
+             (wm-classes (fact-classes-in-working-memory))
+             (results '()))
+        (dolist (rule rules)
+          (let* ((patterns (lisa::rule-patterns rule))
+                 (total (length patterns))
+                 (matched '())
+                 (missing '()))
+            (dolist (pattern patterns)
+              (let ((class-name (lisa::parsed-pattern-class pattern)))
+                (if (member class-name wm-classes)
+                    (push (pattern-description pattern) matched)
+                    (push (pattern-description pattern) missing))))
+            (when (and missing matched)
+              (let ((entry (make-hash-table :test #'equal)))
+                (setf (gethash "rule" entry)
+                      (string-downcase (symbol-name (lisa:rule-short-name rule))))
+                (setf (gethash "belief" entry)
+                      (lisa::belief-factor rule))
+                (setf (gethash "matched" entry)
+                      (coerce (nreverse matched) 'vector))
+                (setf (gethash "missing" entry)
+                      (coerce (nreverse missing) 'vector))
+                (setf (gethash "matched_count" entry) (- total (length missing)))
+                (setf (gethash "total_conditions" entry) total)
+                (push entry results)))))
+        (let ((response (make-hash-table :test #'equal)))
+          (setf (gethash "partial_matches" response)
+                (coerce (nreverse results) 'vector))
+          (json-response response)))
+    (error (e)
+      (error-response (format nil "Partial match query failed: ~A" e) :status 500))))
