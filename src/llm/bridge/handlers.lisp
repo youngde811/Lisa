@@ -59,16 +59,31 @@
         (error (e)
           (error-response (format nil "Assertion failed: ~A" e) :status 500))))))
 
+(defvar *last-rule-trace* ""
+  "Captured trace output from the most recent inference run.")
+
 (hunchentoot:define-easy-handler (run-inference-handler :uri "/run-inference"
                                                         :default-request-type :post) ()
   (handler-case
-      (let ((count (lisa:run)))
-        (let ((result (make-hash-table :test #'equal)))
-          (setf (gethash "status" result) "completed")
-          (setf (gethash "rules_fired" result) count)
-          (json-response result)))
+      (progn
+        (lisa:watch :rules)
+        (let* ((*trace-output* (make-string-output-stream))
+               (count (lisa:run)))
+          (lisa:unwatch :rules)
+          (setf *last-rule-trace* (get-output-stream-string *trace-output*))
+          (let ((result (make-hash-table :test #'equal)))
+            (setf (gethash "status" result) "completed")
+            (setf (gethash "rules_fired" result) count)
+            (json-response result))))
     (error (e)
+      (lisa:unwatch :rules)
       (error-response (format nil "Inference failed: ~A" e) :status 500))))
+
+(hunchentoot:define-easy-handler (rule-trace-handler :uri "/rule-trace"
+                                                     :default-request-type :get) ()
+  (let ((result (make-hash-table :test #'equal)))
+    (setf (gethash "trace" result) *last-rule-trace*)
+    (json-response result)))
 
 (hunchentoot:define-easy-handler (conclusions-handler :uri "/conclusions"
                                                       :default-request-type :get) ()
