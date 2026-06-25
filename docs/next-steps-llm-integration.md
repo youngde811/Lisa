@@ -85,4 +85,4 @@ src/llm/claude/tools.json    — Tool schemas
 
 ## Architecture Reference
 
-Full architecture plan: `/Users/a254571/share/docs/lisa-llm-architecture.md`
+Full architecture plan: `docs/lisa-llm-architecture.md`
