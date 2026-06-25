@@ -92,7 +92,7 @@ export LISA_USE_BEDROCK=1
 python src/llm/claude/driver.py
 ```
 
-Architecture plan: `/Users/a254571/share/docs/lisa-llm-architecture.md`
+Architecture plan: `docs/lisa-llm-architecture.md`
 
 ## Style Notes
 
