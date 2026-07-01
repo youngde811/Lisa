@@ -22,7 +22,9 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; Description: Common interfaces to Lisa's belief-system.
+;; Description: Common interfaces to Lisa's belief-system. The generics below are
+;; the entry points that Lisa's core (rete.lisp) calls. They delegate to the
+;; pluggable belief protocol (adjust-belief*) when *belief-system* is set.
 
 (in-package :belief)
 
@@ -31,4 +33,4 @@
 
 (defgeneric belief-factor (obj))
 (defgeneric adjust-belief (objects rule-belief &optional old-belief))
-(defgeneric belief->english (belief-factor))
+

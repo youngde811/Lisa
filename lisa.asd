@@ -68,7 +68,13 @@
      (:module belief-systems
       :components
       ((:file "belief")
-       (:file "certainty-factors"))
+       (:file "protocol")
+       (:module certainty-factors
+        :components
+        ((:file "certainty-factors")))
+       (:module dempster-shafer
+        :components
+        ((:file "dempster-shafer"))))
       :serial t)
      (:module reflect
       :components
