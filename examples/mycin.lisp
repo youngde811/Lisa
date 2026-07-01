@@ -83,7 +83,7 @@
 
 (defclass organism-identity (param-mixin) ())
 
-(defrule rule-52 (:belief 0.4)
+(defrule gram-neg-rod-in-burn-patient-suggests-pseudomonas (:belief 0.4)
   (culture-site (value blood))
   (gram (value neg) (entity ?organism))
   (morphology (value rod))
@@ -91,14 +91,14 @@
   =>
   (assert (organism-identity (value pseudomonas) (entity ?organism))))
 
-(defrule rule-71 (:belief 0.7)
+(defrule gram-pos-cocci-in-clumps-suggests-staphylococcus (:belief 0.7)
   (gram (value pos) (entity ?organism))
   (morphology (value coccus))
   (growth-conformation (value clumps))
   =>
   (assert (organism-identity (value staphylococcus) (entity ?organism))))
 
-(defrule rule-73 (:belief 0.9)
+(defrule anaerobic-gram-neg-rod-in-blood-suggests-bacteroides (:belief 0.9)
   (culture-site (value blood))
   (gram (value neg) (entity ?organism))
   (morphology (value rod))
@@ -106,21 +106,21 @@
   =>
   (assert (organism-identity (value bacteroides) (entity ?organism))))
 
-(defrule rule-75 (:belief 0.6)
+(defrule gram-neg-rod-in-compromised-host-suggests-pseudomonas (:belief 0.6)
   (gram (value neg) (entity ?organism))
   (morphology (value rod))
   (compromised-host (value t))
   =>
   (assert (organism-identity (value pseudomonas) (entity ?organism))))
 
-(defrule rule-107 (:belief 0.8)
+(defrule aerobic-gram-neg-rod-suggests-enterobacteriaceae (:belief 0.8)
   (gram (value neg) (organism ?organism))
   (morphology (value rod))
   (aerobicity (value aerobic))
   =>
   (assert (organism-identity (value enterobacteriaceae) (entity ?organism))))
 
-(defrule rule-165 (:belief 0.7)
+(defrule gram-pos-cocci-in-chains-suggests-streptococcus (:belief 0.7)
   (gram (value pos) (entity ?organism))
   (morphology (value coccus))
   (growth-conformation (value chains))
@@ -129,7 +129,7 @@
 
 ;;; --- New rules: expanded rulebase for multi-hypothesis differentials ---
 
-(defrule rule-33 (:belief 0.8)
+(defrule hospital-acquired-gram-pos-cocci-in-clumps-suggests-staph-aureus (:belief 0.8)
   (gram (value pos) (entity ?organism))
   (morphology (value coccus))
   (growth-conformation (value clumps))
@@ -137,7 +137,7 @@
   =>
   (assert (organism-identity (value staphylococcus-aureus) (entity ?organism))))
 
-(defrule rule-40 (:belief 0.6)
+(defrule hospital-acquired-gram-neg-rod-in-compromised-host-suggests-klebsiella (:belief 0.6)
   (gram (value neg) (entity ?organism))
   (morphology (value rod))
   (hospital-acquired (value t))
@@ -145,7 +145,7 @@
   =>
   (assert (organism-identity (value klebsiella) (entity ?organism))))
 
-(defrule rule-45 (:belief 0.7)
+(defrule hospital-acquired-aerobic-gram-neg-rod-suggests-pseudomonas (:belief 0.7)
   (gram (value neg) (entity ?organism))
   (morphology (value rod))
   (aerobicity (value aerobic))
@@ -153,7 +153,7 @@
   =>
   (assert (organism-identity (value pseudomonas) (entity ?organism))))
 
-(defrule rule-60 (:belief 0.5)
+(defrule aerobic-gram-neg-rod-in-compromised-host-suggests-klebsiella (:belief 0.5)
   (gram (value neg) (entity ?organism))
   (morphology (value rod))
   (aerobicity (value aerobic))
@@ -161,7 +161,7 @@
   =>
   (assert (organism-identity (value klebsiella) (entity ?organism))))
 
-(defrule rule-84 (:belief 0.75)
+(defrule respiratory-gram-pos-cocci-in-chains-suggests-strep-pneumoniae (:belief 0.75)
   (gram (value pos) (entity ?organism))
   (morphology (value coccus))
   (growth-conformation (value chains))
@@ -169,14 +169,14 @@
   =>
   (assert (organism-identity (value streptococcus-pneumoniae) (entity ?organism))))
 
-(defrule rule-90 (:belief 0.65)
+(defrule gram-neg-rod-with-tropical-travel-suggests-salmonella (:belief 0.65)
   (gram (value neg) (entity ?organism))
   (morphology (value rod))
   (recent-travel (value tropical))
   =>
   (assert (organism-identity (value salmonella) (entity ?organism))))
 
-(defrule rule-112 (:belief 0.7)
+(defrule gram-pos-cocci-in-chains-in-blood-compromised-suggests-enterococcus (:belief 0.7)
   (culture-site (value blood))
   (gram (value pos) (entity ?organism))
   (morphology (value coccus))
@@ -185,7 +185,7 @@
   =>
   (assert (organism-identity (value enterococcus) (entity ?organism))))
 
-(defrule rule-128 (:belief 0.55)
+(defrule gram-neg-rod-in-blood-with-low-wbc-suggests-salmonella (:belief 0.55)
   (gram (value neg) (entity ?organism))
   (morphology (value rod))
   (culture-site (value blood))
@@ -193,7 +193,7 @@
   =>
   (assert (organism-identity (value salmonella) (entity ?organism))))
 
-(defrule rule-150 (:belief 0.8)
+(defrule anaerobic-gram-neg-rod-in-abdomen-suggests-bacteroides (:belief 0.8)
   (gram (value neg) (entity ?organism))
   (morphology (value rod))
   (aerobicity (value anaerobic))

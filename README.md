@@ -126,14 +126,15 @@ Now let me check what additional information would help narrow the diagnosis.
 
 We're close to firing two rules, and both need the same piece of information:
 
-- Rule 71: If growth conformation is clumps -> suggests Staphylococcus (belief 0.7)
-- Rule 165: If growth conformation is chains -> suggests Streptococcus (belief 0.7)
+- gram-pos-cocci-in-clumps-suggests-staphylococcus: If growth conformation is clumps -> Staphylococcus (belief 0.7)
+- gram-pos-cocci-in-chains-suggests-streptococcus: If growth conformation is chains -> Streptococcus (belief 0.7)
 
 Key question: What is the growth conformation on culture -- are the cocci
 arranged in clumps (clusters) or chains?
 
 Clinician: Clumps.
-Assistant: Growth conformation recorded as clumps. That completes Rule 71.
+Assistant: Growth conformation recorded as clumps. That completes
+gram-pos-cocci-in-clumps-suggests-staphylococcus.
 
 [Asserts: growth-conformation=clumps (organism-1)]
 [Calls run_inference]
@@ -144,7 +145,7 @@ Diagnosis:
   Organism         Certainty
   Staphylococcus   0.70 (70%)
 
-Reasoning (Rule 71):
+Reasoning (gram-pos-cocci-in-clumps-suggests-staphylococcus):
   1. Gram stain: positive
   2. Morphology: coccus
   3. Growth conformation: clumps

@@ -123,7 +123,7 @@ Certainty Factors.
 ### Sample MYCIN Code ###
 
 ```lisp
-(defrule rule-52 (:belief 0.4)
+(defrule gram-neg-rod-in-burn-patient-suggests-pseudomonas (:belief 0.4)
   (culture-site (value blood))
   (gram (value neg) (entity ?organism))
   (morphology (value rod))
@@ -131,14 +131,14 @@ Certainty Factors.
   =>
   (assert (organism-identity (value pseudomonas) (entity ?organism))))
 
-(defrule rule-71 (:belief 0.7)
+(defrule gram-pos-cocci-in-clumps-suggests-staphylococcus (:belief 0.7)
   (gram (value pos) (entity ?organism))
   (morphology (value coccus))
   (growth-conformation (value clumps))
   =>
   (assert (organism-identity (value staphylococcus) (entity ?organism))))
 
-(defrule rule-73 (:belief 0.9)
+(defrule anaerobic-gram-neg-rod-in-blood-suggests-bacteroides (:belief 0.9)
   (culture-site (value blood))
   (gram (value neg) (entity ?organism))
   (morphology (value rod))

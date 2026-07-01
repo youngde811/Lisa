@@ -101,7 +101,7 @@ A lightweight bridge (HTTP server or stdio) sits between Claude's tool calls and
 The existing `examples/mycin.lisp` contains:
 
 - **Classes**: `patient`, `organism`, `culture`, `gram`, `morphology`, `aerobicity`, etc. (using `param-mixin` pattern)
-- **Rules**: rule-52, rule-71, rule-73, rule-75, rule-107, rule-165 — each with `:belief` certainty factors (0.4–0.9)
+- **Rules**: descriptive names such as `gram-neg-rod-in-burn-patient-suggests-pseudomonas`, `gram-pos-cocci-in-clumps-suggests-staphylococcus`, `anaerobic-gram-neg-rod-in-blood-suggests-bacteroides`, `gram-neg-rod-in-compromised-host-suggests-pseudomonas`, `aerobic-gram-neg-rod-suggests-enterobacteriaceae`, `gram-pos-cocci-in-chains-suggests-streptococcus` — each with `:belief` certainty factors (0.4–0.9). Rule names are self-documenting so the trace remains clinically legible when narrated back through Claude.
 - **Conclusion rule**: lower-salience rule that fires last to output diagnosis with belief
 - **Test scenarios**: `culture-1` and `culture-2` functions demonstrating fact assertion and inference
 
