@@ -128,3 +128,18 @@
                   (combine-beliefs system old-belief new-belief)
                   (or new-belief old-belief)))))
     updated-belief))
+
+;;; ============================================================
+;;; Convenience API
+;;; ============================================================
+
+(defvar *cf-system*)
+(defvar *ds-system*)
+
+(defun use-system (name)
+  "Set the active belief system by keyword.
+   Supported: :certainty-factors, :dempster-shafer"
+  (setf *belief-system*
+        (ecase name
+          (:certainty-factors *cf-system*)
+          (:dempster-shafer *ds-system*))))
