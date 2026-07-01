@@ -141,12 +141,21 @@
     (error (e)
       (error-response (format nil "Reset failed: ~A" e) :status 500))))
 
-(defun fact-classes-in-working-memory ()
-  "Return a list of class name symbols for all facts currently in working memory."
-  (let ((classes '()))
-    (dolist (fact (lisa:get-fact-list (lisa:inference-engine)))
-      (pushnew (lisa:fact-name fact) classes))
-    classes))
+(defun fact-matches-pattern-p (fact pattern)
+  "Return T if FACT has the same class as PATTERN and every simple (constant)
+slot in the pattern equals the corresponding slot on the fact.  Variable-bound
+and constrained slots are ignored — they can bind to anything within a single
+pattern.  Cross-pattern variable consistency is not checked here."
+  (and (eq (lisa:fact-name fact) (lisa::parsed-pattern-class pattern))
+       (every (lambda (slot)
+                (or (not (lisa::simple-slot-p slot))
+                    (equal (lisa:get-slot-value fact (lisa::pattern-slot-name slot))
+                           (lisa::pattern-slot-value slot))))
+              (lisa::parsed-pattern-slots pattern))))
+
+(defun pattern-satisfied-by-wm-p (pattern facts)
+  "Return T if any fact in FACTS satisfies PATTERN per FACT-MATCHES-PATTERN-P."
+  (some (lambda (fact) (fact-matches-pattern-p fact pattern)) facts))
 
 (defun pattern-description (pattern)
   "Return a human-readable string describing what a pattern requires."
@@ -168,19 +177,21 @@
                                                           :default-request-type :get) ()
   (handler-case
       (let* ((rules (lisa::get-rule-list (lisa:inference-engine)))
-             (wm-classes (fact-classes-in-working-memory))
+             (facts (lisa:get-fact-list (lisa:inference-engine)))
              (results '()))
         (dolist (rule rules)
-          (let* ((patterns (lisa::rule-patterns rule))
-                 (total (length patterns))
-                 (matched '())
-                 (missing '()))
-            (dolist (pattern patterns)
-              (let ((class-name (lisa::parsed-pattern-class pattern)))
-                (if (member class-name wm-classes)
+          (let ((matched '())
+                (missing '())
+                (total 0))
+            (dolist (pattern (lisa::rule-patterns rule))
+              ;; Only consider generic patterns.  Test / negated / OR patterns
+              ;; are out of scope for this diagnostic endpoint.
+              (when (lisa::generic-pattern-p pattern)
+                (incf total)
+                (if (pattern-satisfied-by-wm-p pattern facts)
                     (push (pattern-description pattern) matched)
                     (push (pattern-description pattern) missing))))
-            (when (and missing matched)
+            (when (and (> total 0) missing matched)
               (let ((entry (make-hash-table :test #'equal)))
                 (setf (gethash "rule" entry)
                       (string-downcase (symbol-name (lisa:rule-short-name rule))))
