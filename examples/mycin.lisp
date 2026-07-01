@@ -73,6 +73,14 @@
 
 (defclass growth-conformation (param-mixin) ())
 
+(defclass hospital-acquired (param-mixin) ())
+
+(defclass recent-travel (param-mixin) ())
+
+(defclass white-blood-count (param-mixin) ())
+
+(defclass infection-site (param-mixin) ())
+
 (defclass organism-identity (param-mixin) ())
 
 (defrule rule-52 (:belief 0.4)
@@ -119,6 +127,82 @@
   =>
   (assert (organism-identity (value streptococcus) (entity ?organism))))
 
+;;; --- New rules: expanded rulebase for multi-hypothesis differentials ---
+
+(defrule rule-33 (:belief 0.8)
+  (gram (value pos) (entity ?organism))
+  (morphology (value coccus))
+  (growth-conformation (value clumps))
+  (hospital-acquired (value t))
+  =>
+  (assert (organism-identity (value staphylococcus-aureus) (entity ?organism))))
+
+(defrule rule-40 (:belief 0.6)
+  (gram (value neg) (entity ?organism))
+  (morphology (value rod))
+  (hospital-acquired (value t))
+  (compromised-host (value t))
+  =>
+  (assert (organism-identity (value klebsiella) (entity ?organism))))
+
+(defrule rule-45 (:belief 0.7)
+  (gram (value neg) (entity ?organism))
+  (morphology (value rod))
+  (aerobicity (value aerobic))
+  (hospital-acquired (value t))
+  =>
+  (assert (organism-identity (value pseudomonas) (entity ?organism))))
+
+(defrule rule-60 (:belief 0.5)
+  (gram (value neg) (entity ?organism))
+  (morphology (value rod))
+  (aerobicity (value aerobic))
+  (compromised-host (value t))
+  =>
+  (assert (organism-identity (value klebsiella) (entity ?organism))))
+
+(defrule rule-84 (:belief 0.75)
+  (gram (value pos) (entity ?organism))
+  (morphology (value coccus))
+  (growth-conformation (value chains))
+  (infection-site (value respiratory))
+  =>
+  (assert (organism-identity (value streptococcus-pneumoniae) (entity ?organism))))
+
+(defrule rule-90 (:belief 0.65)
+  (gram (value neg) (entity ?organism))
+  (morphology (value rod))
+  (recent-travel (value tropical))
+  =>
+  (assert (organism-identity (value salmonella) (entity ?organism))))
+
+(defrule rule-112 (:belief 0.7)
+  (culture-site (value blood))
+  (gram (value pos) (entity ?organism))
+  (morphology (value coccus))
+  (growth-conformation (value chains))
+  (compromised-host (value t))
+  =>
+  (assert (organism-identity (value enterococcus) (entity ?organism))))
+
+(defrule rule-128 (:belief 0.55)
+  (gram (value neg) (entity ?organism))
+  (morphology (value rod))
+  (culture-site (value blood))
+  (white-blood-count (value low))
+  =>
+  (assert (organism-identity (value salmonella) (entity ?organism))))
+
+(defrule rule-150 (:belief 0.8)
+  (gram (value neg) (entity ?organism))
+  (morphology (value rod))
+  (aerobicity (value anaerobic))
+  (infection-site (value abdominal))
+  =>
+  (assert (organism-identity (value bacteroides) (entity ?organism))))
+
+;;; --- Conclusion rule ---
+
 (defrule conclusion (:salience -10)
   (?identity (organism-identity (value ?value)))
   =>
@@ -138,6 +222,42 @@
     (assert (gram (value neg) (entity ?organism)))
     (assert (morphology (value rod) (entity ?organism)))
     (assert (aerobicity (value aerobic) (entity ?organism)))
+    (when runp
+      (run))))
+
+(defun culture-1a (&key (runp t))
+  "Hospital-acquired gram-neg infection in immunocompromised patient.
+   Should produce competing hypotheses: pseudomonas, klebsiella, enterobacteriaceae."
+  (reset)
+  (let ((?organism (make-instance 'organism))
+        (?patient (make-instance 'patient
+                                 :name "Robert Chen"
+                                 :sex 'male
+                                 :age 62)))
+    (assert (compromised-host (value t) (entity ?patient)))
+    (assert (hospital-acquired (value t) (entity ?patient)))
+    (assert (culture-site (value blood)))
+    (assert (gram (value neg) (entity ?organism)))
+    (assert (morphology (value rod) (entity ?organism)))
+    (assert (aerobicity (value aerobic) (entity ?organism)))
+    (when runp
+      (run))))
+
+(defun culture-3 (&key (runp t))
+  "Gram-pos cocci in chains from respiratory site in compromised host.
+   Should produce competing hypotheses: streptococcus, streptococcus-pneumoniae, enterococcus."
+  (reset)
+  (let ((?organism (make-instance 'organism))
+        (?patient (make-instance 'patient
+                                 :name "Maria Gonzales"
+                                 :sex 'female
+                                 :age 45)))
+    (assert (compromised-host (value t) (entity ?patient)))
+    (assert (culture-site (value blood)))
+    (assert (infection-site (value respiratory) (entity ?patient)))
+    (assert (gram (value pos) (entity ?organism)))
+    (assert (morphology (value coccus) (entity ?organism)))
+    (assert (growth-conformation (value chains) (entity ?organism)))
     (when runp
       (run))))
 
