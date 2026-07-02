@@ -194,15 +194,17 @@ Claude will assert `burn=serious`, `compromised-host=t`, `culture-site=blood`,
 `culture-age=3`, `gram=neg`, `morphology=rod`, `aerobicity=aerobic`, then run
 inference.
 
-**Expected**: three rules fire on the pseudomonas branch (burn rule +
-compromised-host rule) plus one enterobacteriaceae rule. The `/conclusions`
-payload includes:
+**Expected**: four rules fire — two on the pseudomonas branch (burn rule +
+compromised-host rule, whose beliefs combine), plus one enterobacteriaceae
+rule and one klebsiella rule that also match the aerobic-gram-neg-rod +
+compromised-host pattern. The `/conclusions` payload includes:
 
 ```json
 {
   "conclusions": [
-    {"value": "pseudomonas",         "belief": {"bel": 0.76, "pl": 1.0, "ignorance": 0.24}},
-    {"value": "enterobacteriaceae",  "belief": {"bel": 0.8,  "pl": 1.0, "ignorance": 0.2 }}
+    {"value": "enterobacteriaceae", "belief": {"bel": 0.80, "pl": 1.0, "ignorance": 0.20}},
+    {"value": "pseudomonas",        "belief": {"bel": 0.76, "pl": 1.0, "ignorance": 0.24}},
+    {"value": "klebsiella",         "belief": {"bel": 0.50, "pl": 1.0, "ignorance": 0.50}}
   ],
   "belief_system": "Dempster-Shafer (simplified)"
 }
@@ -213,9 +215,18 @@ underlying rule has a belief that high (0.4 for burn, 0.6 for compromised).
 That's belief combination — two independent lines of evidence for the same
 hypothesis reinforcing each other via `combine-beliefs`.
 
+Also note the *ignorance widths* across the three hypotheses (0.20 / 0.24 /
+0.50). Klebsiella is a real hit on this evidence — the
+`aerobic-gram-neg-rod-in-compromised-host-suggests-klebsiella` rule (belief
+0.5) matches — but with only one rule supporting it and a moderate rule
+belief, DS honestly reports "50% supported, 50% still unresolved." That's
+exactly the sort of nuance CF collapses into a single number.
+
 Ask Claude a follow-up: *"Why is pseudomonas at 0.76 and not 1.0?"* — it will
 narrate the two rules and explain that DS is conservative: two moderate-belief
-rules combine to a higher-belief-but-still-not-certain result.
+rules combine to a higher-belief-but-still-not-certain result. You can also
+ask *"why is klebsiella's ignorance so wide?"* and it should point at the
+single-rule support with moderate rule belief.
 
 ### 2. Partial-matches drive the next question
 
@@ -263,8 +274,9 @@ Expected CF conclusions:
 ```json
 {
   "conclusions": [
+    {"value": "enterobacteriaceae", "belief": 0.8},
     {"value": "pseudomonas",        "belief": 0.76},
-    {"value": "enterobacteriaceae", "belief": 0.8}
+    {"value": "klebsiella",         "belief": 0.5}
   ],
   "belief_system": "Certainty Factors (Shortliffe-Buchanan)"
 }

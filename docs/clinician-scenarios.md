@@ -71,16 +71,23 @@ Transcript flags: `--no-transcript`, `--transcript-verbosity {minimal,normal,ful
 - `gram-neg-rod-in-burn-patient-suggests-pseudomonas` (0.4)
 - `gram-neg-rod-in-compromised-host-suggests-pseudomonas` (0.6)
 - `aerobic-gram-neg-rod-suggests-enterobacteriaceae` (0.8)
+- `aerobic-gram-neg-rod-in-compromised-host-suggests-klebsiella` (0.5)
 
 **Expected differential**:
+- **Enterobacteriaceae** — single rule, strongest single hypothesis.
+  - CF: `0.8`, DS: `bel 0.8, pl 1.0, ignorance 0.2`
 - **Pseudomonas** — two rules conclude it, so belief combines.
   - CF: `~0.76` (0.4 ⊕ 0.6 = 0.4 + 0.6 − 0.24)
   - DS: `bel ~0.76`, `pl 1.0`, `ignorance ~0.24`
-- **Enterobacteriaceae** — single rule.
-  - CF: `0.8`, DS: `bel 0.8, pl 1.0, ignorance 0.2`
+- **Klebsiella** — single rule with a moderate belief; enters the
+  differential but with wide ignorance.
+  - CF: `0.5`, DS: `bel 0.5, pl 1.0, ignorance 0.5`
 
 This is the canonical case for showing "multiple rules → belief
-combination." It's also the anchor case in the README.
+combination" (on pseudomonas), and simultaneously for showing how a
+single-rule hypothesis with a moderate belief factor produces a wide
+ignorance interval under DS — a nuance CF collapses to a single number.
+It's also the anchor case in the README.
 
 ---
 
@@ -266,7 +273,7 @@ the output interval, where CF collapses it to a single number**.
 | hospital-acquired-gram-pos-cocci-in-clumps-suggests-staph-aureus | (variant of 2) |
 | hospital-acquired-gram-neg-rod-in-compromised-host-suggests-klebsiella | 2 |
 | hospital-acquired-aerobic-gram-neg-rod-suggests-pseudomonas | 2 |
-| aerobic-gram-neg-rod-in-compromised-host-suggests-klebsiella | 2 |
+| aerobic-gram-neg-rod-in-compromised-host-suggests-klebsiella | 1, 2 |
 | respiratory-gram-pos-cocci-in-chains-suggests-strep-pneumoniae | 3 |
 | gram-neg-rod-with-tropical-travel-suggests-salmonella | 4 |
 | gram-pos-cocci-in-chains-in-blood-compromised-suggests-enterococcus | 3 |
