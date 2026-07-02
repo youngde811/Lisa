@@ -8,7 +8,7 @@ We want to push this further — not toward a full MYCIN port (clinically irrele
 
 ## Environment
 
-- Development on personal Mac, using Anthropic API directly (not Bedrock)
+- Development on personal Mac, using the Anthropic-protocol client (points at api.anthropic.com by default; set `ANTHROPIC_BASE_URL` to route through an internal wrapper)
 - Branch: master (or feature branches as needed)
 - Driver: `src/llm/claude/driver.py` with `ANTHROPIC_API_KEY`
 

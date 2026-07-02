@@ -48,7 +48,6 @@ import httpx
 
 BRIDGE_URL = os.environ.get("LISA_BRIDGE_URL", "http://localhost:8090")
 MODEL_ANTHROPIC = "claude-sonnet-4-6-20250619"
-MODEL_BEDROCK = "us.anthropic.claude-sonnet-4-6-v1:0"
 MODEL_OVERRIDE = os.environ.get("LISA_MODEL")
 
 VERBOSITY_LEVELS = ("minimal", "normal", "full")
@@ -70,16 +69,13 @@ def make_http_client():
 
 
 def make_client():
-    """Create Anthropic or Bedrock client based on environment.
+    """Create an Anthropic-protocol client.
 
-    Set LISA_USE_BEDROCK=1 to use Bedrock (reads AWS credentials from environment).
-    Otherwise uses ANTHROPIC_API_KEY directly.
+    Uses ANTHROPIC_API_KEY from the environment. The Anthropic SDK also
+    honors ANTHROPIC_BASE_URL — set that when routing through an internal
+    wrapper that speaks the Anthropic protocol.
     """
     http_client = make_http_client()
-    if os.environ.get("LISA_USE_BEDROCK", "").strip() in ("1", "true", "yes"):
-        region = os.environ.get("AWS_REGION", "us-east-1")
-        model = MODEL_OVERRIDE or MODEL_BEDROCK
-        return anthropic.AnthropicBedrock(aws_region=region, http_client=http_client), model
     model = MODEL_OVERRIDE or MODEL_ANTHROPIC
     return anthropic.Anthropic(http_client=http_client), model
 

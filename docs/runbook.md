@@ -62,9 +62,10 @@ switch away.
 
 - SBCL with Quicklisp (project loads via `lisa.asd` / `lisa-bridge.asd`)
 - Python 3.10+ with the `anthropic` and `httpx` packages
-- Either:
-  - `ANTHROPIC_API_KEY` for direct Anthropic API access, **or**
-  - AWS credentials + `LISA_USE_BEDROCK=1` for Bedrock-hosted Claude
+- `ANTHROPIC_API_KEY` set in the environment. If you're routing through an
+  internal wrapper that speaks the Anthropic protocol (rather than
+  `api.anthropic.com` directly), also set `ANTHROPIC_BASE_URL` — the
+  Anthropic SDK picks it up automatically.
 
 That's it — no other services required.
 
@@ -116,7 +117,9 @@ To stop the bridge later: `(lisa-bridge:stop)` at the REPL.
 In another terminal:
 
 ```bash
-export ANTHROPIC_API_KEY=sk-...
+export ANTHROPIC_API_KEY=...
+# If using an internal Anthropic-protocol wrapper:
+# export ANTHROPIC_BASE_URL=https://internal-wrapper.example.com
 python src/llm/claude/driver.py
 ```
 

@@ -102,11 +102,9 @@ Both phases are complete:
 
 ```bash
 # Requires: anthropic Python package, Lisa bridge running on port 8090
-export ANTHROPIC_API_KEY=sk-...
-python src/llm/claude/driver.py
-
-# Or via Bedrock:
-export LISA_USE_BEDROCK=1
+export ANTHROPIC_API_KEY=...            # Anthropic-protocol API key
+# Optional: point at an internal wrapper that speaks the Anthropic protocol
+# export ANTHROPIC_BASE_URL=https://internal-wrapper.example.com
 python src/llm/claude/driver.py
 ```
 

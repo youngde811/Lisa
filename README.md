@@ -97,11 +97,9 @@ Start the Lisa bridge from the SBCL REPL:
 Then run the clinician driver:
 
 ```bash
-export ANTHROPIC_API_KEY=sk-...
-python src/llm/claude/driver.py
-
-# Or via AWS Bedrock:
-export LISA_USE_BEDROCK=1
+export ANTHROPIC_API_KEY=...
+# Optional: point at an internal Anthropic-protocol wrapper
+# export ANTHROPIC_BASE_URL=https://internal-wrapper.example.com
 python src/llm/claude/driver.py
 ```
 
