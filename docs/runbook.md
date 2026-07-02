@@ -61,7 +61,10 @@ switch away.
 ## Prerequisites
 
 - SBCL with Quicklisp (project loads via `lisa.asd` / `lisa-bridge.asd`)
-- Python 3.10+ with the `anthropic` and `httpx` packages
+- Python 3.10+ with the `anthropic`, `httpx`, and (recommended) `rich`
+  packages. `rich` gives you properly rendered tables, bold, and headings
+  in the terminal; without it the driver still works but Claude's markdown
+  prints as raw text. `pip install anthropic httpx rich`
 - One of the following LLM-backend configurations (the driver auto-detects
   in this order, or set `LISA_LLM_BACKEND=anthropic|lms|vertex` to force one):
   - **Anthropic direct (default for public users)**: `ANTHROPIC_API_KEY` in
@@ -420,6 +423,22 @@ Runtime commands at the `Clinician:` prompt: `transcript on|off|where`. Useful
 if a portion of a session is sensitive or exploratory and you don't want it
 captured.
 
+## Terminal rendering
+
+Claude produces markdown: tables, bold, headings, lists. By default the
+driver renders that markdown to the terminal using the `rich` package —
+tables become properly aligned boxes, `**bold**` becomes actual bold text,
+`###` becomes visible headings. Highly recommended for interactive use.
+
+- `pip install rich` if you don't have it. Without `rich` the driver falls
+  back to raw markdown output (functional but harder to read).
+- `--plain` on the CLI or `LISA_PLAIN=1` in the environment disables rich
+  rendering and prints raw markdown, useful when piping the driver's
+  output to another tool or when the terminal doesn't handle ANSI well.
+
+Transcripts always contain raw markdown regardless of terminal display —
+that's what makes them portable to any viewer.
+
 ---
 
 ## Reference: fact vocabulary and rule catalog
@@ -480,7 +499,11 @@ both belief systems, see [`docs/clinician-scenarios.md`](clinician-scenarios.md)
 - **Session files piling up in `sessions/`?** They're gitignored. Delete at
   will, or set `LISA_TRANSCRIPT_DIR` somewhere ephemeral.
 - **`ModuleNotFoundError: anthropic`.** Install driver deps in a venv:
-  `python -m venv .venv && .venv/bin/pip install anthropic httpx`.
+  `python -m venv .venv && .venv/bin/pip install anthropic httpx rich`.
+- **Tables and bold showing as raw markdown (`| a | b |`, `**bold**`).**
+  You don't have `rich` installed. `pip install rich` and rerun the
+  driver, or accept the raw output. See the [Terminal rendering](#terminal-rendering)
+  section.
 
 ---
 

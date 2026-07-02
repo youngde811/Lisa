@@ -153,6 +153,12 @@ by default. Precedence is CLI > env vars > defaults:
 
 At the `Clinician:` prompt: `transcript on`, `transcript off`, `transcript where`, `help`.
 
+**Terminal rendering**: install `rich` (`pip install rich`) for formatted
+markdown output — Claude's tables, bold, and headings render properly instead
+of appearing as raw pipes and asterisks. Fall back to plain text with
+`--plain` or `LISA_PLAIN=1`. Transcripts always contain raw markdown
+regardless of terminal display.
+
 **Hands-on runbook** (start here for a guided tour): `docs/runbook.md`.
 
 **Clinician scenarios** for exercising the 15-rule MYCIN base:

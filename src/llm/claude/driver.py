@@ -46,6 +46,16 @@ from pathlib import Path
 import anthropic
 import httpx
 
+# Rich is a soft dependency: if it's available we render Claude's markdown as
+# formatted terminal output (tables, headings, bold, lists). If it's missing
+# the driver still works — it just prints raw markdown.
+try:
+    from rich.console import Console
+    from rich.markdown import Markdown
+    _RICH_AVAILABLE = True
+except ImportError:
+    _RICH_AVAILABLE = False
+
 BRIDGE_URL = os.environ.get("LISA_BRIDGE_URL", "http://localhost:8090")
 
 # Per-backend model defaults. Overridable via LISA_MODEL at runtime.
@@ -475,7 +485,51 @@ def parse_args(argv=None):
         "--transcript-verbosity", choices=VERBOSITY_LEVELS,
         help="Detail level. Default: normal (env: LISA_TRANSCRIPT_VERBOSITY).",
     )
+    display = parser.add_argument_group("terminal display")
+    display.add_argument(
+        "--plain", action="store_true",
+        help="Print raw markdown instead of rendering it. Also honored via "
+             "LISA_PLAIN=1 in the environment. Useful when piping the "
+             "driver's output or when a terminal doesn't handle ANSI well.",
+    )
     return parser.parse_args(argv)
+
+
+# ---------------------------------------------------------------------------
+# Assistant output rendering
+# ---------------------------------------------------------------------------
+
+
+class AssistantRenderer:
+    """Pretty-print Claude's markdown to the terminal. Uses `rich` when
+    available and not disabled; otherwise falls back to plain text.
+
+    Transcripts always receive raw markdown — this class only affects what
+    the clinician sees on screen. That way the .md files on disk stay clean
+    and portable.
+    """
+
+    def __init__(self, plain: bool):
+        use_rich = _RICH_AVAILABLE and not plain
+        self._console = Console() if use_rich else None
+        self.mode = "rich" if use_rich else "plain"
+
+    def emit(self, text: str):
+        """Print an assistant message to the terminal."""
+        if self._console is not None:
+            # Blank line + a dim label, then the rendered markdown block.
+            self._console.print()
+            self._console.print("[bold cyan]Assistant:[/bold cyan]")
+            self._console.print(Markdown(text))
+        else:
+            print(f"\nAssistant: {text}")
+
+
+def build_renderer(args: argparse.Namespace) -> AssistantRenderer:
+    plain = args.plain or os.environ.get("LISA_PLAIN", "").strip() in (
+        "1", "true", "yes", "on"
+    )
+    return AssistantRenderer(plain=plain)
 
 
 HELP_TEXT = """
@@ -508,6 +562,7 @@ def run():
 
     client, model = make_client()
     messages = []
+    renderer = build_renderer(args)
 
     print("Lisa-Claude Diagnostic Assistant")
     print("Type 'quit' to exit, 'reset' to start a new case, 'help' for commands.")
@@ -524,6 +579,10 @@ def run():
         print("transcript: OFF")
     if belief_system:
         print(f"belief system: {belief_system}")
+    if renderer.mode == "plain" and not _RICH_AVAILABLE:
+        print("display: plain (install `rich` for formatted markdown output)")
+    else:
+        print(f"display: {renderer.mode}")
     print("-" * 50)
 
     while True:
@@ -601,7 +660,7 @@ def run():
                             }
                         )
                     elif block.type == "text" and block.text.strip():
-                        print(f"\nAssistant: {block.text}")
+                        renderer.emit(block.text)
                         transcript.assistant(block.text)
 
                 messages.append({"role": "assistant", "content": assistant_content})
@@ -612,7 +671,7 @@ def run():
                     block.text for block in response.content if block.type == "text"
                 )
                 if text.strip():
-                    print(f"\nAssistant: {text}")
+                    renderer.emit(text)
                     transcript.assistant(text)
                 messages.append({"role": "assistant", "content": response.content})
                 break
