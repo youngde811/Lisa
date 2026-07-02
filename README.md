@@ -44,7 +44,19 @@ Towers of Hanoi, and others.
 ### Recent Features
 
 - **Quicklisp Support**: As of Spring 2025.
-- **LLM Integration**: Claude tool-use integration for natural-language access to Lisa's inference engine. See [LLM Integration](#llm-integration) below.
+- **Hybrid Symbolic + LLM Diagnostic Agent**: A full Claude-driven clinician
+  interface backed by Lisa's Rete engine — three LLM backends (Anthropic API,
+  CVS LMS/Hyperion, GCP Vertex), pluggable belief systems (certainty factors
+  and Dempster-Shafer), configurable session transcripts, goal-directed
+  dialogue via partial-match introspection, and a 15-rule expanded MYCIN
+  rulebase. **Start here → [`docs/runbook.md`](docs/runbook.md).**
+- **Pluggable Belief Systems**: Two algebras ship alongside the classic
+  Shortliffe-Buchanan certainty factors: a simplified Dempster-Shafer
+  implementation that carries explicit `[bel, pl]` ignorance intervals,
+  and the protocol machinery to add more. Switch systems at bridge startup
+  or per session via the LLM. See
+  [`docs/clinician-scenarios.md`](docs/clinician-scenarios.md) for
+  side-by-side CF vs DS behavior on the same case.
 - **Modern Logging**: Integrated [log4cl](https://github.com/7max/log4cl) throughout the codebase, replacing ad-hoc format and error forms with structured logging.
 - **Performance Optimization**: Runtime improvements through strategic inlining and build order optimization (see [Performance Optimization](#performance-optimization)).
 - **Bug Fixes**: Repaired the long-broken TEST and LOGICAL conditional elements.
@@ -52,122 +64,174 @@ Towers of Hanoi, and others.
 
 ## LLM Integration
 
-Lisa includes an optional HTTP bridge and Claude tool-use integration that enables natural-language access to the
-inference engine. This is a separate ASDF system (`lisa-bridge`) that depends on Lisa,
-[Hunchentoot](https://edicl.github.io/hunchentoot/), and
-[jzon](https://github.com/Zulu-Inuoe/jzon) — loading it is entirely opt-in and does not affect the core system.
+Lisa ships with a fully working **hybrid symbolic + LLM diagnostic agent**:
+Claude drives the natural-language conversation with the clinician; Lisa's
+Rete engine handles deterministic forward-chaining inference with full rule
+traceability and a pluggable belief algebra. The bridge between the two is
+an optional ASDF system (`lisa-bridge`) built on
+[Hunchentoot](https://edicl.github.io/hunchentoot/) and
+[jzon](https://github.com/Zulu-Inuoe/jzon). Loading it is entirely opt-in
+and does not affect the core system.
+
+### Why This Is Interesting
+
+LLMs are great at parsing free-form clinical narrative and producing
+readable prose. They are also unreliable at multi-step deterministic
+reasoning and cannot show you a rule trace. Symbolic expert systems like
+Lisa are excellent at both — but historically required rigid input formats
+no clinician would tolerate. Wire them together and each side does what
+it's good at:
+
+- **Claude** turns *"27-year-old burn patient, immunocompromised, blood
+  culture shows aerobic gram-negative rods"* into structured fact
+  assertions, uses `/partial-matches` to decide what to ask next, and
+  narrates the results back in clinical prose — never inventing beliefs
+  the payload doesn't contain.
+- **Lisa** fires rules in a fixed order, combines beliefs across
+  independent evidence paths, and produces a fully auditable conclusion
+  naming the exact rules that led to it.
+- **Dempster-Shafer** (the default belief system) reports beliefs as
+  `{bel, pl, ignorance}` intervals, so the LLM can say "Pseudomonas at
+  93% with only 7% residual uncertainty" instead of collapsing the
+  uncertainty story to a single number.
+
+### Try It in Ten Minutes
+
+The [**runbook**](docs/runbook.md) walks through five hands-on
+demonstrations — multi-rule belief combination, DS ignorance narrowing,
+partial-match-driven questioning, mid-session belief-system switching,
+and ambiguous evidence — with paste-ready clinician scripts and expected
+outputs at every step. Companion doc: [`clinician-scenarios.md`](docs/clinician-scenarios.md)
+catalogs seven annotated vignettes with expected differentials under
+both belief systems.
 
 ### Architecture
 
-The LLM handles natural-language interaction with the user (parsing free-text into structured facts, narrating
-conclusions in plain language), while Lisa handles deterministic forward-chaining inference with full explainability. The
-bridge translates between JSON (the LLM's native interchange format) and Lisa's CLOS-based fact representation.
-
 ```
-  User (natural language)
+  Clinician (natural language)
        |
        v
-  LLM (Claude) ---- tool calls (JSON) ----> Lisa Bridge (Hunchentoot)
-       ^                                         |
-       |                                         v
-       +---- tool results (JSON) <---------- Lisa Engine (Rete)
+  Claude ---- tool calls (JSON) ----> Lisa Bridge (Hunchentoot)
+       ^                                    |
+       |                                    v
+       +---- tool results (JSON) <----- Lisa Engine (Rete + pluggable belief)
+                                            |
+                                            v
+                                  ./sessions/session-*.md
+                                  (markdown transcript of every turn)
 ```
 
 ### Tools Exposed
 
 | Endpoint | Purpose |
 |----------|---------|
-| `POST /assert-fact` | Assert a structured fact into working memory |
+| `POST /assert-fact` | Assert a structured fact into working memory (with optional confidence) |
 | `POST /run-inference` | Trigger forward-chaining inference |
-| `GET /conclusions` | Retrieve inference results with belief factors |
+| `GET /conclusions` | Retrieve inference results — payload shape follows the active belief system |
 | `GET /rule-trace` | Retrieve which rules fired and their matching facts |
 | `GET /partial-matches` | Query which rules are close to firing and what facts are still needed |
-| `POST /reset` | Clear working memory for a new session |
+| `POST /reset` | Clear working memory; optionally switch belief system per session |
 
 ### Getting Started
 
-Start the Lisa bridge from the SBCL REPL:
+Start the Lisa bridge from the SBCL REPL. Dempster-Shafer is the default
+belief system; set `LISA_BELIEF_SYSTEM=cf` before launching SBCL for the
+classic certainty-factor algebra.
 
 ```lisp
 (ql:quickload :lisa-bridge)
-(lisa-bridge:start)           ; default port 8090
-(lisa-bridge:start :port 9000) ; or specify a port
+(in-package :lisa-user)
+(load "examples/mycin.lisp")     ; 15-rule expanded MYCIN base
+(lisa-bridge:start)              ; default port 8090
 ```
 
-Then run the clinician driver:
+Then run the clinician driver. Three LLM backends are auto-detected:
 
 ```bash
-# Direct Anthropic API (default)
+# Direct Anthropic API (default for public users)
 export ANTHROPIC_API_KEY=...
 
-# — or — CVS LMS / Hyperion (via `cvscode auth login`; auto-detected)
+# --- or --- CVS LMS / Hyperion (via `cvscode auth login`; auto-detected)
 
-# — or — GCP Vertex AI:
+# --- or --- GCP Vertex AI:
 # gcloud auth application-default login
 # export ANTHROPIC_VERTEX_PROJECT_ID=your-gcp-project
 # export CLOUD_ML_REGION=us-east5
 
+pip install anthropic httpx rich   # rich renders Claude's markdown in the terminal
 python src/llm/claude/driver.py
 ```
 
-See `docs/runbook.md` for the full three-backend breakdown and precedence
-rules.
-
-The initial domain is medical diagnosis using Lisa's existing Mycin rulebase (`examples/mycin.lisp`), demonstrating
-certainty-factor-based reasoning with full rule-trace explainability.
+Session transcripts land in `./sessions/session-*.md` by default —
+shareable, portable, review-friendly. See `docs/runbook.md` for the full
+three-backend breakdown, transcript configuration, and belief-system
+switching.
 
 ### Example: Diagnostic Conversation
 
-The following is an actual interaction between a clinician and Claude using Lisa's Mycin rulebase. Claude
-parses natural language into structured facts, uses `/partial-matches` to determine what to ask next, then
-runs inference and explains the results with full rule traceability.
+Actual interaction between a clinician and Claude backed by Lisa's Rete
+engine running under Dempster-Shafer. Claude extracts facts from the
+free-form narrative, runs inference, and narrates the belief intervals —
+then, when new evidence lands, produces a diff showing how each hypothesis
+moved.
 
 ```
-Clinician: Blood culture shows gram-positive cocci.
-Assistant: I'll record the facts from your blood culture observation.
+Clinician: I have a 27-year-old female burn patient. She's obviously
+           immunocompromised from the burn. Blood culture from three days
+           ago shows gram-negative rods, aerobic.
 
-[Asserts: culture-site=blood, gram=pos (organism-1), morphology=coccus (organism-1)]
-
-Now let me check what additional information would help narrow the diagnosis.
-
-[Calls get_partial_matches]
-
-We're close to firing two rules, and both need the same piece of information:
-
-- gram-pos-cocci-in-clumps-suggests-staphylococcus: If growth conformation is clumps -> Staphylococcus (belief 0.7)
-- gram-pos-cocci-in-chains-suggests-streptococcus: If growth conformation is chains -> Streptococcus (belief 0.7)
-
-Key question: What is the growth conformation on culture -- are the cocci
-arranged in clumps (clusters) or chains?
-
-Clinician: Clumps.
-Assistant: Growth conformation recorded as clumps. That completes
-gram-pos-cocci-in-clumps-suggests-staphylococcus.
-
-[Asserts: growth-conformation=clumps (organism-1)]
-[Calls run_inference]
+[Claude asserts: burn=serious, compromised-host=t (patient-1),
+                 culture-site=blood, culture-age=3,
+                 gram=neg, morphology=rod, aerobicity=aerobic (organism-1)]
+[Calls run_inference -- 4 rules fire]
 [Calls get_conclusions]
 
-Diagnosis:
+Assistant: Four rules fired on this evidence. Here's the differential:
 
-  Organism         Certainty
-  Staphylococcus   0.70 (70%)
+  Organism            Belief   Ignorance   Rules
+  Enterobacteriaceae  0.80     0.20        aerobic-gram-neg-rod-suggests-enterobacteriaceae
+  Pseudomonas         0.76     0.24        (two rules combined: burn-patient + compromised-host)
+  Klebsiella          0.50     0.50        aerobic-gram-neg-rod-in-compromised-host-suggests-klebsiella
 
-Reasoning (gram-pos-cocci-in-clumps-suggests-staphylococcus):
-  1. Gram stain: positive
-  2. Morphology: coccus
-  3. Growth conformation: clumps
+Pseudomonas at 0.76 comes from *belief combination*: two independent rules
+converge on the same organism, so DS combines them (0.4 + 0.6 with the
+conservative combinator gives 0.76 with only 0.24 residual uncertainty).
+Klebsiella is a real hit but only one moderate-belief rule supports it, so
+DS honestly reports 50% supported / 50% still unresolved.
 
-This is a classic presentation -- gram-positive cocci growing in clusters is
-the hallmark of Staphylococcus species. The 0.7 belief factor reflects the
-rule's built-in confidence level.
+Would you like to add hospital-acquired status? That would fire two more
+rules and tighten the Klebsiella interval considerably.
+
+Clinician: Yes, add hospital-acquired.
+
+[Claude asserts: hospital-acquired=t (patient-1)]
+[Calls run_inference -- 6 rules fire now]
+[Calls get_conclusions]
+
+Assistant: Two additional rules fired. The differential has sharpened:
+
+  Organism            Belief   Ignorance   Δ
+  Pseudomonas         0.93     0.07        ↑ from 0.76 (three rules now combining)
+  Enterobacteriaceae  0.80     0.20        --
+  Klebsiella          0.80     0.20        ↑ from 0.50 (two rules now combining)
+
+Pseudomonas is now the leading diagnosis at 0.93 with only 0.07 residual
+uncertainty. Empiric coverage should prioritize antipseudomonal activity,
+with attention to Enterobacteriaceae and Klebsiella as well -- which fits
+standard practice for a nosocomial burn-unit bacteremia.
 ```
+
+Notice what's happening: as evidence accumulates, DS's ignorance interval
+*narrows* on well-supported hypotheses. That's information CF collapses to a
+single number. And Claude produces a Δ column — reasoning about what
+changed — without being asked to.
 
 ### Goals
 
 - Provide deterministic, auditable inference that an LLM cannot replicate on its own
-- Keep Lisa's core unchanged -- the bridge is purely additive
+- Keep Lisa's core unchanged — the bridge is purely additive
 - Enable natural-language access to expert system reasoning without sacrificing explainability
+- Make uncertainty visible: DS beliefs surface residual ignorance the LLM can narrate honestly
 - Demonstrate that symbolic AI and neural approaches are complementary, not competing
 
 ## Performance Optimization
