@@ -86,3 +86,48 @@ src/llm/claude/tools.json    — Tool schemas
 ## Architecture Reference
 
 Full architecture plan: `docs/lisa-llm-architecture.md`
+
+---
+
+## Progress (2026-07-02)
+
+### Completed
+
+- **Thread 2 — Belief algebra**: Pluggable belief-system protocol
+  (`src/belief-systems/protocol.lisp`) landed with two implementations:
+  certainty factors (`certainty-factors/`) and simplified Dempster-Shafer
+  (`dempster-shafer/`). Convenience switch: `(belief:use-system
+  :certainty-factors | :dempster-shafer)`.
+- **Thread 1 — Rulebase**: MYCIN base expanded from 6 → 15 rules with new
+  fact types (`hospital-acquired`, `recent-travel`, `white-blood-count`,
+  `infection-site`) and new demonstration functions (`culture-1a`,
+  `culture-3`).
+- **Bridge/driver wire-up for DS**: `LISA_BELIEF_SYSTEM` env var selects the
+  system at bridge startup (**Dempster-Shafer is the default**); `POST
+  /reset` accepts optional `belief_system` for per-session overrides;
+  `/conclusions` emits `{bel, pl, ignorance}` under DS and bare numbers
+  under CF; every response includes the active belief-system name.
+- **Configurable session capture in the driver**: markdown transcripts land
+  in `./sessions/` by default. CLI flags `--transcript` /
+  `--no-transcript`, `--transcript-dir`, `--transcript-file`,
+  `--transcript-verbosity {minimal,normal,full}`; matching env vars
+  `LISA_TRANSCRIPT*`; runtime `transcript on|off|where` prompts.
+- **Refreshed tool schemas + system prompt**: `tools.json` covers all 15
+  rules' fact types and the `belief_system` param on reset;
+  `system-prompt.md` narrates the CF vs DS output shapes and gives
+  hedging guidance for wide DS ignorance intervals.
+- **Clinician scenarios**: `docs/clinician-scenarios.md` — 7 vignettes
+  covering every rule and highlighting the CF-vs-DS distinction.
+
+- **User-facing runbook**: `docs/runbook.md` — narrative walkthrough covering
+  bridge/driver startup, five hands-on demonstrations (belief combination,
+  partial-matches-driven questioning, mid-session belief-system switching,
+  DS ambiguous-evidence propagation, DS ignorance narrowing), transcript
+  configuration, and a fact/rule reference.
+
+### Remaining threads
+
+- **Thread 3 — Architecture validation**: partially exercised by the 15-rule
+  base; still worth deliberate stress testing with longer conversations and
+  more competing hypotheses.
+

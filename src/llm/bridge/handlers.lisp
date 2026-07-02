@@ -109,6 +109,20 @@
     (setf (gethash "trace" result) *last-rule-trace*)
     (json-response result)))
 
+(defun belief->json-value (belief)
+  "Serialize a belief through the active belief system, converting alist
+   payloads (as produced by the Dempster-Shafer implementation) into
+   hash-tables so jzon renders them as JSON objects rather than arrays."
+  (let ((rendered (belief:belief->json belief:*belief-system* belief)))
+    (cond
+      ((null rendered) nil)
+      ((and (consp rendered) (consp (car rendered)))
+       (let ((ht (make-hash-table :test #'equal)))
+         (dolist (pair rendered)
+           (setf (gethash (car pair) ht) (cdr pair)))
+         ht))
+      (t rendered))))
+
 (hunchentoot:define-easy-handler (conclusions-handler :uri "/conclusions"
                                                       :default-request-type :get) ()
   (handler-case
@@ -122,10 +136,13 @@
                     (string-downcase (symbol-name val)))
               (let ((belief (belief:belief-factor fact)))
                 (when belief
-                  (setf (gethash "belief" entry) belief)))
+                  (setf (gethash "belief" entry)
+                        (belief->json-value belief))))
               (push entry conclusions))))
         (let ((result (make-hash-table :test #'equal)))
           (setf (gethash "conclusions" result) (coerce (nreverse conclusions) 'vector))
+          (setf (gethash "belief_system" result)
+                (belief:belief-system-name belief:*belief-system*))
           (json-response result)))
     (error (e)
       (error-response (format nil "Failed to retrieve conclusions: ~A" e) :status 500))))
@@ -133,10 +150,16 @@
 (hunchentoot:define-easy-handler (reset-handler :uri "/reset"
                                                 :default-request-type :post) ()
   (handler-case
-      (progn
+      (let* ((body (read-json-body))
+             (requested (when body (gethash "belief_system" body)))
+             (choice (parse-belief-system-name requested)))
+        (when choice
+          (belief:use-system choice))
         (reset-session)
         (let ((result (make-hash-table :test #'equal)))
           (setf (gethash "status" result) "reset")
+          (setf (gethash "belief_system" result)
+                (belief:belief-system-name belief:*belief-system*))
           (json-response result)))
     (error (e)
       (error-response (format nil "Reset failed: ~A" e) :status 500))))
@@ -196,7 +219,7 @@ pattern.  Cross-pattern variable consistency is not checked here."
                 (setf (gethash "rule" entry)
                       (string-downcase (symbol-name (lisa:rule-short-name rule))))
                 (setf (gethash "belief" entry)
-                      (lisa::belief-factor rule))
+                      (belief->json-value (lisa::belief-factor rule)))
                 (setf (gethash "matched" entry)
                       (coerce (nreverse matched) 'vector))
                 (setf (gethash "missing" entry)

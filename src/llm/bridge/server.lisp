@@ -30,16 +30,47 @@
 (defvar *acceptor* nil
   "The active Hunchentoot acceptor, or NIL if the server is not running.")
 
+(defun parse-belief-system-name (name)
+  "Translate a case-insensitive belief-system name string to the keyword
+   expected by BELIEF:USE-SYSTEM. Returns NIL for the empty/unset case; signals
+   an error for anything unrecognized so callers fail loudly."
+  (when (and name (> (length name) 0))
+    (let ((normalized (string-downcase (string-trim '(#\Space #\Tab) name))))
+      (cond
+        ((or (string= normalized "cf")
+             (string= normalized "certainty-factors")
+             (string= normalized "certainty_factors"))
+         :certainty-factors)
+        ((or (string= normalized "ds")
+             (string= normalized "dempster-shafer")
+             (string= normalized "dempster_shafer"))
+         :dempster-shafer)
+        (t
+         (error "Unknown belief system ~S. Expected one of: cf, certainty-factors, ds, dempster-shafer."
+                name))))))
+
+(defun apply-startup-belief-system ()
+  "Honor the LISA_BELIEF_SYSTEM environment variable. Defaults to
+   Dempster-Shafer when unset — it captures ignorance explicitly, which is
+   more informative for the LLM-driven clinician workflow. Called from
+   START."
+  (let* ((env (uiop:getenv "LISA_BELIEF_SYSTEM"))
+         (choice (or (parse-belief-system-name env) :dempster-shafer)))
+    (belief:use-system choice)))
+
 (defun start (&key (port *bridge-port*))
   "Start the Lisa bridge HTTP server on PORT."
   (when *acceptor*
     (error "Lisa bridge is already running on port ~D." (hunchentoot:acceptor-port *acceptor*)))
+  (apply-startup-belief-system)
   (setf *acceptor*
         (make-instance 'hunchentoot:easy-acceptor
                        :port port
                        :name 'lisa-bridge))
   (hunchentoot:start *acceptor*)
-  (format t "Lisa bridge started on port ~D.~%" port)
+  (format t "Lisa bridge started on port ~D (belief system: ~A).~%"
+          port
+          (belief:belief-system-name belief:*belief-system*))
   *acceptor*)
 
 (defun stop ()

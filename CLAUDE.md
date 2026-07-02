@@ -22,6 +22,21 @@ Requires SBCL with Quicklisp. From the SBCL REPL at project root:
 
 To stop: `(lisa-bridge:stop)`
 
+### Choosing a belief system
+
+The bridge honors `LISA_BELIEF_SYSTEM` at startup. **Dempster-Shafer is the
+default** — it exposes ignorance intervals `{bel, pl, ignorance}` that the
+LLM can narrate meaningfully. Override with the env var:
+
+```bash
+LISA_BELIEF_SYSTEM=cf sbcl ...   # certainty factors (Shortliffe-Buchanan)
+LISA_BELIEF_SYSTEM=ds sbcl ...   # Dempster-Shafer (default)
+```
+
+Per-session overrides ride on `POST /reset` with body `{"belief_system":
+"cf" | "ds"}`. `/conclusions` echoes the active system in its response
+and emits `{bel, pl, ignorance}` payloads under DS.
+
 ## Project Structure
 
 ```
@@ -29,19 +44,22 @@ lisa.asd              — Core system definition (depends on log4cl)
 lisa-bridge.asd       — Bridge system (depends on lisa, hunchentoot, jzon, bordeaux-threads)
 src/
   core/               — Rete engine, rules, facts, conflict resolution
-  belief-systems/     — Certainty factor support
+  belief-systems/     — Pluggable belief-system protocol
+    protocol.lisp     — Generic function surface + dispatcher + use-system
+    certainty-factors/— Shortliffe-Buchanan CF implementation
+    dempster-shafer/  — Simplified [Bel, Pl] interval implementation
   rete/reference/     — Rete network nodes and compiler
   llm/bridge/         — HTTP bridge for LLM integration
     package.lisp      — :lisa-bridge package
     session.lisp      — Entity registry, session reset
-    server.lisp       — Hunchentoot start/stop
-    handlers.lisp     — REST endpoints
+    server.lisp       — Hunchentoot start/stop; LISA_BELIEF_SYSTEM env var
+    handlers.lisp     — REST endpoints (belief-system-aware)
   llm/claude/         — Claude tool-use integration
-    driver.py         — Python client: tool-call dispatch loop between Claude and Lisa bridge
+    driver.py         — Python client: tool-call loop; transcript capture
     tools.json        — Tool schemas (assert_fact, run_inference, get_conclusions, etc.)
-    system-prompt.md  — Clinical diagnostic system prompt with fact ontology
+    system-prompt.md  — Clinical diagnostic system prompt (15 rules, CF/DS output)
 examples/
-  mycin.lisp          — MYCIN rules (6 rules, certainty factors, culture-1/culture-2 scenarios)
+  mycin.lisp          — MYCIN rules (15 rules; culture-1, culture-1a, culture-2, culture-3)
 bin/
   test-culture-1.sh   — End-to-end bridge test (curl-based)
   run-mycin.sh        — Same as test-culture-1.sh (legacy name)
@@ -77,8 +95,8 @@ Expected: culture-1 scenario produces pseudomonas (0.6) and enterobacteriaceae (
 
 Both phases are complete:
 
-- **Phase 1 — HTTP Bridge**: Hunchentoot server exposing Lisa's inference engine as REST endpoints (assert-fact, run-inference, conclusions, rule-trace, partial-matches, reset).
-- **Phase 2 — Claude Tool-Use**: Python driver (`src/llm/claude/driver.py`) implementing a tool-call dispatch loop between Claude and the Lisa bridge. Includes tool schemas for all 6 endpoints, a system prompt with the MYCIN clinical ontology and uncertainty-mapping guidelines, and goal-directed dialogue via `/partial-matches`.
+- **Phase 1 — HTTP Bridge**: Hunchentoot server exposing Lisa's inference engine as REST endpoints (assert-fact, run-inference, conclusions, rule-trace, partial-matches, reset). Belief-system-aware: startup-configurable via `LISA_BELIEF_SYSTEM` and per-session overridable via `/reset`.
+- **Phase 2 — Claude Tool-Use**: Python driver (`src/llm/claude/driver.py`) implementing a tool-call dispatch loop between Claude and the Lisa bridge. Includes tool schemas for all 6 endpoints, a system prompt with the MYCIN clinical ontology (15 rules) and uncertainty-mapping guidelines, goal-directed dialogue via `/partial-matches`, and configurable session transcript capture.
 
 ### Running the Clinician Driver
 
@@ -91,6 +109,23 @@ python src/llm/claude/driver.py
 export LISA_USE_BEDROCK=1
 python src/llm/claude/driver.py
 ```
+
+**Session transcripts** are captured to `./sessions/session-YYYYmmdd-HHMMSS.md`
+by default. Precedence is CLI > env vars > defaults:
+
+| Concern | CLI flag | Env var | Default |
+|---|---|---|---|
+| Enable/disable | `--transcript` / `--no-transcript` | `LISA_TRANSCRIPT` (`1`/`0`) | on |
+| Output dir | `--transcript-dir PATH` | `LISA_TRANSCRIPT_DIR` | `./sessions/` |
+| Filename pattern | `--transcript-file NAME` | `LISA_TRANSCRIPT_FILE` | `session-{ts}.md` |
+| Verbosity | `--transcript-verbosity {minimal,normal,full}` | `LISA_TRANSCRIPT_VERBOSITY` | `normal` |
+
+At the `Clinician:` prompt: `transcript on`, `transcript off`, `transcript where`, `help`.
+
+**Hands-on runbook** (start here for a guided tour): `docs/runbook.md`.
+
+**Clinician scenarios** for exercising the 15-rule MYCIN base:
+`docs/clinician-scenarios.md`.
 
 Architecture plan: `docs/lisa-llm-architecture.md`
 

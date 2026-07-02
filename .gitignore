@@ -1,0 +1,26 @@
+# Editor / tool metadata
+.cvscode/
+.claude/
+.todos.md
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Driver session captures (transcripts)
+sessions/
+
+# Common Lisp / SBCL / ASDF caches
+*.fasl
+*.fas
+*.lx64fsl
+*.lx32fsl
+*.dx64fsl
+*.dx32fsl
+
+# OS cruft
+.DS_Store
+Thumbs.db

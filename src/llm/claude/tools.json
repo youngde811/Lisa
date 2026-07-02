@@ -16,20 +16,24 @@
             "culture-site",
             "culture-age",
             "burn",
-            "compromised-host"
+            "compromised-host",
+            "hospital-acquired",
+            "recent-travel",
+            "white-blood-count",
+            "infection-site"
           ]
         },
         "value": {
           "type": "string",
-          "description": "The value for this fact. Valid values depend on fact_type: gram=(pos|neg), morphology=(rod|coccus), aerobicity=(aerobic|anaerobic), growth-conformation=(clumps|chains), culture-site=(blood), burn=(serious), compromised-host=(t), culture-age=(integer as string)."
+          "description": "The value for this fact. Valid values depend on fact_type: gram=(pos|neg), morphology=(rod|coccus), aerobicity=(aerobic|anaerobic), growth-conformation=(clumps|chains), culture-site=(blood), burn=(serious), compromised-host=(t), culture-age=(integer as string), hospital-acquired=(t), recent-travel=(tropical), white-blood-count=(low), infection-site=(respiratory|abdominal)."
         },
         "entity": {
           "type": "string",
-          "description": "Identifier for the entity this fact describes (e.g. 'organism-1', 'patient-1'). Required for organism facts (gram, morphology, aerobicity, growth-conformation) and patient facts (burn, compromised-host). Not needed for culture-site or culture-age."
+          "description": "Identifier for the entity this fact describes (e.g. 'organism-1', 'patient-1'). Required for organism facts (gram, morphology, aerobicity, growth-conformation) and patient facts (burn, compromised-host, hospital-acquired, recent-travel, infection-site, white-blood-count). Not needed for culture-site or culture-age."
         },
         "entity_class": {
           "type": "string",
-          "description": "The class of the entity: 'organism' or 'patient'. Defaults to 'organism' if omitted.",
+          "description": "The class of the entity: 'organism' or 'patient'. Defaults to 'organism' if omitted. Use 'patient' for burn, compromised-host, hospital-acquired, recent-travel, infection-site, and white-blood-count.",
           "enum": ["organism", "patient"]
         },
         "confidence": {
@@ -44,7 +48,7 @@
   },
   {
     "name": "run_inference",
-    "description": "Trigger Lisa's forward-chaining inference engine. This fires all applicable rules against the current working memory and produces diagnostic conclusions with certainty factors. Call this after asserting all available clinical facts.",
+    "description": "Trigger Lisa's forward-chaining inference engine. This fires all applicable rules against the current working memory and produces diagnostic conclusions with belief factors. Call this after asserting all available clinical facts.",
     "input_schema": {
       "type": "object",
       "properties": {},
@@ -53,7 +57,7 @@
   },
   {
     "name": "get_conclusions",
-    "description": "Retrieve diagnostic conclusions from the last inference run. Returns organism identities with their belief factors (certainty). Each conclusion represents a possible pathogen identification.",
+    "description": "Retrieve diagnostic conclusions from the last inference run. Returns organism identities with their belief factors. Under certainty-factor mode, each belief is a single number in [-1, 1]. Under Dempster-Shafer mode, each belief is an object {bel, pl, ignorance} where bel is the lower bound of support, pl is the plausibility (upper bound), and ignorance is the width of the uncertainty interval (pl - bel). The response also includes a top-level belief_system field naming the active algebra.",
     "input_schema": {
       "type": "object",
       "properties": {},
@@ -80,10 +84,16 @@
   },
   {
     "name": "reset_session",
-    "description": "Clear all facts from working memory and reset the session. Use this when starting a new patient case or when the clinician wants to start over.",
+    "description": "Clear all facts from working memory and reset the session. Optionally switch the active belief system as part of the reset. Use this when starting a new patient case or when the clinician wants to start over.",
     "input_schema": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "belief_system": {
+          "type": "string",
+          "description": "Optional: switch the active belief system on this reset. 'cf' = certainty factors (Shortliffe-Buchanan); 'ds' = simplified Dempster-Shafer. Omit to keep the current setting.",
+          "enum": ["cf", "certainty-factors", "ds", "dempster-shafer"]
+        }
+      },
       "required": []
     }
   }
