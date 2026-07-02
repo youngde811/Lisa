@@ -100,13 +100,31 @@ Both phases are complete:
 
 ### Running the Clinician Driver
 
+The driver supports two LLM backends. **Anthropic direct API is the default**;
+GCP Vertex AI is available for CVS engineers running under `cvscode` SSO.
+
 ```bash
-# Requires: anthropic Python package, Lisa bridge running on port 8090
-export ANTHROPIC_API_KEY=...            # Anthropic-protocol API key
-# Optional: point at an internal wrapper that speaks the Anthropic protocol
+# --- Path A: direct Anthropic API (default) ---
+export ANTHROPIC_API_KEY=...
+# Optional: point at an internal Anthropic-protocol wrapper
 # export ANTHROPIC_BASE_URL=https://internal-wrapper.example.com
 python src/llm/claude/driver.py
+
+# --- Path B: GCP Vertex AI (matches the cvscode environment) ---
+# Auth once via `gcloud auth application-default login`
+export ANTHROPIC_VERTEX_PROJECT_ID=your-gcp-project
+export CLOUD_ML_REGION=us-east5
+python src/llm/claude/driver.py     # auto-detects when API key isn't set
 ```
+
+Backend selection precedence:
+1. `LISA_LLM_BACKEND=anthropic|vertex` (explicit override).
+2. Auto-detect: `ANTHROPIC_API_KEY` → anthropic; else
+   `ANTHROPIC_VERTEX_PROJECT_ID` → vertex; else an error with hints.
+
+Model selection: `LISA_MODEL` overrides the per-backend default.
+Defaults are `claude-sonnet-4-6-20250619` on the Anthropic backend and
+`claude-opus-4-7` on Vertex (matching `cvscode`).
 
 **Session transcripts** are captured to `./sessions/session-YYYYmmdd-HHMMSS.md`
 by default. Precedence is CLI > env vars > defaults:

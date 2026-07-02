@@ -62,10 +62,14 @@ switch away.
 
 - SBCL with Quicklisp (project loads via `lisa.asd` / `lisa-bridge.asd`)
 - Python 3.10+ with the `anthropic` and `httpx` packages
-- `ANTHROPIC_API_KEY` set in the environment. If you're routing through an
-  internal wrapper that speaks the Anthropic protocol (rather than
-  `api.anthropic.com` directly), also set `ANTHROPIC_BASE_URL` — the
-  Anthropic SDK picks it up automatically.
+- One of the following LLM-backend configurations:
+  - **Anthropic direct (default)**: `ANTHROPIC_API_KEY` in the environment.
+    If you're routing through an internal Anthropic-protocol wrapper,
+    also set `ANTHROPIC_BASE_URL` (the SDK reads it automatically).
+  - **GCP Vertex AI** (matches the `cvscode` environment for CVS engineers):
+    `ANTHROPIC_VERTEX_PROJECT_ID` + `CLOUD_ML_REGION`, plus GCP Application
+    Default Credentials — run `gcloud auth application-default login` once.
+    No API key needed; SSO is handled by the ADC.
 
 That's it — no other services required.
 
@@ -114,14 +118,24 @@ To stop the bridge later: `(lisa-bridge:stop)` at the REPL.
 
 ## Start the driver
 
-In another terminal:
+In another terminal, pick a backend:
 
 ```bash
+# Direct Anthropic API (default when ANTHROPIC_API_KEY is set)
 export ANTHROPIC_API_KEY=...
-# If using an internal Anthropic-protocol wrapper:
+# Optional: internal Anthropic-protocol wrapper
 # export ANTHROPIC_BASE_URL=https://internal-wrapper.example.com
+
+# — or — GCP Vertex AI (matches the cvscode SSO environment):
+# export ANTHROPIC_VERTEX_PROJECT_ID=your-gcp-project
+# export CLOUD_ML_REGION=us-east5
+
 python src/llm/claude/driver.py
 ```
+
+The driver auto-detects the backend from the env vars above, or you can
+force it with `LISA_LLM_BACKEND=anthropic|vertex`. To pin a specific model
+regardless of backend defaults, set `LISA_MODEL=claude-...`.
 
 You'll get:
 

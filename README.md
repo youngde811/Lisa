@@ -97,9 +97,16 @@ Start the Lisa bridge from the SBCL REPL:
 Then run the clinician driver:
 
 ```bash
+# Direct Anthropic API (default)
 export ANTHROPIC_API_KEY=...
-# Optional: point at an internal Anthropic-protocol wrapper
+# Optional: internal Anthropic-protocol wrapper
 # export ANTHROPIC_BASE_URL=https://internal-wrapper.example.com
+
+# — or — GCP Vertex AI (matches the cvscode SSO environment):
+# gcloud auth application-default login
+# export ANTHROPIC_VERTEX_PROJECT_ID=your-gcp-project
+# export CLOUD_ML_REGION=us-east5
+
 python src/llm/claude/driver.py
 ```
 

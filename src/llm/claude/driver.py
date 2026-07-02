@@ -47,8 +47,14 @@ import anthropic
 import httpx
 
 BRIDGE_URL = os.environ.get("LISA_BRIDGE_URL", "http://localhost:8090")
-MODEL_ANTHROPIC = "claude-sonnet-4-6-20250619"
-MODEL_OVERRIDE = os.environ.get("LISA_MODEL")
+
+# Per-backend model defaults. Overridable via LISA_MODEL at runtime.
+DEFAULT_MODEL_ANTHROPIC = "claude-sonnet-4-6-20250619"
+DEFAULT_MODEL_VERTEX = "claude-opus-4-7"
+
+BACKEND_ANTHROPIC = "anthropic"
+BACKEND_VERTEX = "vertex"
+VALID_BACKENDS = (BACKEND_ANTHROPIC, BACKEND_VERTEX)
 
 VERBOSITY_LEVELS = ("minimal", "normal", "full")
 DEFAULT_FILENAME_PATTERN = "session-{ts}.md"
@@ -68,16 +74,78 @@ def make_http_client():
     return httpx.Client()
 
 
-def make_client():
-    """Create an Anthropic-protocol client.
+def resolve_backend() -> str:
+    """Decide which LLM backend to use.
 
-    Uses ANTHROPIC_API_KEY from the environment. The Anthropic SDK also
-    honors ANTHROPIC_BASE_URL — set that when routing through an internal
-    wrapper that speaks the Anthropic protocol.
+    Precedence:
+      1. LISA_LLM_BACKEND env var (values: 'anthropic' or 'vertex').
+      2. Auto-detect: if ANTHROPIC_API_KEY is set → anthropic; else if
+         ANTHROPIC_VERTEX_PROJECT_ID is set → vertex.
+      3. Otherwise raise, with a helpful hint.
+    """
+    explicit = os.environ.get("LISA_LLM_BACKEND", "").strip().lower()
+    if explicit:
+        if explicit not in VALID_BACKENDS:
+            raise RuntimeError(
+                f"Invalid LISA_LLM_BACKEND={explicit!r}. "
+                f"Expected one of: {', '.join(VALID_BACKENDS)}."
+            )
+        return explicit
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        return BACKEND_ANTHROPIC
+    if os.environ.get("ANTHROPIC_VERTEX_PROJECT_ID"):
+        return BACKEND_VERTEX
+    raise RuntimeError(
+        "No LLM backend detected. Set one of:\n"
+        "  ANTHROPIC_API_KEY=...            (direct Anthropic API — the default path)\n"
+        "  ANTHROPIC_VERTEX_PROJECT_ID=..., CLOUD_ML_REGION=...   (GCP Vertex AI, e.g. via cvscode SSO)\n"
+        "Or set LISA_LLM_BACKEND=anthropic|vertex explicitly."
+    )
+
+
+def make_client():
+    """Create an LLM client based on the resolved backend.
+
+    - anthropic: reads ANTHROPIC_API_KEY (and optionally ANTHROPIC_BASE_URL
+      to point at an internal Anthropic-protocol wrapper). Default when
+      ANTHROPIC_API_KEY is present.
+    - vertex: reads ANTHROPIC_VERTEX_PROJECT_ID and CLOUD_ML_REGION and
+      uses GCP Application Default Credentials (e.g. from `gcloud auth
+      application-default login`). Matches the environment `cvscode` uses.
+
+    Returns (client, model_id).
     """
     http_client = make_http_client()
-    model = MODEL_OVERRIDE or MODEL_ANTHROPIC
-    return anthropic.Anthropic(http_client=http_client), model
+    backend = resolve_backend()
+
+    model_override = os.environ.get("LISA_MODEL")
+
+    if backend == BACKEND_ANTHROPIC:
+        model = model_override or DEFAULT_MODEL_ANTHROPIC
+        return anthropic.Anthropic(http_client=http_client), model
+
+    if backend == BACKEND_VERTEX:
+        project_id = os.environ.get("ANTHROPIC_VERTEX_PROJECT_ID")
+        region = os.environ.get("CLOUD_ML_REGION") or os.environ.get(
+            "ANTHROPIC_VERTEX_REGION"
+        )
+        if not project_id or not region:
+            raise RuntimeError(
+                "Vertex backend requires ANTHROPIC_VERTEX_PROJECT_ID and "
+                "CLOUD_ML_REGION to be set."
+            )
+        model = model_override or DEFAULT_MODEL_VERTEX
+        return (
+            anthropic.AnthropicVertex(
+                project_id=project_id,
+                region=region,
+                http_client=http_client,
+            ),
+            model,
+        )
+
+    # Unreachable — resolve_backend() already validated.
+    raise RuntimeError(f"Unhandled backend: {backend!r}")
 
 HERE = Path(__file__).parent
 SYSTEM_PROMPT = (HERE / "system-prompt.md").read_text()
