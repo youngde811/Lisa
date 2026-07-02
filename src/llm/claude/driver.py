@@ -50,11 +50,20 @@ BRIDGE_URL = os.environ.get("LISA_BRIDGE_URL", "http://localhost:8090")
 
 # Per-backend model defaults. Overridable via LISA_MODEL at runtime.
 DEFAULT_MODEL_ANTHROPIC = "claude-sonnet-4-6-20250619"
+DEFAULT_MODEL_LMS = "claude-opus-4-7"
 DEFAULT_MODEL_VERTEX = "claude-opus-4-7"
 
+# Default LMS (Hyperion) endpoint — the value shown by `cvscode --help`.
+# Override via CVSCODE_BASE_URL for dev/stage instances.
+DEFAULT_LMS_BASE_URL = "https://hyperion-lms-api.prod.cvshealth.com"
+
+# Path where `cvscode auth login` writes LMS session credentials.
+LMS_CREDENTIALS_PATH = Path.home() / ".cvscode" / ".lms-credentials.json"
+
 BACKEND_ANTHROPIC = "anthropic"
+BACKEND_LMS = "lms"
 BACKEND_VERTEX = "vertex"
-VALID_BACKENDS = (BACKEND_ANTHROPIC, BACKEND_VERTEX)
+VALID_BACKENDS = (BACKEND_ANTHROPIC, BACKEND_LMS, BACKEND_VERTEX)
 
 VERBOSITY_LEVELS = ("minimal", "normal", "full")
 DEFAULT_FILENAME_PATTERN = "session-{ts}.md"
@@ -74,13 +83,42 @@ def make_http_client():
     return httpx.Client()
 
 
+def _lms_credentials_available() -> bool:
+    """Return True when either the cvscode credentials file exists or
+    CVSCODE_API_KEY is set in the environment."""
+    return LMS_CREDENTIALS_PATH.exists() or bool(os.environ.get("CVSCODE_API_KEY"))
+
+
+def _load_lms_api_key() -> str:
+    """Prefer CVSCODE_API_KEY from env; fall back to the cvscode credentials
+    file written by `cvscode auth login`."""
+    env_key = os.environ.get("CVSCODE_API_KEY")
+    if env_key:
+        return env_key
+    if not LMS_CREDENTIALS_PATH.exists():
+        raise RuntimeError(
+            f"LMS backend selected but no credentials found. "
+            f"Run `cvscode auth login`, set CVSCODE_API_KEY, or choose a different backend."
+        )
+    with open(LMS_CREDENTIALS_PATH) as fh:
+        data = json.load(fh)
+    key = data.get("lmsApiKey")
+    if not key:
+        raise RuntimeError(
+            f"{LMS_CREDENTIALS_PATH} is present but missing 'lmsApiKey'. "
+            f"Re-run `cvscode auth login`."
+        )
+    return key
+
+
 def resolve_backend() -> str:
     """Decide which LLM backend to use.
 
     Precedence:
-      1. LISA_LLM_BACKEND env var (values: 'anthropic' or 'vertex').
-      2. Auto-detect: if ANTHROPIC_API_KEY is set → anthropic; else if
-         ANTHROPIC_VERTEX_PROJECT_ID is set → vertex.
+      1. LISA_LLM_BACKEND env var ('anthropic', 'lms', or 'vertex').
+      2. Auto-detect in order: ANTHROPIC_API_KEY → anthropic;
+         cvscode LMS credentials → lms;
+         ANTHROPIC_VERTEX_PROJECT_ID → vertex.
       3. Otherwise raise, with a helpful hint.
     """
     explicit = os.environ.get("LISA_LLM_BACKEND", "").strip().lower()
@@ -93,13 +131,16 @@ def resolve_backend() -> str:
         return explicit
     if os.environ.get("ANTHROPIC_API_KEY"):
         return BACKEND_ANTHROPIC
+    if _lms_credentials_available():
+        return BACKEND_LMS
     if os.environ.get("ANTHROPIC_VERTEX_PROJECT_ID"):
         return BACKEND_VERTEX
     raise RuntimeError(
         "No LLM backend detected. Set one of:\n"
-        "  ANTHROPIC_API_KEY=...            (direct Anthropic API — the default path)\n"
-        "  ANTHROPIC_VERTEX_PROJECT_ID=..., CLOUD_ML_REGION=...   (GCP Vertex AI, e.g. via cvscode SSO)\n"
-        "Or set LISA_LLM_BACKEND=anthropic|vertex explicitly."
+        "  ANTHROPIC_API_KEY=...                                (direct Anthropic API — default)\n"
+        "  `cvscode auth login`  or  CVSCODE_API_KEY=...        (CVS LMS/Hyperion gateway)\n"
+        "  ANTHROPIC_VERTEX_PROJECT_ID=..., CLOUD_ML_REGION=... (GCP Vertex AI)\n"
+        "Or set LISA_LLM_BACKEND=anthropic|lms|vertex explicitly."
     )
 
 
@@ -109,9 +150,13 @@ def make_client():
     - anthropic: reads ANTHROPIC_API_KEY (and optionally ANTHROPIC_BASE_URL
       to point at an internal Anthropic-protocol wrapper). Default when
       ANTHROPIC_API_KEY is present.
+    - lms: CVS Hyperion LMS gateway. Reads the API key from
+      CVSCODE_API_KEY or ~/.cvscode/.lms-credentials.json (written by
+      `cvscode auth login`). Base URL defaults to hyperion-lms-api.prod;
+      override with CVSCODE_BASE_URL.
     - vertex: reads ANTHROPIC_VERTEX_PROJECT_ID and CLOUD_ML_REGION and
       uses GCP Application Default Credentials (e.g. from `gcloud auth
-      application-default login`). Matches the environment `cvscode` uses.
+      application-default login`).
 
     Returns (client, model_id).
     """
@@ -123,6 +168,19 @@ def make_client():
     if backend == BACKEND_ANTHROPIC:
         model = model_override or DEFAULT_MODEL_ANTHROPIC
         return anthropic.Anthropic(http_client=http_client), model
+
+    if backend == BACKEND_LMS:
+        api_key = _load_lms_api_key()
+        base_url = os.environ.get("CVSCODE_BASE_URL", DEFAULT_LMS_BASE_URL)
+        model = model_override or DEFAULT_MODEL_LMS
+        return (
+            anthropic.Anthropic(
+                api_key=api_key,
+                base_url=base_url,
+                http_client=http_client,
+            ),
+            model,
+        )
 
     if backend == BACKEND_VERTEX:
         project_id = os.environ.get("ANTHROPIC_VERTEX_PROJECT_ID")

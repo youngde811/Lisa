@@ -62,14 +62,17 @@ switch away.
 
 - SBCL with Quicklisp (project loads via `lisa.asd` / `lisa-bridge.asd`)
 - Python 3.10+ with the `anthropic` and `httpx` packages
-- One of the following LLM-backend configurations:
-  - **Anthropic direct (default)**: `ANTHROPIC_API_KEY` in the environment.
-    If you're routing through an internal Anthropic-protocol wrapper,
-    also set `ANTHROPIC_BASE_URL` (the SDK reads it automatically).
-  - **GCP Vertex AI** (matches the `cvscode` environment for CVS engineers):
-    `ANTHROPIC_VERTEX_PROJECT_ID` + `CLOUD_ML_REGION`, plus GCP Application
-    Default Credentials — run `gcloud auth application-default login` once.
-    No API key needed; SSO is handled by the ADC.
+- One of the following LLM-backend configurations (the driver auto-detects
+  in this order, or set `LISA_LLM_BACKEND=anthropic|lms|vertex` to force one):
+  - **Anthropic direct (default for public users)**: `ANTHROPIC_API_KEY` in
+    the environment. Optionally set `ANTHROPIC_BASE_URL` if routing through
+    an internal Anthropic-protocol wrapper — the SDK reads it automatically.
+  - **CVS LMS / Hyperion** (for CVS engineers): run `cvscode auth login`
+    once. The driver reads `~/.cvscode/.lms-credentials.json` automatically
+    — no env vars needed. Override the endpoint with `CVSCODE_BASE_URL` or
+    the API key with `CVSCODE_API_KEY` if you need to.
+  - **GCP Vertex AI**: run `gcloud auth application-default login` once,
+    then set `ANTHROPIC_VERTEX_PROJECT_ID` and `CLOUD_ML_REGION`.
 
 That's it — no other services required.
 
@@ -123,19 +126,22 @@ In another terminal, pick a backend:
 ```bash
 # Direct Anthropic API (default when ANTHROPIC_API_KEY is set)
 export ANTHROPIC_API_KEY=...
-# Optional: internal Anthropic-protocol wrapper
-# export ANTHROPIC_BASE_URL=https://internal-wrapper.example.com
 
-# — or — GCP Vertex AI (matches the cvscode SSO environment):
+# — or — CVS LMS / Hyperion (for CVS engineers):
+# cvscode auth login   (once; writes ~/.cvscode/.lms-credentials.json)
+# no env vars required — the driver reads the creds file automatically
+
+# — or — GCP Vertex AI:
+# gcloud auth application-default login   (once)
 # export ANTHROPIC_VERTEX_PROJECT_ID=your-gcp-project
 # export CLOUD_ML_REGION=us-east5
 
 python src/llm/claude/driver.py
 ```
 
-The driver auto-detects the backend from the env vars above, or you can
-force it with `LISA_LLM_BACKEND=anthropic|vertex`. To pin a specific model
-regardless of backend defaults, set `LISA_MODEL=claude-...`.
+The driver auto-detects the backend from what's present, or force it with
+`LISA_LLM_BACKEND=anthropic|lms|vertex`. To pin a specific model regardless
+of backend defaults, set `LISA_MODEL=claude-...`.
 
 You'll get:
 

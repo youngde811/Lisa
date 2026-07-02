@@ -99,16 +99,19 @@ Then run the clinician driver:
 ```bash
 # Direct Anthropic API (default)
 export ANTHROPIC_API_KEY=...
-# Optional: internal Anthropic-protocol wrapper
-# export ANTHROPIC_BASE_URL=https://internal-wrapper.example.com
 
-# — or — GCP Vertex AI (matches the cvscode SSO environment):
+# — or — CVS LMS / Hyperion (via `cvscode auth login`; auto-detected)
+
+# — or — GCP Vertex AI:
 # gcloud auth application-default login
 # export ANTHROPIC_VERTEX_PROJECT_ID=your-gcp-project
 # export CLOUD_ML_REGION=us-east5
 
 python src/llm/claude/driver.py
 ```
+
+See `docs/runbook.md` for the full three-backend breakdown and precedence
+rules.
 
 The initial domain is medical diagnosis using Lisa's existing Mycin rulebase (`examples/mycin.lisp`), demonstrating
 certainty-factor-based reasoning with full rule-trace explainability.
