@@ -31,7 +31,7 @@
 
 (asdf:defsystem lisa-bridge
   :name "Lisa-Bridge"
-  :version "4.0.0"
+  :version "4.1.0"
   :author "David E. Young"
   :maintainer "David E. Young"
   :licence "MIT"

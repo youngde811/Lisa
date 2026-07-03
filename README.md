@@ -318,7 +318,7 @@ implementation. Current development priorities include:
 
 Lisa is actively developed and tested on SBCL. Additional testing has been performed on
 [AllegroExpress](https://franz.com/) (the free version of Allegro Common Lisp) with excellent results. The core codebase
-represents Lisa version 4.0.0 and should run correctly on all supported Common Lisp implementations listed above.
+represents Lisa version 4.1.0 and should run correctly on all supported Common Lisp implementations listed above.
 
 ### Design Philosophy
 

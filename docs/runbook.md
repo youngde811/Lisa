@@ -346,6 +346,12 @@ that DS's belief (0.60) sits *above* CF's (0.52): Dempster redistributes the
 conflict mass across the frame rather than simply subtracting it, so `bel` and
 `pl` each carry a different part of the story.
 
+> **See it for real:** [`docs/sample-session-ds-conflict.md`](sample-session-ds-conflict.md)
+> is a captured transcript of exactly this case driven end-to-end through Claude
+> and the bridge — the DS conclusions (`bacteroides {bel 0.60, pl 0.83}`), the
+> disconfirming rule firing, and the CF side-by-side, all with Claude's
+> narration.
+
 ### 5. The abdominal anaerobe — narrowing ignorance
 
 **Goal**: See DS combination *narrowing* the ignorance interval as
@@ -388,7 +394,7 @@ Structure:
 # Lisa/Claude session transcript
 
 - Started: 2026-07-02T12:15:00
-- Model: `claude-sonnet-4-6-20250619`
+- Model: `claude-sonnet-5`
 - Bridge: `http://localhost:8090`
 - Belief system: `Dempster-Shafer (simplified)`
 - Verbosity: `normal`
