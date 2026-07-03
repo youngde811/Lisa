@@ -12,16 +12,19 @@ annotated with:
   contrasted between certainty factors (CF) and simplified
   Dempster-Shafer (DS)
 
-Together the seven cases exercise every rule in the current base and,
-critically, produce cases where *multiple rules conclude the same organism*
-— which is where belief combination becomes visible.
+Together the seven cases reach every rule in the current base — most are
+fired directly by a scenario as written; the two `clumps`-based
+gram-positive rules (staphylococcus, staph-aureus) are reachable only by the
+noted variations (see the coverage matrix). Critically, several cases produce situations where *multiple rules
+conclude the same organism* — which is where belief combination becomes
+visible.
 
 ## How to Run
 
 Start the bridge under the belief system you want to see:
 
 ```bash
-# Certainty factors (default)
+# Dempster-Shafer (default)
 sbcl --load lisa.asd \
      --eval '(asdf:load-system :lisa)' \
      --eval '(in-package :lisa-user)' \
@@ -29,8 +32,8 @@ sbcl --load lisa.asd \
      --eval '(asdf:load-system :lisa-bridge)' \
      --eval '(lisa-bridge:start)'
 
-# Dempster-Shafer
-LISA_BELIEF_SYSTEM=ds sbcl --load lisa.asd ...  (same, just the env var)
+# Certainty factors (override with the env var)
+LISA_BELIEF_SYSTEM=cf sbcl --load lisa.asd ...  (same, just the env var)
 ```
 
 Then start the driver in another shell:

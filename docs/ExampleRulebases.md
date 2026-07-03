@@ -117,8 +117,9 @@ Another interesting problem is MYCIN, an early backward chaining expert system t
 identify bacteria causing severe infections, such as bacteremia and meningitis, and to recommend antibiotics, with the
 dosage adjusted for patient's body weight. Lisa uses a forward-chaining version borrowed from Peter Norvig's excellent
 book on artificial intelligence[^3]. The run output is brief, but the rulebase in
-[_examples/mycin.lisp_](../examples/mycin.lisp) is an interesting study, as it illustrates Lisa's implementation of
-Certainty Factors.
+[_examples/mycin.lisp_](../examples/mycin.lisp) is an interesting study, as it illustrates Lisa's pluggable belief
+systems — the same rules run under either Certainty Factors or Dempster-Shafer (the default). See
+[_docs/runbook.md_](runbook.md) for a hands-on tour under both.
 
 ### Sample MYCIN Code ###
 

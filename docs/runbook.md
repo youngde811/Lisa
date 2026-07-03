@@ -213,6 +213,11 @@ compromised-host pattern. The `/conclusions` payload includes:
 }
 ```
 
+(Conclusion ordering isn't significant — the payload isn't sorted by belief,
+so a given run may list pseudomonas before enterobacteriaceae or vice versa.
+Compare against `docs/sample-session.md`, where the same case lists
+pseudomonas first.)
+
 **Read this carefully**: pseudomonas ends up at 0.76 even though *neither*
 underlying rule has a belief that high (0.4 for burn, 0.6 for compromised).
 That's belief combination — two independent lines of evidence for the same

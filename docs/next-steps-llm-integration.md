@@ -2,7 +2,12 @@
 
 ## Context
 
-Phase 1 (HTTP bridge) and Phase 2 (Claude tool-use clinician driver) are complete. The system demonstrates a hybrid architecture where Claude handles natural-language interaction and Lisa handles deterministic forward-chaining inference with certainty factors and full rule traceability. The current MYCIN rulebase has 6 rules covering a narrow slice of infectious disease identification.
+> **Note:** This section describes the state *before* the 2026-07-02 work
+> below. The rulebase has since grown from 6 → 15 rules and Dempster-Shafer
+> has been added as a second (now default) belief system — see the Progress
+> section at the end.
+
+Phase 1 (HTTP bridge) and Phase 2 (Claude tool-use clinician driver) are complete. The system demonstrates a hybrid architecture where Claude handles natural-language interaction and Lisa handles deterministic forward-chaining inference with certainty factors and full rule traceability. At the time of writing, the MYCIN rulebase has 6 rules covering a narrow slice of infectious disease identification.
 
 We want to push this further — not toward a full MYCIN port (clinically irrelevant today, and the backward-chaining mismatch makes it impractical at scale), but toward a richer demonstration of what the hybrid architecture can do.
 
