@@ -22,9 +22,15 @@
 ;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-;; Description: Simplified Dempster-Shafer belief system implementation.
+;; Description: Dempster-Shafer belief system implementation.
 ;; Represents belief as [Bel, Pl] intervals where the width (Pl - Bel)
-;; captures remaining ignorance explicitly.
+;; captures remaining ignorance explicitly. Each interval is a basic
+;; probability assignment over the dichotomous frame {H, not-H}
+;; (m(H)=Bel, m(not-H)=1-Pl, m(Theta)=Pl-Bel), and COMBINE-BELIEFS applies
+;; Dempster's rule of combination with explicit conflict (K) renormalization.
+;; Restricting the frame to a single hypothesis and its negation (the Barnett
+;; simplification) keeps combination O(1) and avoids power-set mass functions
+;; while remaining faithful DS on that frame -- hence the "(simplified)" name.
 
 (in-package :belief)
 
@@ -93,32 +99,67 @@
 ;;; ============================================================
 
 (defmethod combine-beliefs ((system dempster-shafer-system) a b)
-  "Combine two DS beliefs for the same hypothesis.
+  "Combine two DS beliefs for the same hypothesis via Dempster's rule of
+   combination on the dichotomous frame {H, not-H}.
 
-   Uses asymptotic combination for the belief component (lower bound)
-   and minimum for plausibility (conservative upper bound).
+   Each [Bel, Pl] interval encodes a basic probability assignment over that
+   frame:
+     m(H)     = Bel        — mass committed to the hypothesis
+     m(not-H) = 1 - Pl     — mass committed against it
+     m(Theta) = Pl - Bel   — uncommitted mass (ignorance)
 
-   Note: Full DS would require mass functions over the power set.
-   This approximation works well for single-hypothesis reasoning."
-  (let ((bel-a (ds-belief-bel a))
-        (bel-b (ds-belief-bel b))
-        (pl-a (ds-belief-pl a))
-        (pl-b (ds-belief-pl b)))
-    (let ((combined-bel (+ bel-a bel-b (* -1.0 bel-a bel-b)))
-          (combined-pl (min pl-a pl-b)))
-      (make-ds-belief (min combined-bel combined-pl) combined-pl))))
+   Dempster's rule intersects the focal elements of the two BPAs, tallies the
+   conflict mass K (the mass that lands on the empty set, H and not-H being
+   disjoint), and renormalizes the survivors by 1 - K:
+
+     K       = m1(H)*m2(not-H) + m1(not-H)*m2(H)
+     m12(H)  = [m1(H)m2(H) + m1(H)m2(Theta) + m1(Theta)m2(H)] / (1 - K)
+     m12(nH) = [m1(nH)m2(nH) + m1(nH)m2(Theta) + m1(Theta)m2(nH)] / (1 - K)
+
+   This is genuine Dempster-Shafer, restricted to singleton hypotheses (the
+   Barnett simplification) so it stays O(1) per combination and needs no
+   power-set machinery. When there is no disconfirming evidence
+   (m(not-H) = 0 on both sides) K collapses to 0 and the rule reduces to the
+   familiar Bel = a + b - a*b, Pl = 1 form, so confirmatory-only scenarios are
+   numerically unchanged from before."
+  (let* ((h1 (ds-belief-bel a)) (nh1 (- 1.0 (ds-belief-pl a)))
+         (th1 (- (ds-belief-pl a) (ds-belief-bel a)))
+         (h2 (ds-belief-bel b)) (nh2 (- 1.0 (ds-belief-pl b)))
+         (th2 (- (ds-belief-pl b) (ds-belief-bel b)))
+         (k (+ (* h1 nh2) (* nh1 h2))))
+    (if (>= k 1.0)
+        ;; Total conflict: the sources are irreconcilable. Return full
+        ;; ignorance rather than dividing by zero (a Dempster-vs-Yager choice;
+        ;; full ignorance is the conservative, non-committal option).
+        (make-ds-belief 0.0 1.0)
+        (let* ((norm (- 1.0 k))
+               (mh  (/ (+ (* h1 h2) (* h1 th2) (* th1 h2)) norm))
+               (mnh (/ (+ (* nh1 nh2) (* nh1 th2) (* th1 nh2)) norm))
+               ;; Clamp defensively: with well-formed inputs (bel <= pl in [0,1])
+               ;; these already land in range, but a malformed input interval
+               ;; would otherwise leak negative or >1 masses into the result.
+               (bel (max 0.0 (min 1.0 mh)))
+               (pl  (max 0.0 (min 1.0 (- 1.0 mnh)))))
+          (make-ds-belief (min bel pl) pl)))))
 
 (defmethod weaken-belief ((system dempster-shafer-system) belief rule-factor)
-  "Apply rule weight to belief.
+  "Scale the premise support by a rule's intrinsic belief, producing a simple
+   support function for the conclusion.
 
-   Scales belief proportionally; plausibility moves toward 1.0
-   (weaker evidence = more uncertainty)."
-  (let* ((bel (ds-belief-bel belief))
-         (pl (ds-belief-pl belief))
+   A positive RULE-FACTOR yields support FOR the hypothesis: mass RULE-FACTOR *
+   premise-strength lands on H, the rest on Theta. A negative RULE-FACTOR
+   yields support AGAINST it: the mass lands on not-H instead — this is how
+   ruling-out rules inject disconfirming evidence that COMBINE-BELIEFS can then
+   turn into genuine conflict. Plausibility falls out of the mass placement:
+   1.0 for supporting evidence, 1 - mass for disconfirming evidence."
+  (let* ((strength (ds-belief-bel belief))            ; support carried by premises
          (f (coerce rule-factor 'single-float))
-         (new-bel (* bel f))
-         (new-pl (+ (* pl f) (* 1.0 (- 1.0 f)))))
-    (make-ds-belief new-bel (max new-bel new-pl))))
+         ;; Clamp to [0,1] so an out-of-range rule :belief (|factor| > 1) can't
+         ;; produce an invalid interval (bel > pl or a negative bound).
+         (mass (min 1.0 (max 0.0 (* strength (abs f))))))
+    (if (minusp f)
+        (make-ds-belief 0.0 (- 1.0 mass))                    ; against: m(not-H)=mass
+        (make-ds-belief mass (ds-belief-pl belief)))))       ; for: m(H)=mass, carry premise Pl
 
 (defmethod conjoin-beliefs ((system dempster-shafer-system) beliefs)
   "Combine beliefs from AND-ed premises.
