@@ -224,9 +224,60 @@ standard practice for a nosocomial burn-unit bacteremia.
 ```
 
 Notice what's happening: as evidence accumulates, DS's ignorance interval
-*narrows* on well-supported hypotheses. That's information CF collapses to a
-single number. And Claude produces a Δ column — reasoning about what
-changed — without being asked to.
+*narrows* on well-supported hypotheses, and Claude produces a Δ column —
+reasoning about what changed — without being asked to. One honest caveat:
+every hypothesis above keeps `pl = 1.0`, because nothing in this case argues
+*against* any organism. In that purely confirmatory regime DS's belief numbers
+match what CF would report. The two algebras diverge the moment evidence
+*conflicts* — which is exactly the next example.
+
+### Example: Conflicting Evidence — Where CF and DS Part Ways
+
+Give the engine *contradictory* evidence and Dempster-Shafer earns its keep.
+Here the Gram stain itself is ambiguous, so the same organism has evidence
+both for and against being gram-negative:
+
+```
+Clinician: Same 27-year-old burn patient, immunocompromised. Blood culture
+           grew an anaerobic organism. But the Gram stain is ambiguous — the
+           microbiologist is ~80% sure it's gram-negative rods, though it
+           could be gram-positive, maybe 60% confidence.
+
+[Claude asserts gram=neg (conf 0.8) AND gram=pos (conf 0.6), plus
+                burn=serious, compromised-host=t, culture-site=blood,
+                morphology=rod, aerobicity=anaerobic]
+[Calls run_inference, get_conclusions -- belief system: Dempster-Shafer]
+
+Assistant:
+  Organism      bel    pl     ignorance
+  Bacteroides   0.60   0.83   0.23
+  Pseudomonas   0.51   0.80   0.29
+
+Plausibility fell *below 1.0* here. The possible gram-positive reading fires
+gram-pos-stain-argues-against-gram-neg-organism — evidence *against* every
+gram-negative hypothesis. Under Dempster's rule of combination that conflict
+renormalizes the interval: belief stays moderate, but the ceiling drops.
+
+Clinician: Now run the identical case under certainty factors.
+
+[Claude calls reset with belief_system=cf, re-asserts, re-runs]
+
+Assistant:
+  Organism      CF
+  Bacteroides   0.52
+  Pseudomonas   0.39
+
+Same rules, same evidence — but CF collapses each hypothesis to one number.
+You can't tell "well-supported but contested" (Bacteroides here) from
+"weakly supported but uncontested"; both can land at the same CF. DS keeps
+them apart: `bel` says how supported, `pl` says how contested, and `pl < 1.0`
+is the visible fingerprint of the conflicting stain.
+```
+
+This whole exchange — driven live through Claude and the bridge under
+`claude-sonnet-5` — is captured verbatim in
+[`docs/sample-session-ds-conflict.md`](docs/sample-session-ds-conflict.md),
+including the raw `{bel, pl, ignorance}` tool payloads.
 
 ### Goals
 
