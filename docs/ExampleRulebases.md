@@ -160,11 +160,12 @@ CL-USER> (in-package :lisa-user)
 LISA-USER> (culture-1)
 Identity: PSEUDOMONAS (0.760)
 Identity: ENTEROBACTERIACEAE (0.800)
-5
+Identity: KLEBSIELLA (0.500)
+7
 LISA-USER> (culture-2)
-Identity: PSEUDOMONAS (0.646)
-Identity: BACTEROIDES (0.720)
-5
+Identity: PSEUDOMONAS (0.589)
+Identity: BACTEROIDES (0.674)
+7
 LISA-USER> 
 ```
 

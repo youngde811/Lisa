@@ -1,6 +1,6 @@
 # Clinician Scenarios for the MYCIN Rulebase
 
-A curated set of vignettes for driving the expanded 15-rule MYCIN rulebase
+A curated set of vignettes for driving the expanded 18-rule MYCIN rulebase
 (`examples/mycin.lisp`) through the Claude driver
 (`src/llm/claude/driver.py`) and the HTTP bridge. Each scenario is written
 the way a clinician might present a case at the bedside, and each is
@@ -9,15 +9,15 @@ annotated with:
 - **Facts to be extracted** — what Claude should turn the vignette into
 - **Rules expected to fire** — the descriptive rule names from the rulebase
 - **Expected differential** — the organism hypotheses and belief behavior,
-  contrasted between certainty factors (CF) and simplified
-  Dempster-Shafer (DS)
+  contrasted between certainty factors (CF) and Dempster-Shafer (DS)
 
-Together the seven cases reach every rule in the current base — most are
-fired directly by a scenario as written; the two `clumps`-based
-gram-positive rules (staphylococcus, staph-aureus) are reachable only by the
-noted variations (see the coverage matrix). Critically, several cases produce situations where *multiple rules
-conclude the same organism* — which is where belief combination becomes
-visible.
+Together the seven cases exercise most of the base directly, and Scenario 7
+reaches the disconfirming rules. Two `clumps`-based gram-positive rules
+(staphylococcus, staph-aureus) and two of the three disconfirming rules are
+reachable only by the noted variations (see the coverage matrix). Critically,
+several cases produce situations where *multiple rules conclude the same
+organism* — which is where belief combination becomes visible — and Scenario 7
+produces *conflicting* evidence, which is where CF and DS diverge.
 
 ## How to Run
 
@@ -245,21 +245,32 @@ as independent evidence accumulates.
 - `anaerobic-gram-neg-rod-in-blood-suggests-bacteroides` (0.9)
 - `gram-neg-rod-in-burn-patient-suggests-pseudomonas` (0.4)
 - `gram-neg-rod-in-compromised-host-suggests-pseudomonas` (0.6)
-- Possibly gram-positive branches (staphylococcus, streptococcus) if
-  `growth-conformation` is later asserted.
+- `gram-pos-stain-argues-against-gram-neg-organism` (−0.7) — the disconfirming
+  rule: the possible gram-*positive* reading argues *against* both
+  gram-negative hypotheses (bacteroides and pseudomonas)
 
 **Expected differential**:
-Both belief systems propagate the input uncertainty into the conclusions,
-but they do it differently:
+This is the case that pulls CF and DS apart. Both fold in the disconfirming
+gram-positive evidence, but they encode the result differently:
 
-- **CF**: the low input CF on the gram-pos fact weakens any rule requiring
-  it via `weaken-belief` (multiplication).
-- **DS**: the input becomes a `ds-belief` with `bel = confidence, pl = 1.0`.
-  Downstream rules produce wider ignorance intervals — you can see the
-  uncertainty flowing through the network.
+| Organism | CF | DS |
+|---|---|---|
+| **Bacteroides** | `0.52` | `bel 0.60, pl 0.83, ignorance 0.23` |
+| **Pseudomonas** | `0.39` | `bel 0.51, pl 0.80, ignorance 0.29` |
 
-This is the interesting DS case: **DS makes input uncertainty visible in
-the output interval, where CF collapses it to a single number**.
+- **CF** combines the negative evidence as a negative certainty factor and
+  reports a single lowered number — you can't distinguish "conflicted" from
+  "weakly supported."
+- **DS** combines via Dempster's rule of combination with conflict
+  renormalization: the gram-positive reading puts mass on *not-H*, so
+  **plausibility drops below 1.0**. That `pl` ceiling (0.83, 0.80) is the
+  visible fingerprint of the conflict. Note DS's `bel` sits *above* CF's
+  number — Dempster redistributes the conflict mass rather than subtracting it,
+  so `bel` and `pl` carry different parts of the story.
+
+This is the interesting DS case: **DS makes evidential conflict visible as a
+plausibility ceiling below 1.0, where CF collapses it to a single number**.
+Run it under both systems and compare the transcripts.
 
 ---
 
@@ -282,8 +293,16 @@ the output interval, where CF collapses it to a single number**.
 | gram-pos-cocci-in-chains-in-blood-compromised-suggests-enterococcus | 3 |
 | gram-neg-rod-in-blood-with-low-wbc-suggests-salmonella | 5 |
 | anaerobic-gram-neg-rod-in-abdomen-suggests-bacteroides | 6 |
+| gram-pos-stain-argues-against-gram-neg-organism | 7 |
+| gram-neg-stain-argues-against-gram-pos-organism | (needs a gram-neg reading alongside a live gram-positive hypothesis) |
+| aerobic-growth-argues-against-anaerobe | (needs an aerobic result contradicting a prior bacteroides hypothesis) |
 
 *Scenario 6 fires this rule only if a blood culture is also asserted.
+
+The three disconfirming rules carry negative beliefs and fire only when a
+contradictory finding meets a live hypothesis. Scenario 7 exercises the first
+directly; the other two need a scenario where the oxygen requirement or stain
+flips against an already-supported organism.
 
 ---
 

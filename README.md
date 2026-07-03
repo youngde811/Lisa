@@ -48,11 +48,13 @@ Towers of Hanoi, and others.
   interface backed by Lisa's Rete engine — three LLM backends (Anthropic API,
   CVS LMS/Hyperion, GCP Vertex), pluggable belief systems (certainty factors
   and Dempster-Shafer), configurable session transcripts, goal-directed
-  dialogue via partial-match introspection, and a 15-rule expanded MYCIN
-  rulebase. **Start here → [`docs/runbook.md`](docs/runbook.md).**
+  dialogue via partial-match introspection, and an 18-rule expanded MYCIN
+  rulebase (including disconfirming rules that make Dempster-Shafer's
+  conflict handling visible). **Start here → [`docs/runbook.md`](docs/runbook.md).**
 - **Pluggable Belief Systems**: Two algebras ship alongside the classic
-  Shortliffe-Buchanan certainty factors: a simplified Dempster-Shafer
-  implementation that carries explicit `[bel, pl]` ignorance intervals,
+  Shortliffe-Buchanan certainty factors: a Dempster-Shafer implementation
+  carrying explicit `[bel, pl]` intervals — combining evidence via Dempster's
+  rule of combination with conflict renormalization on the `{H, ¬H}` frame —
   and the protocol machinery to add more. Switch systems at bridge startup
   or per session via the LLM. See
   [`docs/clinician-scenarios.md`](docs/clinician-scenarios.md) for
@@ -141,7 +143,7 @@ classic certainty-factor algebra.
 ```lisp
 (ql:quickload :lisa-bridge)
 (in-package :lisa-user)
-(load "examples/mycin.lisp")     ; 15-rule expanded MYCIN base
+(load "examples/mycin.lisp")     ; 18-rule expanded MYCIN base
 (lisa-bridge:start)              ; default port 8090
 ```
 

@@ -3,9 +3,9 @@
 ## Context
 
 > **Note:** This section describes the state *before* the 2026-07-02 work
-> below. The rulebase has since grown from 6 → 15 rules and Dempster-Shafer
-> has been added as a second (now default) belief system — see the Progress
-> section at the end.
+> below. The rulebase has since grown from 6 → 18 rules and Dempster-Shafer
+> has been added as a second (now default) belief system, upgraded to real
+> Dempster combination on 2026-07-03 — see the Progress sections at the end.
 
 Phase 1 (HTTP bridge) and Phase 2 (Claude tool-use clinician driver) are complete. The system demonstrates a hybrid architecture where Claude handles natural-language interaction and Lisa handles deterministic forward-chaining inference with certainty factors and full rule traceability. At the time of writing, the MYCIN rulebase has 6 rules covering a narrow slice of infectious disease identification.
 
@@ -132,7 +132,64 @@ Full architecture plan: `docs/lisa-llm-architecture.md`
 
 ### Remaining threads
 
-- **Thread 3 — Architecture validation**: partially exercised by the 15-rule
+- **Thread 3 — Architecture validation**: partially exercised by the 18-rule
   base; still worth deliberate stress testing with longer conversations and
   more competing hypotheses.
+
+## Progress (2026-07-03)
+
+### Dempster-Shafer: from noisy-OR to real Dempster combination
+
+A review of the "simplified" DS implementation found that its `combine-beliefs`
+was the identical noisy-OR formula CF uses (`a + b − a*b`), with plausibility
+pinned at 1.0 because **every rule in the base was confirmatory**. Empirically,
+DS and CF produced identical numbers on every scenario, and `culture-2` (the
+ambiguous-gram-stain showcase) actually *crashed* under DS — an explicit
+numeric `:belief` was stored as a raw float and blew up `conjoin-beliefs`.
+
+Fixed end-to-end (option B — Dempster on the dichotomous frame `{H, ¬H}`, the
+Barnett simplification, rather than full power-set mass functions):
+
+- **Input normalization** (`src/core/rete.lisp`): an explicit numeric `:belief`
+  now routes through the active system's `normalize-belief`, so DS stores a
+  `ds-belief` interval instead of a bare number. Fixes the `culture-2` crash.
+- **Real Dempster's rule** (`src/belief-systems/dempster-shafer/`): each
+  `[Bel, Pl]` interval is a BPA over `{H, ¬H}` (`m(H)=Bel`, `m(¬H)=1−Pl`,
+  `m(Θ)=Pl−Bel`); `combine-beliefs` intersects focal elements, tallies conflict
+  `K`, and renormalizes by `1−K`. `weaken-belief` now accepts negative rule
+  factors, placing mass on `¬H` (disconfirming evidence). Confirmatory-only
+  cases have `K=0` and reduce to the old numbers, so `culture-1`/`1a`/`3` are
+  unchanged.
+- **Three disconfirming rules** (`examples/mycin.lisp`, 15 → 18): a
+  contradictory stain or oxygen requirement argues *against* a hypothesis.
+  These are what make DS and CF diverge — under DS, conflict pulls plausibility
+  below 1.0; under CF it collapses to a single lowered number.
+
+Result: `culture-2` no longer crashes and now genuinely separates the two
+algebras (DS bacteroides `[0.60, 0.83]` vs CF `0.52`). Docs (runbook Demo 4,
+Scenario 7, system prompt, ExampleRulebases sample run) refreshed with real
+engine output.
+
+A high-effort code-review pass then hardened the change:
+
+- **Disconfirming strength attribution** (`src/core/rete.lisp`): a rule that
+  re-asserts a fact it also matches (the disconfirming rules) was folding the
+  hypothesis's *own* prior belief into the premise-strength conjunction, so
+  ruling-out force tracked how strongly the hypothesis was already held rather
+  than the contradicting observation. The conclusion fact is now excluded from
+  its own premise list. Showcase scenarios (gram carries explicit confidence)
+  are unchanged; the plain-assertion path is now correct.
+- **Defensive clamps** (`dempster-shafer.lisp`): `weaken-belief` and
+  `combine-beliefs` clamp their outputs to a valid `[bel ≤ pl] ⊆ [0,1]`
+  interval, so an out-of-range rule `:belief` or a malformed input interval
+  can no longer leak invalid masses into `/conclusions`.
+
+### Still open
+
+- The disconfirming `gram-neg-argues-against-gram-pos` and
+  `aerobic-argues-against-anaerobe` rules aren't yet exercised by a written
+  scenario (they need a contradiction against a live hypothesis) — worth a
+  dedicated vignette.
+- Full power-set DS (set-valued / taxonomic hypotheses) remains deferred; the
+  dichotomous-frame simplification is the right cost/benefit point for now.
 

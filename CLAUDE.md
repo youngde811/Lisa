@@ -57,9 +57,9 @@ src/
   llm/claude/         — Claude tool-use integration
     driver.py         — Python client: tool-call loop; transcript capture
     tools.json        — Tool schemas (assert_fact, run_inference, get_conclusions, etc.)
-    system-prompt.md  — Clinical diagnostic system prompt (15 rules, CF/DS output)
+    system-prompt.md  — Clinical diagnostic system prompt (18 rules, CF/DS output)
 examples/
-  mycin.lisp          — MYCIN rules (15 rules; culture-1, culture-1a, culture-2, culture-3)
+  mycin.lisp          — MYCIN rules (18 rules incl. 3 disconfirming; culture-1, culture-1a, culture-2, culture-3)
 bin/
   test-culture-1.sh   — End-to-end bridge test (curl-based)
   run-mycin.sh        — Same as test-culture-1.sh (legacy name)
@@ -96,7 +96,7 @@ Expected: culture-1 scenario produces pseudomonas (0.6) and enterobacteriaceae (
 Both phases are complete:
 
 - **Phase 1 — HTTP Bridge**: Hunchentoot server exposing Lisa's inference engine as REST endpoints (assert-fact, run-inference, conclusions, rule-trace, partial-matches, reset). Belief-system-aware: startup-configurable via `LISA_BELIEF_SYSTEM` and per-session overridable via `/reset`.
-- **Phase 2 — Claude Tool-Use**: Python driver (`src/llm/claude/driver.py`) implementing a tool-call dispatch loop between Claude and the Lisa bridge. Includes tool schemas for all 6 endpoints, a system prompt with the MYCIN clinical ontology (15 rules) and uncertainty-mapping guidelines, goal-directed dialogue via `/partial-matches`, and configurable session transcript capture.
+- **Phase 2 — Claude Tool-Use**: Python driver (`src/llm/claude/driver.py`) implementing a tool-call dispatch loop between Claude and the Lisa bridge. Includes tool schemas for all 6 endpoints, a system prompt with the MYCIN clinical ontology (18 rules) and uncertainty-mapping guidelines, goal-directed dialogue via `/partial-matches`, and configurable session transcript capture.
 
 ### Running the Clinician Driver
 
@@ -161,7 +161,7 @@ regardless of terminal display.
 
 **Hands-on runbook** (start here for a guided tour): `docs/runbook.md`.
 
-**Clinician scenarios** for exercising the 15-rule MYCIN base:
+**Clinician scenarios** for exercising the 18-rule MYCIN base:
 `docs/clinician-scenarios.md`.
 
 Architecture plan: `docs/lisa-llm-architecture.md`
