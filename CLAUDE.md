@@ -138,7 +138,7 @@ LMS specifics:
   `lmsApiKey` from `~/.cvscode/.lms-credentials.json`.
 
 Model selection: `LISA_MODEL` overrides the per-backend default.
-Defaults are `claude-sonnet-4-6-20250619` on Anthropic and `claude-opus-4-7`
+Defaults are `claude-sonnet-5` on Anthropic and `claude-opus-4-7`
 on LMS and Vertex (matching `cvscode`).
 
 **Session transcripts** are captured to `./sessions/session-YYYYmmdd-HHMMSS.md`
