@@ -22,7 +22,7 @@ bug or a rule change — file an issue.
    - [1. Multi-rule belief combination](#1-multi-rule-belief-combination)
    - [2. Partial-matches drive the next question](#2-partial-matches-drive-the-next-question)
    - [3. Switching belief systems mid-conversation](#3-switching-belief-systems-mid-conversation)
-   - [4. Ambiguous evidence — where DS shines](#4-ambiguous-evidence--where-ds-shines)
+   - [4. Conflicting evidence — where DS shines](#4-conflicting-evidence--where-ds-shines)
    - [5. The abdominal anaerobe — narrowing ignorance](#5-the-abdominal-anaerobe--narrowing-ignorance)
 6. [Reviewing your session](#reviewing-your-session)
 7. [Tuning the transcript](#tuning-the-transcript)
@@ -47,9 +47,12 @@ The system has two halves that talk over HTTP:
   observations into structured facts, calls Lisa's endpoints as tool-use
   invocations, and narrates the results with full rule-level traceability.
 
-The MYCIN rulebase currently has **15 rules** covering gram-stain morphology,
+The MYCIN rulebase currently has **18 rules** covering gram-stain morphology,
 site-of-culture context, host status (burn / immunocompromised /
-hospital-acquired), travel history, and WBC. See
+hospital-acquired), travel history, and WBC — including **three disconfirming
+rules** that argue *against* a hypothesis (a contradictory stain or oxygen
+requirement), which is what lets Dempster-Shafer's conflict handling produce
+plausibility below 1.0. See
 [`docs/clinician-scenarios.md`](clinician-scenarios.md) for the full annotated
 scenario catalog.
 
@@ -90,7 +93,7 @@ From the project root, in an SBCL REPL:
 (asdf:load-system :lisa)
 
 (in-package :lisa-user)
-(load "examples/mycin.lisp")     ; loads classes, 15 rules, culture-* driver funcs
+(load "examples/mycin.lisp")     ; loads classes, 18 rules, culture-* driver funcs
 
 (asdf:load-system :lisa-bridge)
 (lisa-bridge:start)              ; port 8090
@@ -304,10 +307,10 @@ curl -sX POST http://localhost:8090/reset \
 Or set the default for the whole bridge lifetime with `LISA_BELIEF_SYSTEM` at
 startup.
 
-### 4. Ambiguous evidence — where DS shines
+### 4. Conflicting evidence — where DS shines
 
-**Goal**: Show how DS makes *input uncertainty* visible in the output, where
-CF collapses it.
+**Goal**: Show how DS makes *evidential conflict* visible in the output as a
+plausibility ceiling below 1.0, where CF collapses it to a bare point.
 
 Switch back to DS: *"Reset and use Dempster-Shafer."*
 
@@ -318,22 +321,36 @@ Then:
 > Blood culture, anaerobic organism.*
 
 Claude will assert two competing gram facts with confidence values:
-`gram=neg` at 0.8, `gram=pos` at 0.6. Under DS these become
-`ds-belief[bel=0.8, pl=1.0]` and `ds-belief[bel=0.6, pl=1.0]` respectively —
-both facts live in working memory with different belief strengths.
+`gram=neg` at 0.8, `gram=pos` at 0.6. Under DS these normalize to
+`[bel=0.8, pl=1.0]` and `[bel=0.6, pl=1.0]` — both live in working memory with
+different belief strengths.
 
-When you run inference, the anaerobic-blood-bacteroides rule fires strongly
-(gram=neg × 0.8 × rule belief 0.9), but you'll also see faint hypotheses on
-the gram-pos side. The DS output shows the *inherited* ignorance from the
-weak input evidence:
+When you run inference, the `anaerobic-gram-neg-rod-in-blood-suggests-bacteroides`
+rule fires for bacteroides (a gram-negative anaerobe). But the gram-*positive*
+reading now triggers a **disconfirming** rule —
+`gram-pos-stain-argues-against-gram-neg-organism` (belief −0.7) — which argues
+*against* bacteroides (and against pseudomonas). Dempster's rule of combination
+folds the conflicting evidence in and renormalizes, pulling plausibility below
+1.0:
 
 ```json
-{"value": "bacteroides", "belief": {"bel": 0.72, "pl": 1.0, "ignorance": 0.28}}
+{"value": "bacteroides", "belief": {"bel": 0.60, "pl": 0.83, "ignorance": 0.23}}
+{"value": "pseudomonas", "belief": {"bel": 0.51, "pl": 0.80, "ignorance": 0.29}}
 ```
 
-The ignorance width (0.28) is directly traceable to "the clinician wasn't
-sure about the gram stain." That's a story CF can't tell — under CF the same
-scenario just produces a single number and the input uncertainty is gone.
+The **plausibility ceiling** (0.83, not 1.0) is the tell: something argued
+against this organism. That's the story CF can't tell — run the identical case
+under CF and you get bare points (`bacteroides ≈ 0.52`, `pseudomonas ≈ 0.39`)
+with no signal that the gram-positive reading created any conflict. Note too
+that DS's belief (0.60) sits *above* CF's (0.52): Dempster redistributes the
+conflict mass across the frame rather than simply subtracting it, so `bel` and
+`pl` each carry a different part of the story.
+
+> **See it for real:** [`docs/sample-session-ds-conflict.md`](sample-session-ds-conflict.md)
+> is a captured transcript of exactly this case driven end-to-end through Claude
+> and the bridge — the DS conclusions (`bacteroides {bel 0.60, pl 0.83}`), the
+> disconfirming rule firing, and the CF side-by-side, all with Claude's
+> narration.
 
 ### 5. The abdominal anaerobe — narrowing ignorance
 
@@ -377,7 +394,7 @@ Structure:
 # Lisa/Claude session transcript
 
 - Started: 2026-07-02T12:15:00
-- Model: `claude-sonnet-4-6-20250619`
+- Model: `claude-sonnet-5`
 - Bridge: `http://localhost:8090`
 - Belief system: `Dempster-Shafer (simplified)`
 - Verbosity: `normal`

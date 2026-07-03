@@ -59,7 +59,7 @@ except ImportError:
 BRIDGE_URL = os.environ.get("LISA_BRIDGE_URL", "http://localhost:8090")
 
 # Per-backend model defaults. Overridable via LISA_MODEL at runtime.
-DEFAULT_MODEL_ANTHROPIC = "claude-sonnet-4-6-20250619"
+DEFAULT_MODEL_ANTHROPIC = "claude-sonnet-5"
 DEFAULT_MODEL_LMS = "claude-opus-4-7"
 DEFAULT_MODEL_VERTEX = "claude-opus-4-7"
 
@@ -637,9 +637,16 @@ def run():
         while True:
             response = client.messages.create(
                 model=model,
-                max_tokens=1024,
+                # 1024 truncates both multi-tool turns and longer narration
+                # (tables, differentials), which strands tool_use blocks without
+                # tool_result and 400s the next request.
+                max_tokens=4096,
                 system=SYSTEM_PROMPT,
                 tools=TOOLS,
+                # One tool call per turn: keeps each response small so it never
+                # truncates mid-tool-batch, and keeps the transcript legible
+                # (one assert_fact per step).
+                tool_choice={"type": "auto", "disable_parallel_tool_use": True},
                 messages=messages,
             )
 

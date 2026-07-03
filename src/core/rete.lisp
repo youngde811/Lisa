@@ -200,13 +200,27 @@
   
 (defmethod adjust-belief (rete fact (belief-factor number))
    (with-unique-fact (rete fact)
-     (setf (belief-factor fact) belief-factor)))
+     ;; Route an explicit numeric :belief through the active belief system so
+     ;; the stored value is in that system's internal representation (e.g. a
+     ;; DS-BELIEF interval under Dempster-Shafer) rather than a bare number.
+     ;; Without this, asserting a fact with a numeric :belief under DS would
+     ;; store a raw float that later blows up CONJOIN-BELIEFS / COMBINE-BELIEFS.
+     (setf (belief-factor fact)
+           (if belief:*belief-system*
+               (belief:normalize-belief belief:*belief-system* belief-factor)
+               belief-factor))))
 
 (defmethod adjust-belief (rete fact (belief-factor t))
   (declare (ignore rete))
   (when (in-rule-firing-p)
     (let ((rule-belief (belief-factor (active-rule)))
-          (facts (token-make-fact-list *active-tokens*)))
+          ;; Exclude the conclusion fact itself from the premise list. When a
+          ;; rule matches the very fact it re-asserts (e.g. a disconfirming rule
+          ;; that guards on an already-present hypothesis), that fact's prior
+          ;; belief is not premise *evidence* and must not drive the combined
+          ;; strength — otherwise ruling-out force would track how strongly the
+          ;; hypothesis is already held instead of the contradicting observation.
+          (facts (remove fact (token-make-fact-list *active-tokens*) :test #'eq)))
       (setf (belief-factor fact) (belief:adjust-belief facts rule-belief (belief-factor fact))))))
 
 (defmethod assert-fact ((self rete) fact &key belief)

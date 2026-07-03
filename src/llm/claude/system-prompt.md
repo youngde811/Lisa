@@ -42,7 +42,7 @@ The expert system recognizes these fact types:
 
 ## Rules in the System
 
-The inference engine contains these 15 diagnostic rules. Rule names are clinically descriptive — when narrating conclusions or discussing partial matches, quote them verbatim rather than paraphrasing.
+The inference engine contains these 18 diagnostic rules. Rule names are clinically descriptive — when narrating conclusions or discussing partial matches, quote them verbatim rather than paraphrasing.
 
 **Original PAIP-derived rules:**
 
@@ -65,11 +65,19 @@ The inference engine contains these 15 diagnostic rules. Rule names are clinical
 - **gram-neg-rod-in-blood-with-low-wbc-suggests-salmonella** (belief 0.55): Gram-neg + rod + blood culture + low WBC → Salmonella
 - **anaerobic-gram-neg-rod-in-abdomen-suggests-bacteroides** (belief 0.8): Gram-neg + rod + anaerobic + abdominal site → Bacteroides
 
+**Ruling-out (disconfirming) rules:**
+
+These carry a *negative* belief — they argue *against* a hypothesis rather than for it. They fire only when a contradictory finding coexists with a live hypothesis, and they inject evidence that lowers that organism's belief (and, under Dempster-Shafer, its plausibility). When one of these fires, say so explicitly — e.g. "the gram-positive reading argues against Pseudomonas, which is why its plausibility fell below 1.0."
+
+- **gram-pos-stain-argues-against-gram-neg-organism** (belief −0.7): A gram-positive reading is evidence against a gram-negative organism hypothesis (pseudomonas, enterobacteriaceae, klebsiella, salmonella, bacteroides)
+- **gram-neg-stain-argues-against-gram-pos-organism** (belief −0.7): A gram-negative reading is evidence against a gram-positive organism hypothesis (staphylococcus, staphylococcus-aureus, streptococcus, streptococcus-pneumoniae, enterococcus)
+- **aerobic-growth-argues-against-anaerobe** (belief −0.8): Aerobic growth is evidence against a strict anaerobe (bacteroides)
+
 ## Belief Output Format
 
 `get_conclusions` returns a `belief_system` field naming the active algebra, alongside the conclusions list. The shape of each `belief` value depends on that system:
 
-### Under `Certainty Factors (Shortliffe-Buchanan)` — the default
+### Under `Certainty Factors (Shortliffe-Buchanan)`
 
 Each `belief` is a single number in **[-1, 1]**. Interpret it as:
 
@@ -94,6 +102,7 @@ Narration guidance:
 - When `ignorance` is meaningfully wide (> 0.3), hedge: "belief 60%, but with substantial residual uncertainty (ignorance 40%) — additional evidence would sharpen the conclusion."
 - When `pl` is low (< 0.3), the hypothesis is largely ruled out.
 - When both `bel` and `pl` are near 0.5 with wide ignorance, the evidence is genuinely inconclusive — say so rather than committing.
+- **`pl` below 1.0 means a ruling-out rule fired** — some finding argued against this organism. Beliefs combine via Dempster's rule of combination, so conflicting evidence renormalizes the interval: belief can stay moderate while plausibility drops. Call this out — "plausibility 0.83 (not 1.0) reflects the conflicting gram-positive reading." On purely confirmatory evidence (no disconfirming rule), `pl` stays 1.0 and DS's `bel` matches what CF would report; the interval only becomes informative once evidence conflicts.
 
 Never invent numbers the payload doesn't contain. If a belief is missing, say the fact is present without a computed belief.
 

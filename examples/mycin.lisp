@@ -216,6 +216,45 @@
   =>
   (assert (organism-identity (value bacteroides) (entity ?organism))))
 
+;;; --- Ruling-out (disconfirming) rules ---
+;;;
+;;; Unlike every rule above, these inject *negative* evidence: a contradictory
+;;; Gram stain or oxygen requirement argues AGAINST an organism hypothesis.
+;;; They key off a live organism-identity hypothesis and re-assert it with a
+;;; negative rule belief, which the active belief system folds in as
+;;; disconfirming evidence.
+;;;
+;;; This is what makes Dempster-Shafer earn its keep: under DS a negative
+;;; :belief becomes mass on not-H, so when it meets confirmatory evidence the
+;;; combination produces real conflict (K > 0), lowering Bel AND pulling
+;;; plausibility below 1.0 -- an ambiguous stain becomes visible as a widened,
+;;; lowered interval. Under certainty factors it simply combines as a negative
+;;; CF and collapses to a single number. With a purely confirmatory rulebase
+;;; the two algebras are numerically identical; these rules are what pull them
+;;; apart.
+
+(defrule gram-pos-stain-argues-against-gram-neg-organism (:belief -0.7)
+  (gram (value pos) (entity ?organism))
+  (organism-identity (value ?value) (entity ?organism))
+  (test (member ?value '(pseudomonas enterobacteriaceae klebsiella salmonella bacteroides)))
+  =>
+  (assert (organism-identity (value ?value) (entity ?organism))))
+
+(defrule gram-neg-stain-argues-against-gram-pos-organism (:belief -0.7)
+  (gram (value neg) (entity ?organism))
+  (organism-identity (value ?value) (entity ?organism))
+  (test (member ?value '(staphylococcus staphylococcus-aureus streptococcus
+                         streptococcus-pneumoniae enterococcus)))
+  =>
+  (assert (organism-identity (value ?value) (entity ?organism))))
+
+(defrule aerobic-growth-argues-against-anaerobe (:belief -0.8)
+  (aerobicity (value aerobic) (entity ?organism))
+  (organism-identity (value ?value) (entity ?organism))
+  (test (member ?value '(bacteroides)))
+  =>
+  (assert (organism-identity (value ?value) (entity ?organism))))
+
 ;;; --- Conclusion rule ---
 
 (defrule conclusion (:salience -10)
