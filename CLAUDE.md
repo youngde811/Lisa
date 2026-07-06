@@ -85,6 +85,27 @@ bin/
 
 Expected: culture-1 scenario produces pseudomonas (0.6) and enterobacteriaceae (0.8).
 
+## Running the Test Suite
+
+Dependency-free golden-master + belief-algebra tests live in `tests/` as the
+`lisa/test` ASDF system (no external framework). From an SBCL REPL with Lisa loaded:
+
+```lisp
+(asdf:test-system :lisa)                 ; runs the suite; errors on any failure
+;; or, for the raw report / interactive use:
+(asdf:load-system "lisa/test")
+(lisa-test:run-all)                      ; => T iff all pass; prints pass/fail counts
+```
+
+Coverage: both belief algebras (CF and DS) directly, all four `culture-*` scenarios
+under each system with hand-verified golden values, the DS clamp / total-conflict /
+malformed-input edge cases, **each of the 18 rules fired in isolation** (confirming
+rules contribute exactly their `:belief`; disconfirming rules drop plausibility below
+1.0), and behavioral properties (confirmatory evidence keeps
+`pl = 1.0`; conflicting evidence drops it below 1.0; CF and DS agree without conflict
+and diverge with it). Golden values were captured from the 4.1.0 engine; if a belief
+computation changes intentionally, re-capture and update `tests/scenarios.lisp`.
+
 ## Key Packages
 
 - `lisa` / `lisa-user` — Core engine and user-facing DSL (defrule, assert, run, reset)

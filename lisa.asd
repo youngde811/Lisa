@@ -55,6 +55,7 @@
   :licence "MIT"
   :description "The Lisa Expert System Shell"
   :depends-on ("log4cl")
+  :in-order-to ((asdf:test-op (asdf:test-op "lisa/test")))
   :components
   ((:module src
     :components
@@ -139,6 +140,22 @@
        (:file "epilogue"))
       :serial t))
     :serial t)))
+
+;;; Dependency-free test suite. Run with (asdf:test-system :lisa) or
+;;; (asdf:load-system "lisa/test") followed by (lisa-test:run-all).
+(asdf:defsystem "lisa/test"
+  :description "Golden-master and belief-algebra test suite for Lisa (no external deps)."
+  :depends-on ("lisa")
+  :components
+  ((:module "tests"
+    :serial t
+    :components ((:file "harness")
+                 (:file "belief-algebra")
+                 (:file "scenarios")
+                 (:file "rules"))))
+  :perform (asdf:test-op (o c)
+             (unless (uiop:symbol-call "LISA-TEST" "RUN-ALL")
+               (error "Lisa test suite reported failures"))))
 
 (pushnew :lisa.asdf *features*)
 (pushnew :log4cl *features*)
