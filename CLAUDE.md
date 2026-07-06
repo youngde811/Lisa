@@ -99,7 +99,9 @@ Dependency-free golden-master + belief-algebra tests live in `tests/` as the
 
 Coverage: both belief algebras (CF and DS) directly, all four `culture-*` scenarios
 under each system with hand-verified golden values, the DS clamp / total-conflict /
-malformed-input edge cases, and behavioral properties (confirmatory evidence keeps
+malformed-input edge cases, **each of the 18 rules fired in isolation** (confirming
+rules contribute exactly their `:belief`; disconfirming rules drop plausibility below
+1.0), and behavioral properties (confirmatory evidence keeps
 `pl = 1.0`; conflicting evidence drops it below 1.0; CF and DS agree without conflict
 and diverge with it). Golden values were captured from the 4.1.0 engine; if a belief
 computation changes intentionally, re-capture and update `tests/scenarios.lisp`.

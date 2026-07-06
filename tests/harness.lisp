@@ -127,6 +127,36 @@
   "Look up the belief for organism NAME (case-insensitive) in CONCLUSIONS."
   (cdr (assoc (string-downcase name) conclusions :test #'string=)))
 
+;;; Programmatic fact assertion, for per-rule tests that need a minimal premise
+;;; set. Uses the same functional path as the bridge (LISA:ASSERT-INSTANCE),
+;;; so no rulebase-DSL macro is needed here.
+
+(defun lu (name)
+  "The symbol NAME (string or symbol) interned in the LISA-USER package."
+  (intern (string-upcase (string name)) "LISA-USER"))
+
+(defun af (class value &optional entity)
+  "Assert a param-mixin fact of CLASS with VALUE (both named in LISA-USER),
+   optionally attached to ENTITY (a CLOS instance)."
+  (let ((c (lu class)) (v (lu value)))
+    (lisa:assert-instance
+     (if entity
+         (make-instance c :value v :entity entity)
+         (make-instance c :value v)))))
+
+(defun run-facts (system builder)
+  "Select belief SYSTEM, reset, create an ORGANISM and PATIENT, call BUILDER
+   with them (it asserts facts via AF), run inference, return conclusions.
+   Lets a single rule fire in isolation on a minimal premise set."
+  (belief:use-system system)
+  (let ((*standard-output* (make-broadcast-stream)))
+    (lisa:reset)
+    (let ((organism (make-instance (lu "organism")))
+          (patient  (make-instance (lu "patient"))))
+      (funcall builder organism patient)
+      (lisa:run)))
+  (collect-conclusions))
+
 ;;; ------------------------------------------------------------------
 ;;; Runner
 ;;; ------------------------------------------------------------------

@@ -151,7 +151,8 @@
     :serial t
     :components ((:file "harness")
                  (:file "belief-algebra")
-                 (:file "scenarios"))))
+                 (:file "scenarios")
+                 (:file "rules"))))
   :perform (asdf:test-op (o c)
              (unless (uiop:symbol-call "LISA-TEST" "RUN-ALL")
                (error "Lisa test suite reported failures"))))
